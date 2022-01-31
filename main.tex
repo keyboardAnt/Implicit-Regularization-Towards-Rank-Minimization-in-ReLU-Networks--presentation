@@ -38,15 +38,6 @@
 
 
 
-\AtBeginSection[]
-{
-    \begin{frame}{Table of Contents}
-        \tableofcontents[currentsection]
-    \end{frame}
-}
-
-
-
 \section{Introduction}
 
 \begin{frame}{Introduction}{1. Generalization despite overparameterization}
@@ -77,11 +68,9 @@
         (despite \#[learnable parameters] $>>$ \#[training examples])
     \end{block}
     \pause
-    \begin{itemize}
-        \item[Q:] How?\\
-        \pause
-        \item[Possible A:] Implicit regularization/bias.
-    \end{itemize}
+    \textbf{Q:} How?\\
+    \pause
+    \textbf{Possible A:} ``implicit regularization'' (or ``implicit bias'').
     
     \note{
         \begin{enumerate}
@@ -94,7 +83,12 @@
 \end{frame}
 
 
-
+\AtBeginSection[]
+{
+    \begin{frame}{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
 
 \section{Results}
 
