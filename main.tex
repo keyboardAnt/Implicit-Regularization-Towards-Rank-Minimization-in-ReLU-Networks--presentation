@@ -138,11 +138,9 @@
 
 
 
-\section{Introduction}
+\section{What is implicit regularization?}
 
-\subsection{The problem}
-
-\begin{frame}{Intro: The problem}{Generalization despite overparameterization}
+\begin{frame}{What is \emph{implicit regularization}?}{How to generalize despite overparameterization?}
     \pause
     \newline
     If \#[learnable parameters] $>>$ \#[training examples]:
@@ -191,10 +189,21 @@
 \end{frame}
 
 
-\subsection{Previous work}
-\subsubsection{Implicit regularization in linear networks}
 
-\begin{frame}{Intro: Previous work}{Implicit regularization in linear networks}
+\AtBeginSection[]
+{
+    \begin{frame}{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+
+
+\section{Previous work}
+\subsection{Implicit regularization in linear networks}
+\subsubsection{Matrix fact.}
+
+\begin{frame}{Previous work}{Implicit regularization in linear networks}
     \pause
     \begin{definition}[fully-connected~neural~network]
         A fully-connected~neural~network $N_\btheta$ of depth~$k \geq 2$ is parameterized by a collection~$\btheta := [W^{(\ell)}]_{\ell=1}^k$ of weight~matrices\\
@@ -228,7 +237,7 @@
 
 
 
-\begin{frame} %{Intro: Previous work}{Implicit regularization in linear networks}
+\begin{frame}
     \begin{definition}[square loss]
         Given a network $N_\btheta$ and a dataset $\{(\bx_i,\by_i)\}_{i=1}^n \subseteq \reals^\din \times \reals^\dout$,
         \begin{align} \label{eq:objective}
@@ -303,6 +312,9 @@
 
 
 
+
+\subsubsection{Classification}
+
 \begin{frame}{Implicit bias in linear~networks: Classification}
     \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
         w.r.t. exponentially-tailed~classification~losses.
@@ -335,16 +347,8 @@
 
 
 
-\AtBeginSection[]
-{
-    \begin{frame}{Table of Contents}
-        \tableofcontents[currentsection]
-    \end{frame}
-}
 
-
-
-\subsubsection{Implicit regularization in ReLU networks}
+\subsection{Implicit regularization in ReLU networks}
 
 
 
