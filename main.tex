@@ -9,7 +9,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[round]{natbib}
-
+\renewcommand*{\bibfont}{\scriptsize}
 
 
 \DeclareMathOperator{\rank}{rank}
@@ -261,6 +261,7 @@
     
     \note{
         \begin{enumerate}
+            \item \true{Empirical} square loss.
             \item Our assumption that $\sigma'(0) = 0$:\\
             Practical implementations of gradient~methods define $\sigma'(0) \in [0,1]$.
         \end{enumerate}
@@ -280,7 +281,7 @@
     \end{itemize}
     \pause
     \begin{block}{\cite{razin2020implicit}’s conjecture}
-        (1) The implicit~bias in \emph{matrix~fact.} can be characterized by \true{rank~minimization}. (2) Some notion of rank~min. may be key to explaining generalization in deep~learning.
+        (1) \emph{Matrix~fact.} is implicitly biased towards \true{low-rank}. (2) Some notion of rank~min. may be key to explaining generalization in deep~learning.
     \end{block}
     \pause
     \begin{exampleblock}{\cite{li2020towards}’s evidence}
@@ -290,14 +291,6 @@
     \begin{exampleblock}{\cite{razin2021implicit}’s theoretical \& empirical results \hfill\checkmark}
         \emph{Tensor~fact.} (a generalization) is implicitly biased towards low-rank.
     \end{exampleblock}
-    
-    % % \begin{itemize}
-    % %     % \item \cite{li2020towards}’s evidence:\\
-    % %     % \emph{Matrix~fact.} is implicitly biased towards rank~min.
-    % %     \pause
-    % %     \item \cite{razin2021implicit}’s theoretical \& empirical results:\\
-    % %     \emph{Tensor~fact.} (a generalization) is implicitly biased towards low-rank~tensors.
-    % \end{itemize}
     
     \note{
     \begin{enumerate}
@@ -311,7 +304,33 @@
 
 
 \begin{frame}{Implicit bias in linear~networks: Classification}
+    \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
+        w.r.t. exponentially-tailed~classification~losses.
+    \pause
+    \begin{definition}[classification loss]
+        Given a binary~classification dataset $\{(\bx_i,y_i)\}_{i=1}^n \subseteq \reals^d \times \set{\pm 1}$, a network $N_\btheta$ and a loss function $\ell:\reals \to \reals$,
+        \begin{equation}\label{eq:objective classification}
+        	L_{X,\by}(\btheta) := \sum_{i=1}^n \ell\left(y_i N_\btheta(\bx_i)\right)~.
+        \end{equation}
+    \end{definition}
+    \pause
+    \begin{description}
+        \item[exponential~loss] \, $\ell(q) := e^{-q}$.
+        \item[logistic~loss] \,\,\,\,\, $\ell(q) := \log(1+e^{-q})$.
+    \end{description}
+    \begin{exampleblock}{\cite{ji2018gradient, ji2020directional} \hfill\checkmark}
+        GF converges s.t. the weight~matrix of every layer has rank~$1$.
+        \[
+            \rank W^{(\ell)}(\infty) = 1, ~\forall \ell \in [k].
+        \]
+    \end{exampleblock}
     
+    
+    \note{
+    \begin{itemize}
+        \item \true{Empirical} classification loss.
+    \end{itemize}
+    }
 \end{frame}
 
 
@@ -353,7 +372,7 @@ Sample text in green box. The title of the block is ``Examples".
 
 
 \section*{References}
-\begin{frame}{References}
+\begin{frame}{References}[allowframebreaks]
     \bibliography{bib}
     \bibliographystyle{abbrvnat}    
 \end{frame}
