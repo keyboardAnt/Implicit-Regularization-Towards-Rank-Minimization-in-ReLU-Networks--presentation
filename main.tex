@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[usenames,dvipsnames]{beamer}
 \usetheme{Boadilla}
 \usecolortheme{default}
 % \usepackage{pgfpages} % TO DELETE
@@ -107,6 +107,9 @@
 \newcommand{\complex}{{\mathbb C}}
 \newcommand{\zero}{{\mathbf{0}}}
 
+% Style conventions
+\newcommand{\true}[1]{{\textcolor{ForestGreen}{\textbf{#1}}}}
+
 
 
 
@@ -117,7 +120,7 @@
 }
 \institute[Weizmann Institute]{Weizmann Institute of Science}
 \date[January 2022]{January 2022}
-\logo{\includegraphics[height=.75cm]{WeizmannLogo.png}}
+% \logo{\includegraphics[height=.75cm]{WeizmannLogo.png}}
 
 
 
@@ -217,7 +220,7 @@
     }
     \onslide<7->{
         \begin{block}{Well-studied test-bed: Matrix Factorization}
-            What is the implicit regularization of training a depth-2 linear network w.r.t. square loss?\\
+            What is the implicit regularization of training a linear network of depth 2 and multiple outputs w.r.t. square loss?\\
             (find $W^{(2)}W^{(1)}\bx_i = W^* \bx_i, \forall i \in [n]$.)
         \end{block}
     }
@@ -266,20 +269,49 @@
 
 
 
-\begin{frame}{Implicit regularization in linear~networks/matrix~factorization}
+\begin{frame}{Implicit bias in linear~networks: Matrix~fact.}
     \pause
     \begin{block}{\cite{gunasekar2018implicit}’s conjecture}
-        The implicit~regularization in matrix~factorization can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
+        The implicit~bias in \emph{matrix~fact.} can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
     \end{block}
-    \begin{itemize}
-        \item This conjecture was further studied in a string of works (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}) and was \alert{formally refuted} by \cite{li2020towards}.
-    \end{itemize}
-    \pause
-    \item \cite{razin2020implicit} conjectured that the implicit~regularization in matrix~factorization can be explained by rank~minimization, and also hypothesized that some notion of rank~minimization may be key to explaining generalization in deep~learning.
     \pause
     \begin{itemize}
-        \item \cite{li2020towards} established evidence that the implicit~regularization in matrix~factorization is a heuristic for rank~minimization.
+        \item \alert{Formally refuted} by \cite{li2020towards}.
     \end{itemize}
+    \pause
+    \begin{block}{\cite{razin2020implicit}’s conjecture}
+        (1) The implicit~bias in \emph{matrix~fact.} can be characterized by \true{rank~minimization}. (2) Some notion of rank~min. may be key to explaining generalization in deep~learning.
+    \end{block}
+    \pause
+    \begin{exampleblock}{\cite{li2020towards}’s evidence}
+        \emph{Matrix~fact.} is implicitly biased towards low-rank.
+    \end{exampleblock}
+    \pause
+    \begin{exampleblock}{\cite{razin2021implicit}’s theoretical \& empirical results \hfill\checkmark}
+        \emph{Tensor~fact.} (a generalization) is implicitly biased towards low-rank.
+    \end{exampleblock}
+    
+    % % \begin{itemize}
+    % %     % \item \cite{li2020towards}’s evidence:\\
+    % %     % \emph{Matrix~fact.} is implicitly biased towards rank~min.
+    % %     \pause
+    % %     \item \cite{razin2021implicit}’s theoretical \& empirical results:\\
+    % %     \emph{Tensor~fact.} (a generalization) is implicitly biased towards low-rank~tensors.
+    % \end{itemize}
+    
+    \note{
+    \begin{enumerate}
+        \item \cite{gunasekar2018implicit}’s conjecture:\\
+        Was further studied in a string of works\\
+        (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}).
+    \end{enumerate}
+    }
+\end{frame}
+
+
+
+\begin{frame}{Implicit bias in linear~networks: Classification}
+    
 \end{frame}
 
 
