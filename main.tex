@@ -274,9 +274,9 @@
     
     \note{
         \begin{itemize}
-            \item With clicks:
+            \item Clicks:
             \begin{enumerate}
-                \item $\btheta(\bzero) :=$ initial parameterization.
+                \item $\btheta(\zero) :=$ initial parameterization.
                 \item GF guarantee convergence to a local minima.
                 \item When GF converges to a global minima:\\Can we guarantee to which one?
             \end{enumerate}
@@ -447,39 +447,67 @@
 
 
 
-\subsection{Implicit regularization in ReLU networks}
+\subsection{Implicit regularization in nonlinear networks}
 
 
 
-\begin{frame}{Implicit regularization in ReLU networks}
-    Empirically, a series of works studying neural~network~compression (cf. \cite{denton2014exploiting,yu2017compressing,alvarez2017compression,arora2018stronger,tukan2020compressed}) showed that replacing their weight~matrices by low-rank~approximations results in only a small drop in accuracy. This suggests that the weight~matrices in~practice are not too far from being low-rank. 
+\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{Neural~network~compression}
+    \begin{exampleblock}{Empirical evidences}
+        Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
+        \newline \newline
+        (cf., \cite{denton2014exploiting,yu2017compressing,alvarez2017compression,arora2018stronger,tukan2020compressed})
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item This suggests: In~practice, weight~matrices are not too far from being low-rank.
+        \pause
+        \item Today: Are they \textbf{provably} behave this way?
+    \end{itemize}
+    \pause
     \newline \newline
-    However, whether they provably behave this way remains unclear.
-    \newline \newline
-    In this work...
+    Our proofs:
+    \begin{itemize}
+        \item \alert{NO!} \pause (not always)
+        \item BUT, in some reasonable settings, \true{YES}: sufficient depth $\Rightarrow$ low-rank bias.
+    \end{itemize}
 \end{frame}
 
+
+\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{More prior results...}
+    \begin{exampleblock}{\cite{oymak2019overparameterized}}
+         GD over certain nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
+    \end{exampleblock}
+    \pause
+    \begin{exampleblock}{\cite{vardi2021implicit}}
+         In ReLU networks of width 1, $\forall$ regularization~function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minimum that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. ($\btheta :=$ model's parameters.)
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item $\Rightarrow$ $\not\exists$ a non-trivial~$\calr(\btheta)$ which expresses the implicit~bias for all possible datasets and initializations.
+        \pause
+        \item Does GF is implicitly~biased towards low-ranks? (\emph{rank} is undefined for width $1$.)
+        \pause
+        \item $\not\Rightarrow$ GF doesn't act as a \emph{heuristic} for rank~minimization (i.e., minimizes the ranks for ``most'' datasets and initializations).
+    \end{itemize}
+    
+    \note{
+    \begin{enumerate}
+        \item \cite{williams2019gradient,jin2020implicit}\\
+        studied the dynamics and implicit~bias of GD\\
+        in wide~depth-$2$~ReLU~networks w/ \alert{input~dimension~$1$}.
+    \end{enumerate}
+    }
+\end{frame}
+
+\begin{frame}
+    
+\end{frame}
 
 
 \section{Results}
 
-\begin{frame}{Sample frame title}
+\begin{frame}{Our results}{GF doesn't even approximately minimize ranks}
 
-In this slide, some important text will be
-\alert{highlighted} because it's important.
-Please, don't abuse it.
-
-\begin{block}{Remark}
-Sample text
-\end{block}
-
-\begin{alertblock}{Important theorem}
-Sample text in red box
-\end{alertblock}
-
-\begin{examples}
-Sample text in green box. The title of the block is ``Examples".
-\end{examples}
 \end{frame}
 
 
