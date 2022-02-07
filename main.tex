@@ -221,6 +221,7 @@
         \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (432,105.5) .. controls (432,103.71) and (433.46,102.25) .. (435.25,102.25) .. controls (437.04,102.25) and (438.5,103.71) .. (438.5,105.5) .. controls (438.5,107.29) and (437.04,108.75) .. (435.25,108.75) .. controls (433.46,108.75) and (432,107.29) .. (432,105.5) -- cycle ;
         
         % 2. GF guarantee convergence to a local min.
+        % 2.1. local- & global-min. 
         \pause
         %Shape: Ellipse [id:dp1447748006695847] 
         \draw  [fill={rgb, 255:red, 148; green, 180; blue, 242 }  ,fill opacity=0.5 ] (54,148) .. controls (54,100.23) and (140.86,61.5) .. (248,61.5) .. controls (355.14,61.5) and (442,100.23) .. (442,148) .. controls (442,195.77) and (355.14,234.5) .. (248,234.5) .. controls (140.86,234.5) and (54,195.77) .. (54,148) -- cycle ;
@@ -231,8 +232,7 @@
         % Text Node
         \draw (188,122) node [anchor=north west][inner sep=0.75pt]   [align=left] {0-loss (global min.)};
         
-        % 3. When GF converges to a global min. (w.r.t. the loss): Can we guarantee to which one?
-        \pause
+        % 2.2. GF & convergence
         %Shape: Circle [id:dp26530060350771567] 
         \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (137.5,109.5) .. controls (137.5,107.71) and (138.96,106.25) .. (140.75,106.25) .. controls (142.54,106.25) and (144,107.71) .. (144,109.5) .. controls (144,111.29) and (142.54,112.75) .. (140.75,112.75) .. controls (138.96,112.75) and (137.5,111.29) .. (137.5,109.5) -- cycle ;
         %Shape: Circle [id:dp7555562235073366] 
@@ -265,6 +265,7 @@
         % Text Node
         \draw (326.25,179.25) node [anchor=north west][inner sep=0.75pt]  [font=\small] [align=left] {$\displaystyle \boldsymbol{\theta }( \infty )$};
         
+        % 3. When GF converges to a global min. (w.r.t. the loss): Can we guarantee to which one?
         \pause
         %Shape: Ellipse [id:dp2535016048578479] 
         \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=0.6 ][dash pattern={on 5.63pt off 4.5pt}][line width=1.5]  (199,182.5) .. controls (199,164.83) and (236.83,150.5) .. (283.5,150.5) .. controls (330.17,150.5) and (368,164.83) .. (368,182.5) .. controls (368,200.17) and (330.17,214.5) .. (283.5,214.5) .. controls (236.83,214.5) and (199,200.17) .. (199,182.5) -- cycle ;
@@ -297,9 +298,9 @@
 
 
 
-\section{Previous work}
-\subsection{Implicit regularization in linear networks}
-\subsubsection{Matrix fact.}
+\section{Square loss}
+\subsection{Previous work}
+\subsubsection{Linear networks}
 
 \begin{frame}{Previous work}{Implicit regularization in linear networks}
     \pause
@@ -391,7 +392,7 @@
         (1) \emph{Matrix~fact.} is implicitly biased towards \true{low-rank}. (2) Some notion of rank~min. may be key to explaining generalization in deep~learning.
     \end{block}
     \pause
-    \begin{exampleblock}{\cite{li2020towards}’s evidence}
+    \begin{exampleblock}{\cite{li2020towards} \hfill\checkmark}
         \emph{Matrix~fact.} is implicitly biased towards low-rank.
     \end{exampleblock}
     \pause
@@ -411,7 +412,135 @@
 
 
 
-\subsubsection{Classification}
+\subsubsection{Nonlinear networks}
+
+
+
+\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{Neural~network~compression}
+    \pause
+    \begin{exampleblock}{Empirical evidences}
+        Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
+        \newline \newline
+        (cf., \cite{denton2014exploiting,yu2017compressing,alvarez2017compression,arora2018stronger,tukan2020compressed})
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item This suggests: In~practice, weight~matrices are not too far from being low-rank.
+        \pause
+        \item Today: Are they \textbf{provably} behave this way?
+    \end{itemize}
+    \pause
+    \newline \newline
+    Our proofs:
+    \begin{itemize}
+        \item \alert{NO!} \pause (not always)
+        \item BUT, in some reasonable settings, \true{YES}: sufficient depth $\Rightarrow$ low-rank bias.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{More prior results...}
+    \pause
+    \begin{block}{\cite{oymak2019overparameterized}}
+         GD over certain nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
+    \end{block}
+    \pause
+    \begin{block}{\cite{vardi2021implicit}}
+         In ReLU networks of width 1, $\forall$ regularization~function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minimum that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. %($\btheta :=$ model's parameters.)
+    \end{block}
+    \pause
+    \begin{itemize}
+        \item $\Rightarrow$ $\not\exists$ a non-trivial~$\calr(\btheta)$ which expresses the implicit~bias for all possible datasets and initializations.
+        \pause
+        \item Does GF is implicitly~biased towards low-ranks? (\emph{rank} is undefined for width $1$.)
+        \pause
+        \item $\not\Rightarrow$ GF doesn't act as a \emph{heuristic} for rank~minimization (i.e., minimizes the ranks for ``most'' datasets and initializations).
+    \end{itemize}
+    
+    \note{
+    More works:
+    \begin{enumerate}
+        \item \cite{williams2019gradient,jin2020implicit}:\\
+        Dynamics \& implicit~bias of GD\\
+        in wide~depth-$2$~ReLU~networks w/ \alert{input~dimension~$1$}.
+    \end{enumerate}
+    }
+\end{frame}
+
+
+
+
+\subsection{Our results}
+
+\begin{frame}{Our results}{GF doesn't even approximately minimize ranks}
+    \pause
+    Settings: \true{ReLU}~networks of depth $2$ and width $2$ w/ multiple outputs,\\
+    \pause
+    trained w/ the square~loss.
+    \begin{exampleblock}{\cite{li2020towards} (matrix~fact.)}
+        \alert{Linear} networks of this architecture are implicitly biased towards low-rank. (GF can be viewed as a "heuristic for rank~minimization".)
+    \end{exampleblock}
+    \pause
+    \begin{exampleblock}{Thm. (informal) \hfill\checkmark}
+          GF doesn't converge to a low-rank~solution for size-$2$ datasets, $\{(\bx_1,\by_1),(\bx_2,\by_2)\} \subseteq \mathbb{S}^1 \times \mathbb{S}^1$, whenever $\measuredangle(\bx_1,\bx_2) \in (\pi/2,\pi)$ and $\by_1,\by_2$ are linearly~independent.
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item $\Rightarrow$ No rank~minimization for ``most'' size-$2$ datasets.
+    \end{itemize}
+    \pause
+    \begin{exampleblock}{Thm. (informal) \hfill\checkmark}
+          The solutions that GF converges to are not even close to have low~rank, w.p. at least constant.
+    \end{exampleblock}
+\end{frame}
+
+
+
+\begin{frame}
+    
+\end{frame}
+
+
+
+\begin{frame}{Our results}{Rank~min. in deep~networks w/ small~$\ell_2$~norm}
+    \pause
+    Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained w/ the square~loss.
+    \pause
+    \begin{exampleblock}{Thm. (informal)}
+        For sufficiently deep networks, if $\btheta(\infty)$ exists and $\btheta(\infty) \in \arg\min_{\btheta} \norm{\btheta}$ s.t. $L_{X,Y}(\btheta(\infty)) = 0$, then 
+        \[
+        \frac{1}{k}\sum_{i=1}^{k} \frac{\norm{W^{(i)}(\infty)}_\sigma}{\norm{W^{(i)}(\infty)}_F}
+        \approx 1
+        \]
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item The squared inverse of this ratio is the \emph{stable~rank} (a continuous approx. of the rank: equals~$1$ iff the matrix has rank~$1$).
+        \pause
+        \item $\Rightarrow$ The result implies a bias towards \true{low~ranks}.
+        \pause
+        \item GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm.
+        \pause
+        \item In practice, it is common to use explicit $\ell_2$~regularization, which encourages norm~minimization.
+    \end{itemize}
+    
+    \note{
+    
+    \begin{itemize}
+        \item "GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm...":\\
+        ... in ReLU~networks w/ square~loss
+        \item At the end:\\
+        $\Rightarrow$ Our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$~regularization encourages rank~minimization.
+    \end{itemize}
+    }
+\end{frame}
+
+
+
+
+\section{Classification}
+\subsection{Previous work}
+\subsubsection{Linear networks}
 
 \begin{frame}{Implicit bias in linear~networks: Classification}
     \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
@@ -445,74 +574,59 @@
 \end{frame}
 
 
+\subsubsection{Nonlinear networks}
 
-
-\subsection{Implicit regularization in nonlinear networks}
-
-
-
-\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{Neural~network~compression}
-    \begin{exampleblock}{Empirical evidences}
-        Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
-        \newline \newline
-        (cf., \cite{denton2014exploiting,yu2017compressing,alvarez2017compression,arora2018stronger,tukan2020compressed})
+\begin{frame}{Implicit bias in nonlinear networks w/ exponentially-tailed losses}
+    \begin{exampleblock}{\cite{soudry2018implicit}}
+         GD on linearly-separable~binary~classification~problems converges to the maximum~$\ell_2$-margin~direction.
     \end{exampleblock}
     \pause
     \begin{itemize}
-        \item This suggests: In~practice, weight~matrices are not too far from being low-rank.
-        \pause
-        \item Today: Are they \textbf{provably} behave this way?
+        \item Extended to other loss~functions, tighter convergence~rates, non-separable~data, and variants of gradient-based~optimization~algorithms \citep{nacson2019convergence,ji2018risk,ji2020gradient,gunasekar2018characterizing,shamir2021gradient,ji2021characterizing}.
     \end{itemize}
     \pause
-    \newline \newline
-    Our proofs:
-    \begin{itemize}
-        \item \alert{NO!} \pause (not always)
-        \item BUT, in some reasonable settings, \true{YES}: sufficient depth $\Rightarrow$ low-rank bias.
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{More prior results...}
-    \begin{exampleblock}{\cite{oymak2019overparameterized}}
-         GD over certain nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
-    \end{exampleblock}
-    \pause
-    \begin{exampleblock}{\cite{vardi2021implicit}}
-         In ReLU networks of width 1, $\forall$ regularization~function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minimum that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. ($\btheta :=$ model's parameters.)
+    \begin{exampleblock}{\cite{lyu2019gradient,ji2020directional}}
+          GF on homogeneous~networks converges~in~direction to a KKT~point of the maximum-margin~problem in the parameter~space.
     \end{exampleblock}
     \pause
     \begin{itemize}
-        \item $\Rightarrow$ $\not\exists$ a non-trivial~$\calr(\btheta)$ which expresses the implicit~bias for all possible datasets and initializations.
-        \pause
-        \item Does GF is implicitly~biased towards low-ranks? (\emph{rank} is undefined for width $1$.)
-        \pause
-        \item $\not\Rightarrow$ GF doesn't act as a \emph{heuristic} for rank~minimization (i.e., minimizes the ranks for ``most'' datasets and initializations).
+        \item \cite{vardi2021margin}: In which settings this KKT~point is guaranteed to be a global/local~optimum of the maximum-margin~problem?
     \end{itemize}
     
     \note{
-    \begin{enumerate}
-        \item \cite{williams2019gradient,jin2020implicit}\\
-        studied the dynamics and implicit~bias of GD\\
-        in wide~depth-$2$~ReLU~networks w/ \alert{input~dimension~$1$}.
-    \end{enumerate}
+        More works:
+        \begin{enumerate}
+            \item \cite{gunasekar2018bimplicit,moroshko2020implicit,yun2020unifying}: \\
+            The implicit~bias in \alert{diagonal} and \alert{convolutional~linear~networks}. 
+            \item \cite{chizat2020implicit}:\\
+            The implicit~bias in \alert{infinitely-wide~two-layer~homogeneous~networks}.
+        \end{enumerate}
     }
 \end{frame}
 
-\begin{frame}
-    
+
+
+\subsection{Our results}
+
+
+
+\begin{frame}{Questions?}
 \end{frame}
 
 
-\section{Results}
-
-\begin{frame}{Our results}{GF doesn't even approximately minimize ranks}
-
+\begin{frame}{Thank you for listening!}
+Special thanks to
+\begin{itemize}
+    \item Prof. Ohad Shamir
+    \item Dr. Gal Vardi
+\end{itemize}
+and my family.
 \end{frame}
+
 
 
 \section*{References}
-\begin{frame}{References}[allowframebreaks]
+\begin{frame}[allowframebreaks]{References}
     \bibliography{bib}
     \bibliographystyle{abbrvnat}    
 \end{frame}
