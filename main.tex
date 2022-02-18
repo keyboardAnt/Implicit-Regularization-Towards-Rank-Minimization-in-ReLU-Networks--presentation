@@ -333,6 +333,7 @@
 
 
 \begin{frame}
+    \pause
     \begin{definition}[square loss]
         Given a network $N_\btheta$ and a dataset $\{(\bx_i,\by_i)\}_{i=1}^n \subseteq \reals^\din \times \reals^\dout$,
         \begin{align} \label{eq:objective}
@@ -344,30 +345,31 @@
     \end{definition}
     \pause
     \begin{itemize}
-        \item Overparameterization $\Rightarrow$
-        \pause
-        \begin{itemize}
-            \item $\min_\btheta L(\btheta)=0$.
-            \item $L$ has multiple (or even infinitely many) global minima.
+            \item Assume $\min_\btheta L(\btheta)=0$.
+            \pause
+            \item Overparameterization $\Rightarrow$ Multiple (or even $\infty$) global minima.
         \end{itemize}
-    \end{itemize}
     \pause
-    \begin{definition}[gradient flow (GF) w.r.t. square loss]
+    \begin{definition}[gradient flow (w.r.t. square loss)]
         Let~$\btheta(t)$ be the trajectory of GF. Starting from $\btheta(0)$, the dynamics is given by $\frac{d \btheta(t)}{dt} = -\nabla L_{X,Y}(\btheta(t))$.
     \end{definition}
     \begin{itemize}
-        \item Behaves as GD w/ an infinitesimally small step~size.
         \pause
-        \item GF \emph{converges} $\Leftrightarrow \lim_{t \to \infty}\btheta(t)$~exists. Then, $\btheta(\infty) := \lim_{t \to \infty}\btheta(t)$.
+        \item GF \emph{converges} $\Leftrightarrow \btheta(\infty) := \lim_{t \to \infty}\btheta(t)$.
         \pause
-        \item We assume $\sigma'(0) = 0$ for convenience.
+        \item Assume $\sigma'(0) = 0$ for convenience.
     \end{itemize}
     
     \note{
+        \footnotesize
         \begin{enumerate}
-            \item \true{Empirical} square loss.
-            \item Our assumption that $\sigma'(0) = 0$:\\
-            Practical implementations of gradient~methods define $\sigma'(0) \in [0,1]$.
+            \nosep
+            \item The \emph{empirical square loss} is half of the sum of the squared L2 norm of the differences between the network’s prediction, $N_\btheta(\bx_i)$, and the corresponding target vector, $\by_i$. For convenience, we sometimes use the matrix notation and take the Frobenius norm. Then, the input and target vectors are the columns of the matrices $X$ and $Y$.
+            \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining zero~loss.
+            \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
+            \item We consider GF on the square loss. It captures the behavior of GD with an infinitesimally small step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial point~$\btheta(0)$. The dynamics of~$\btheta(t)$ is given by the differential equation: $\frac{d \btheta(t)}{dt}$ equals the minus of the gradient of the objective function $L_{X,Y}$ with respect to vector of parameters $\btheta(t)$.
+            \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.
+            \item Another note is that, by default, the derivative of the ReLU~function at $\zero$ is ambiguous. However, practical implementations of gradient~methods define its derivative~at~$\zero$ to be some constant in the closed~interval between $0$~and~$1$ ((N.T.:~$\sigma'(0) \in [0,1]$)). For convenience, we assume that the derivative~at~$\zero$ equals~$0$.
         \end{enumerate}
     }
 \end{frame}
