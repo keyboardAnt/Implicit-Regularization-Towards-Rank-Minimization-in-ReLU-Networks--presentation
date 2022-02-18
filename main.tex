@@ -374,7 +374,7 @@
 
 
 
-\begin{frame}{Previous work}{Implicit regularization in linear networks (w/ square~loss)}
+\begin{frame}{Previous work}{Implicit regularization in linear networks w/ square~loss}
     \pause
     \begin{block}{\cite{gunasekar2018implicit}’s conjecture \onslide<3->{\hfill\alert{X}}}
         The implicit~bias in \emph{matrix~fact.} can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
@@ -403,16 +403,17 @@
         \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
         \item \cite{li2020towards} formally refuted it.
         \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
-        \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is indeed a heuristic for rank~minimization.
-        \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
+        \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
+        \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: Tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
     \end{enumerate}
+    Therefore, in a sense, the implicit bias in this linear setting seems to be solved. However, once we move to nonlinear~networks, things are less~clear.
     }
 \end{frame}
 
 
 
 
-\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks (w/ square~loss)}
+\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks w/ square~loss}
     \pause
     \begin{exampleblock}{Empirical evidences}
         Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
