@@ -281,7 +281,6 @@
 
 \section{Square loss}
 \subsection{Previous work}
-\subsubsection{Linear networks}
 
 \begin{frame}{Previous work}{Implicit regularization in linear networks}
     \pause
@@ -363,7 +362,6 @@
     \note{
         \footnotesize
         \begin{enumerate}
-            \nosep
             \item The \emph{empirical square loss} is half of the sum of the squared L2 norm of the differences between the network’s prediction, $N_\btheta(\bx_i)$, and the corresponding target vector, $\by_i$. For convenience, we sometimes use the matrix notation and take the Frobenius norm. Then, the input and target vectors are the columns of the matrices $X$ and $Y$.
             \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining zero~loss.
             \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
@@ -376,7 +374,7 @@
 
 
 
-\begin{frame}{Implicit bias in linear~networks: Matrix~fact.}
+\begin{frame}{Previous work}{Implicit regularization in linear networks (w/ square~loss)}
     \pause
     \begin{block}{\cite{gunasekar2018implicit}’s conjecture \onslide<3->{\hfill\alert{X}}}
         The implicit~bias in \emph{matrix~fact.} can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
@@ -399,10 +397,14 @@
     \end{exampleblock}
     
     \note{
+    \footnotesize
+    We saw that training a linear~network with multiple outputs w.r.t. the square~loss corresponds to a matrix~factorization~problem. Prior works in recent years have tried to identify its implicit~regularization.
     \begin{enumerate}
-        \item \cite{gunasekar2018implicit}’s conjecture:\\
-        Was further studied in a string of works\\
-        (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}).
+        \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
+        \item \cite{li2020towards} formally refuted it.
+        \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
+        \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is indeed a heuristic for rank~minimization.
+        \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
     \end{enumerate}
     }
 \end{frame}
@@ -410,11 +412,7 @@
 
 
 
-\subsubsection{Nonlinear networks}
-
-
-
-\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{Neural~network~compression}
+\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks (w/ square~loss)}
     \pause
     \begin{exampleblock}{Empirical evidences}
         Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
@@ -829,7 +827,6 @@
 
 \section{Classification}
 \subsection{Previous work}
-\subsubsection{Linear networks}
 
 \begin{frame}{Implicit bias in linear~networks: Classification}
     \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
@@ -856,6 +853,9 @@
     
     
     \note{
+    NEW: (from the Introduction section)\newline
+    Going beyond factorization~problems,  \cite{ji2018gradient, ji2020directional} showed that in linear~networks of output~dimension~$1$, gradient~flow~(GF) w.r.t. exponentially-tailed~classification~losses converges to networks where the weight~matrix of every layer is of rank~$1$.
+    
     \begin{itemize}
         \item \true{Empirical} classification loss.
     \end{itemize}
@@ -863,7 +863,6 @@
 \end{frame}
 
 
-\subsubsection{Nonlinear networks}
 
 \begin{frame}{Implicit bias in nonlinear networks w/ exponentially-tailed losses}
     \begin{exampleblock}{\cite{soudry2018implicit}}
