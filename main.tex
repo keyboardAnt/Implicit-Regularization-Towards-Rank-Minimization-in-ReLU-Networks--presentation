@@ -1,7 +1,7 @@
-\documentclass[usenames,dvipsnames]{beamer}
+\documentclass[handout,usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
 \usetheme{Boadilla}
 \usecolortheme{default}
-% \usepackage{pgfpages} % TO DELETE
+\usepackage{pgfpages}
 % \setbeameroption{hide notes} % Only slides
 % \setbeameroption{show only notes} % Only notes
 \setbeameroption{show notes on second screen=right} % Both
@@ -11,6 +11,7 @@
 \usepackage[round]{natbib}
 \renewcommand*{\bibfont}{\scriptsize}
 \usepackage{tikz}
+\usepackage{wrapfig}
 
 
 \DeclareMathOperator{\rank}{rank}
@@ -141,58 +142,50 @@
 
 \section{What is implicit regularization?}
 
-\begin{frame}{What is \emph{implicit regularization}?}{How to generalize despite overparameterization?}
+\begin{frame}{What is \emph{implicit regularization}?}{Generalization despite overparameterization}
     \pause
     \newline
     If \#[learnable parameters] $>>$ \#[training examples]:
     \pause
-    % \begin{columns}
-        % \column{0.5\textwidth}
     \begin{itemize}
-        \item \alert{Many global minima}\\
-        (w/ $0$ training loss).
+        \item \alert{Many} global minima w/ $0$ training loss.
         \pause
-        \item Might \alert{overfit}.
-        \pause
-        \begin{itemize}
-            \item Popular solution: explicit regularization.
-        \end{itemize}
     \end{itemize}
-        % \column{0.5\textwidth}
-        % \begin{figure}
-        % \centering
-        %     \includegraphics[width=6cm]{figures/overfitting.png}
-        %     % \caption{}
-        %     % \label{fig:overfitting}
-        % \end{figure}
-    % \end{columns}
     \pause
     \begin{block}{Phenomenon in practice (\cite{zhang2017understanding})}
-        Networks trained \true{w/o explicit~regularization} generalize well.
-        \newline
-        \newline
-        (despite \#[learnable parameters] $>>$ \#[training examples])
+        GD over such overparameterized neural networks generalize well even when trained \true{w/o~explicit~regularization}.
     \end{block}
-    \pause
     \textbf{Q:} How?\\
     \pause
-    \textbf{Possible A:} ``implicit regularization'' (or ``implicit bias'').
+    \textbf{Possible A:} \emph{``implicit regularization''} (or \emph{``implicit bias''}).
     
     \note{
-        \alert{If asked:}
+        We focus on overparameterized neural networks, namely, 
         \begin{enumerate}
+            \item there are far more learnable~parameters than training~examples.
+            \item Then, we face an underdetermined optimization~problem with many global~minima of zero~training~loss.
+            \item A central puzzle in the theory~of~deep~learning is how such overparameterized neural~networks generalize, even when trained without explicit regularization, as \cite{zhang2017understanding}  demonstrated.
+            \item A possible explanation is that GD induces an {\em implicit~regularization}~(or~\emph{implicit~bias}).
+        \end{enumerate}
+        Today we take another step in trying to characterizing this regularization/bias.
+        
+        \vspace*{\fill}
+        \noindent\rule{\textwidth}{1pt}
+        \newline
+        \alert{If asked:}
+        \begin{itemize}
             \item \cite{zhang2017understanding}:\\
             Large CNNs, trained w/ stochastic~gradient~methods\\
             fit a random~labeling (of the training~data), or even completely~unstructured random~noise.\\
             Unaffected by explicit~regularization.
-        \end{enumerate}
+        \end{itemize}
     }
 \end{frame}
 
 
 
 
-\begin{frame}{What is \emph{implicit regularization}?}
+\begin{frame}{What is \emph{implicit regularization/bias}?}
     \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
     
     \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
@@ -274,15 +267,13 @@
     \end{tikzpicture}
     
     \note{
-        \begin{itemize}
-            \item Clicks:
-            \begin{enumerate}
-                \item $\btheta(\zero) :=$ initial parameterization.
-                \item GF guarantee convergence to a local minima.
-                \item When GF converges to a global minima:\\Can we guarantee to which one?
-            \end{enumerate}
-            \item The "implicit bias" we are looking for may not even exist!
-        \end{itemize}
+        Let's try to understand implicit regularization by the following illustration:
+        \begin{enumerate}
+            \item The points in $\reals^d$ that we marked by $\btheta(\zero)$ are different possible initial parameterizations of a neural network.
+            \item We know that GF (e.g., w.r.t. square loss) guarantee convergence to a local minima. 
+            \item The question is: When GF converges to a global minima, can we guarantee to which one?
+        \end{enumerate}
+        But please remember that the "implicit bias" we are looking for may not even exist!
     }
 \end{frame}
 
@@ -318,10 +309,23 @@
         \end{description}
     }
     \onslide<7->{
-        \begin{block}{Well-studied test-bed: Matrix Factorization}
-            What is the implicit regularization of training a linear network of depth 2 and multiple outputs w.r.t. square loss?\\
-            (find $W^{(2)}W^{(1)}\bx_i = W^* \bx_i, \forall i \in [n]$.)
+        \begin{block}{Matrix Factorization}
+            What is the implicit regularization in training linear networks of depth 2 and multiple outputs w.r.t. square loss? ($W^{(2)}W^{(1)}\bx_i = W^* \bx_i, \forall i \in [n]$.)
         \end{block}
+    }
+    
+    \note{
+        \footnotesize
+        In recent years, several works studied the relationship between the implicit~regularization in \emph{linear}~neural~networks and rank~minimization. To understand those, let's first define our model.
+        \begin{enumerate}
+            \itemsep0em 
+            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{d\out}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called "the output of the first layer" or "the input to the second layer".
+            \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
+            \item This continues until we compute the input to the last layer.
+            \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.
+            \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
+        \end{enumerate}
+        A main focus in recent years was on the matrix~factorization~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
     }
 \end{frame}
 
@@ -472,6 +476,7 @@
     Setting: \true{ReLU}~networks of depth $2$ and width $2$ w/ multiple outputs,\\
     \pause
     trained w/ the square~loss.
+    \pause
     \begin{exampleblock}{\cite{li2020towards,razin2020implicit} (matrix/tensor~fact.)}
         \alert{Linear} networks of this architecture are implicitly biased towards low-rank. (GF can be viewed as a "heuristic for rank~minimization".)
     \end{exampleblock}
@@ -635,6 +640,141 @@
         \newline \newline
         Only if asked: We trained ReLU~networks in the same setup as in the previous section (w.r.t. two $2\times 2$~weight~matrices~$W^{(1)},W^{(2)}$) on the two data~points~$\{(\bx_i,\by_i)\}_{i=1}^{2}$ where~$\by_1,\by_2$ are the standard~basis vectors in~$\reals^2$, and~$\bx_1,\bx_2$ are~$(1,0.99)$ and~$(-1,0.99)$ normalized to have unit~norm. At initialization, every row of~$W^{(1)}$ and every column of~$W^{(2)}$ is sampled uniformly~at~random from the sphere of radius~$10^{-4}$ around the origin. To simulate GF, we performed~$3\cdot 10^{6}$ epochs of full-batch~GD of step~size~$10^{-4}$, w.r.t. the square~loss. Of~$288$~repeats of this experiment, $79$~converged to negligible~loss~(defined~as~$<10^{-4}$). In 
         the figure, we plot a histogram of the \emph{stable~(numerical)~ranks} of the resulting weight~matrices, i.e. the ratio~${\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$ of layer~$\ell \in [2]$. The figure clearly suggests that whenever convergence to zero~loss occurs, the solutions are all of rank~$2$, and none are even close~to being low-rank (in~terms of the stable~rank).
+    }
+\end{frame}
+
+
+
+\begin{frame}{Proof ideas}
+    Recall:
+    \pause
+    \begin{exampleblock}{Thm. \hfill\checkmark}\label{T2}
+        Let $(X,Y) \in \mathbb{R}^{2 \times 2} \times \mathbb{R}^{2 \times 2}$ be a labeled dataset that satisfies Assumptions~\ref{assumption:ys_linearly_independent},~\ref{assumption:xs_bounded_angle}.
+        Consider GF w.r.t. the square~loss~$L_{X,Y}(W,V)$. Suppose that $W,V \in \reals^{2 \times 2}$ are initialized s.t. 
+        $\norm{\bw_i(0)} < \min \left\{ \frac{1}{2}, \frac{\sqrt{3}}{2} \cos{\frac{\measuredangle(\bx_1, \bx_2)}{2}} \right\}$ 
+        and $\norm{\bv_i(0)} < \frac{1}{2}$ for all $i \in \{1,2\}$. If GF converges to a $0$-loss~solution~$N_{W(\infty),V(\infty)}$, then $\rank W(\infty) = 2$.
+    \end{exampleblock}
+    \begin{assumption}
+        The two target~vectors~$\by_1, \by_2$ are on the unit~sphere~$\mathbb{S}^1$ and are linearly~independent.
+    \end{assumption}
+    \begin{assumption}
+        The two inputs~$\bx_1, \bx_2$ are on the unit~sphere~$\mathbb{S}^1$ and $\frac{\pi}{2} < \measuredangle(\bx_1, \bx_2) < \pi$.
+    \end{assumption}
+\end{frame}
+
+
+
+\begin{frame}
+    \begin{columns}
+            \column{0.5\textwidth}
+            \begin{figure}[t]
+                \centering
+                \frame{\includegraphics[scale=.25]{figures/D_and_Ss_regions.png}}
+                \label{fig:D_and_Ss_regions}
+            \end{figure}
+            \pause
+            \column{0.7\textwidth}
+            {\fontsize{10}{10} \selectfont
+            \begin{align*}
+                &\mathcal{D} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) \le 0\}\\
+                \pause
+                &\mathcal{S} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) > 0 \}\\
+                \pause
+                &\mathcal{S}_j := \{ \bw  \mid  i=j \Leftrightarrow \sigma(\bw^\top \bx_i) > 0 \}
+            \end{align*}
+            }
+    \end{columns}
+    \pause
+    {\fontsize{10}{10} \selectfont
+    \[
+        \mathcal{S}_1 := \{ \bw  \mid \sigma(\bw^\top \bx_1) > 0, \sigma(\bw^\top \bx_2) \leq 0\},
+        \mathcal{S}_2 := \{ \bw  \mid \sigma(\bw^\top \bx_2) > 0, \sigma(\bw^\top \bx_1) \leq 0\}
+    \]
+    }
+    
+    \note{
+        Intuitively,~$\mathcal{D}$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$; $\mathcal{S}$~is the ``active''~region where a neuron outputs a positive~output on both~$\bx_1,\bx_2$; and $\mathcal{S}_1,\mathcal{S}_2$~are the ``partially~active''~regions, where the relevant neuron outputs a positive~output on one point, and~$0$ on the other. 
+    }
+\end{frame}
+
+
+
+\begin{frame}
+    \begin{columns}
+        \column{0.6\textwidth}
+        \begin{itemize}
+            \setlength{\parskip}{0pt}
+            \setlength{\abovedisplayskip}{0pt}
+            \setlength{\belowdisplayskip}{0pt}
+            \setlength{\abovedisplayshortskip}{0pt}
+            \setlength{\belowdisplayshortskip}{0pt}
+            
+            \item Assume towards~contradiction:\\GF converges to some 0-loss~network~$N_{W(\infty),V(\infty)}$ s.t. ~$\rank(W(\infty))<2$. 
+            \pause
+            \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
+            \pause
+            \item $\Rightarrow$ 
+            \begin{align*}
+                2 &= \rank(Y) = \rank \left( V(\infty) \sigma \left(W(\infty) X \right) \right) \\
+                &\leq \rank \left( \sigma \left( W(\infty) X \right) \right).
+            \end{align*}
+        \end{itemize}    
+
+        \column{0.4\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
+        \end{center}
+    \end{columns}
+    
+    \begin{itemize}
+        \pause
+        \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \notin \cd$. (Otherwise, $\zero^T$ is a row in~$\sigma(W(\infty) X)$.)
+        \pause
+        \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \ne \zero$ $\Rightarrow \rank(W(\infty))=1$. 
+        \pause
+        \item Denote $\bw_2(\infty) = \alpha \bw_1(\infty)$ where~$\alpha \neq 0$.
+        \pause
+        \begin{itemize}
+            \item $\alpha > 0 \Rightarrow \sigma(\bw_2(\infty)^\top \bx_j) = \alpha \sigma(\bw_1(\infty)^\top \bx_j), \forall j \in [2] \Rightarrow$ contradiction!
+            \pause
+            \item $\Rightarrow \alpha < 0$.
+        \end{itemize}
+        \pause
+        \item $\Rightarrow$ w.l.o.g., $\bw_1(\infty) \in \cs_1 \setminus \partial \cs_1, \bw_2(\infty) \in \cs_2 \setminus \partial \cs_2$.
+    \end{itemize}
+    
+    \note{
+        Starting from the 4th point: \newline
+        \begin{itemize}
+            \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in the region~$\cd$. Indeed, if $\bw_1(\infty)$ or~$\bw_2(\infty)$ are in~$\cd$, then at~least one of the rows of~$\sigma(W(\infty) X)$ is~zero, in~contradiction.
+            \item In~particular, it implies that~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are non-zero.
+            \item Since by our assumption we have~$\rank(W(\infty))<2$, then we conclude that~$\rank(W(\infty))=1$. 
+            \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where~$\alpha \neq 0$.
+            \item Note that if~$\alpha > 0$, then~$\sigma(\bw_2(\infty)^\top \bx_j) = \alpha \sigma(\bw_1(\infty)^\top \bx_j)$ for~all~$j \in \{1,2\}$, in~contradiction
+            \item Thus,~$\alpha < 0$.
+            \item Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in~$\cs_1 \setminus \partial \cs_1$ and the other is in~$\cs_2 \setminus \partial \cs_2$ (as can be seen in the figure). Assume~w.l.o.g. that~$\bw_1(\infty) \in \cs_1 \setminus \partial \cs_1$ and $\bw_2(\infty) \in \cs_2 \setminus \partial \cs_2$.
+        \end{itemize}
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    \begin{figure}[t]
+        \centering
+        \frame{\includegraphics[scale=.25]{figures/F_and_A_regions.png}}
+        \caption{Regions~$\cf_i$~(in~green) and~$\ca_i$ (the union of the green and orange regions). A dashed line marks an open~boundary.}
+        \label{fig:F_and_A_regions}
+    \end{figure} 
+
+    \note{
+        By observing the gradients of~$L_{X,Y}$ w.r.t.~$\bw_i$ for~$i \in \{1,2\}$, the following facts follow. First, if~$\bw_i(t) \in \cd$ at some time~$t$, then~$\frac{d}{dt} \bw_i(t) = \zero$, hence $\bw_i$~remains at~$\cd$ indefinitely, in~contradiction to~$\bw_i(\infty) \in \cs_i \setminus \partial \cs_i$. Thus, the trajectory~$\bw_i(t)$ does~not visit~$\cd$. Second, if~$\bw_i(t) \in \cs_i$ at time~$t$, then~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$. Since~$\bw_i(\infty) \in \cs_i \setminus \partial \cs_i$, we can consider the last~time~$t'$ that~$\bw_i$ enters~$\cs_i$, which can be either at the initialization (i.e.,~$t'=0$) or when moving from~$\cs$ (i.e.,~$t'>0$). For~all time~$t \geq t'$ we have~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$. It allows us to conclude that~$\bw_i(\infty)$ must be in a region~$\ca_i$ which is illustrated in \figref{fig:F_and_A_regions} (by the union of the orange and green regions).
+        
+        Furthermore, we show that~$\norm{\bw_i(\infty)}$ cannot be too~small, namely, obtaining a lower~bound on~$\norm{\bw_i(\infty)}$. First, a theorem from \cite{du2018algorithmic} implies that~$\norm{\bw_i(t)}^2 - \norm{\bv_i(t)}^2$ remains constant throughout the training. Since at the initialization both~$\norm{\bw_i(0)}$ and~$\norm{\bv_i(0)}$ are small, the consequence is that~$\norm{\bv_i(\infty)}$ is small if~$\norm{\bw_i(\infty)}$ is small.
+        Also, since~$N_{W(\infty),V(\infty)}$ attains zero~loss and~$\bw_i(\infty) \in \cs_i$ for all $i \in \{1,2\}$, then we have~$\by_i = \bv_i(\infty) (\bw_i(\infty)^\top \bx_i)$, namely, only the $i$-th~hidden~neuron contributes to the output of~$N_{W(\infty),V(\infty)}$ for the input~$\bx_i$. Since~$\norm{\by_i}=\norm{\bx_i}=1$, it is impossible that both~$\norm{\bw_i(\infty)}$ and~$\norm{\bv_i(\infty)}$ are small. Hence, we are able to obtain a lower~bound on~$\norm{\bw_i(\infty)}$, which implies that~$\bw_i(\infty)$ is in a region~$\cf_i$ which is illustrated in \figref{fig:F_and_A_regions}.
+        
+        Finally, we show that since $\bw_1(\infty) \in \cf_1$ and $\bw_2(\infty) \in \cf_2$ then the angle between $\bw_1(\infty)$ and $\bw_2(\infty)$ is smaller than $\pi$, in~contradiction to $\bw_2(\infty) = \alpha \bw_1(\infty)$.
     }
 \end{frame}
 
