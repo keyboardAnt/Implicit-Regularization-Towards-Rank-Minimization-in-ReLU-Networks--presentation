@@ -13,7 +13,6 @@
 \usepackage{tikz}
 \usepackage{wrapfig}
 
-
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\erank}{erank}
 \DeclareMathOperator{\cl}{cl}
@@ -174,8 +173,8 @@
         \newline
         \alert{If asked:}
         \begin{itemize}
-            \item \cite{zhang2017understanding}:\\
-            Large CNNs, trained w/ stochastic~gradient~methods\\
+            \item \cite{zhang2017understanding}: Large CNNs,\\
+            trained w/ stochastic~gradient~methods\\
             fit a random~labeling (of the training~data), or even completely~unstructured random~noise.\\
             Unaffected by explicit~regularization.
         \end{itemize}
@@ -315,17 +314,19 @@
     }
     
     \note{
-        \footnotesize
+        \scriptsize
         In recent years, several works studied the relationship between the implicit~regularization in \emph{linear}~neural~networks and rank~minimization. To understand those, let's first define our model.
         \begin{enumerate}
-            \itemsep0em 
-            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{d\out}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called "the output of the first layer" or "the input to the second layer".
+            \itemsep=0pt
+            \topsep=0pt
+            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices $W^{(\ell)}$. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{d\out}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called ``the output of the first layer" or ``the input to the second layer".
             \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
-            \item This continues until we compute the input to the last layer.
+            \item This continues until we compute the input to the last layer.\\
+            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} equals $d_\ell$ (the number of rows in $W^{(\ell)}$) and the \emph{width of the network} is the maximal width of its layers.
             \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.
             \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
+            \item A main focus in recent years was on the matrix~fact.~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
         \end{enumerate}
-        A main focus in recent years was on the matrix~factorization~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
     }
 \end{frame}
 
