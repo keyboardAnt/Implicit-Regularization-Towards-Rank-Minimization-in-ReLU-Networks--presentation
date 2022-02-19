@@ -424,15 +424,13 @@
     \begin{itemize}
         \item $\Rightarrow$ In~practice, weight~matrices are not too far from being low-rank.
         \pause
-        \item Today: Are they \textbf{provably} behave this way?
-    \end{itemize}
-    \pause
-    \newline \newline
-    Our proofs:
-    \begin{itemize}
-        \item \alert{NO!} \pause (not always)
-        \item BUT, in some reasonable settings, \true{YES}:\\
-        sufficient depth $\Rightarrow$ low-rank bias.
+        \item \textbf{Today:} Are they provably behave this way?
+        \pause
+        \begin{itemize}
+            \item \alert{NO!} \pause (not always)
+            \item BUT, in some reasonable settings, \true{YES}:\\
+            sufficient depth $\Rightarrow$ low-rank bias.
+        \end{itemize}
     \end{itemize}
     
     \note{
@@ -450,35 +448,34 @@
 \end{frame}
 
 
-\begin{frame}{Implicit bias in nonlinear networks w/ square loss}{More prior results...}
+\begin{frame}{More previous work...}{Implicit regularization in *nonlinear* networks w/ square~loss}
     \pause
     \begin{block}{\cite{oymak2019overparameterized}}
-         GD over certain nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
+         GD over certain overparameterized nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
     \end{block}
     \pause
     \begin{block}{\cite{vardi2021implicit}}
-         In ReLU networks of width 1, $\forall$ regularization~function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minimum that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. %($\btheta :=$ model's parameters.)
+         In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. %($\btheta :=$ model's parameters.)
     \end{block}
     \pause
     \begin{itemize}
-        \item $\Rightarrow$ $\not\exists$ a non-trivial~$\calr(\btheta)$ which expresses the implicit~bias for all possible datasets and initializations.
+        \item Does GF act as a \emph{heuristic}? (i.e., induces implicit bias for ``most" datasets and initializations)
         \pause
         \item Does GF is implicitly~biased towards low-ranks? (\emph{rank} is undefined for width $1$.)
-        \pause
-        \item $\not\Rightarrow$ GF doesn't act as a \emph{heuristic} for rank~minimization (i.e., minimizes the ranks for ``most'' datasets and initializations).
     \end{itemize}
     
     \note{
-    At the beginning:
-    \begin{itemize}
-        \item "Sol-tanol-kotabi"
-    \end{itemize}
-    At the end:\\More works:
+    \fontsize{9}{9}\selectfont
+    Before introducing our results on ranks, I would like to mention a~few more other prior~studies on nonlinear~networks with the square loss.
     \begin{enumerate}
-        \item \cite{williams2019gradient,jin2020implicit}:\\
-        Dynamics \& implicit~bias of GD\\
-        in wide~depth-$2$~ReLU~networks w/ \alert{input~dimension~$1$}.
+        \itemsep=0pt
+        \topsep=0pt
+        \item For overparameterized nonlinear networks, Oymak~and~"Sol-tanol-ko-tabi" (2019) showed that, under some assumptions on the initial loss, first order methods (such as GD or stochastic GD) converge to a global minima even when the loss is nonconvex, and that the converged solution has a near minimal distance to the initial point (among all global minima).
+        \item \cite{vardi2021implicit} showed that in ReLU networks of width $1$ (namely, ReLU networks with a single~neuron~or~hidden-neuron), the implicit~regularization cannot be expressed by any non-trivial~regularization~function. Namely, for any function of the model's parameters $\calr(\btheta)$, if GF with the square~loss converges to a global~minima of the loss, and it is also a global~minima of~$\calr$, then $\calr$ is necessarily trivial.
+        \item Their negative result rules~out the existence of a non-trivial~regularization~function which expresses the implicit~bias for all possible datasets and initializations. However, it does~not rule~out the possibility that GF acts as a heuristic that induces bias for ``most" datasets and initializations.
+        \item Moreover, in their width-$1$ setting, the notation of \emph{rank} is undefined. Hence, implicit bias towards low~ranks would not contradict their negative result.
     \end{enumerate}
+    There are also other works on the dynamics and implicit~bias of GD in wide~depth-$2$~ReLU~networks of \alert{input~dimension~$1$}. (\cite{williams2019gradient} and \cite{jin2020implicit}.)
     }
 \end{frame}
 
