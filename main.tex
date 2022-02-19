@@ -503,6 +503,7 @@
     \end{exampleblock}
     
     \note{
+        \footnotesize
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
@@ -511,7 +512,8 @@
             \item In contrast to the linear case, we show that in ReLU~networks, the situation is quite different: We show that GF does~not converge to a low-rank~solution, already for the simple case of datasets of size~$2$. Our result has only mild assumptions on the training dataset and that the initialization is sufficiently close-to-$0$. The assumptions on the data are so weak that they allow us to consider ``most'' datasets of size $2$. Soon we will see it formally.
             \item To completely rule~out the possibility of low-rank bias, we show that with at least constant probability, the solutions GF converges to are not even close to having low~rank for any reasonable rank-approximation metric (e.g., the ratio of the Frobenius and spectral norms).
         \end{enumerate}
-        We also demonstrate these results empirically.
+        We also demonstrate these results empirically, showing that they hold for GD with finite step size and a standard initialization scheme.\\
+        Now, let's examine those results formally.
     }
 \end{frame}
 
