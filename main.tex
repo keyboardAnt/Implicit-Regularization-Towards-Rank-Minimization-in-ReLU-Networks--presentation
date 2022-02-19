@@ -397,16 +397,16 @@
     \end{exampleblock}
     
     \note{
-    \footnotesize
-    We saw that training a linear~network with multiple outputs w.r.t. the square~loss corresponds to a matrix~factorization~problem. Prior works in recent years have tried to identify its implicit~regularization.
-    \begin{enumerate}
-        \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
-        \item \cite{li2020towards} formally refuted it.
-        \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
-        \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
-        \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: Tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
-    \end{enumerate}
-    Therefore, in a sense, the implicit bias in this linear setting seems to be solved. However, once we move to nonlinear~networks, things are less~clear.
+        \footnotesize
+        We saw that training a linear~network with multiple outputs w.r.t. the square~loss corresponds to a matrix~factorization~problem. Prior works in recent years have tried to identify its implicit~regularization.
+        \begin{enumerate}
+            \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
+            \item \cite{li2020towards} formally refuted it.
+            \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
+            \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
+            \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: Tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
+        \end{enumerate}
+        Therefore, in a sense, the implicit bias in this linear setting seems to be solved. However, once we move to nonlinear~networks, things are less~clear.
     }
 \end{frame}
 
@@ -465,17 +465,17 @@
     \end{itemize}
     
     \note{
-    \fontsize{9}{9}\selectfont
-    Before introducing our results on ranks, I would like to mention a~few more other prior~studies on nonlinear~networks with the square loss.
-    \begin{enumerate}
-        \itemsep=0pt
-        \topsep=0pt
-        \item For overparameterized nonlinear networks, Oymak~and~"Sol-tanol-ko-tabi" (2019) showed that, under some assumptions on the initial loss, first order methods (such as GD or stochastic GD) converge to a global minima even when the loss is nonconvex, and that the converged solution has a near minimal distance to the initial point (among all global minima).
-        \item \cite{vardi2021implicit} showed that in ReLU networks of width $1$ (namely, ReLU networks with a single~neuron~or~hidden-neuron), the implicit~regularization cannot be expressed by any non-trivial~regularization~function. Namely, for any function of the model's parameters $\calr(\btheta)$, if GF with the square~loss converges to a global~minima of the loss, and it is also a global~minima of~$\calr$, then $\calr$ is necessarily trivial.
-        \item Their negative result rules~out the existence of a non-trivial~regularization~function which expresses the implicit~bias for all possible datasets and initializations. However, it does~not rule~out the possibility that GF acts as a heuristic that induces bias for ``most" datasets and initializations.
-        \item Moreover, in their width-$1$ setting, the notation of \emph{rank} is undefined. Hence, implicit bias towards low~ranks would not contradict their negative result.
-    \end{enumerate}
-    There are also other works on the dynamics and implicit~bias of GD in wide~depth-$2$~ReLU~networks of \alert{input~dimension~$1$}. (\cite{williams2019gradient} and \cite{jin2020implicit}.)
+        \fontsize{9}{9}\selectfont
+        Before introducing our results on ranks, I would like to mention a~few more other prior~studies on nonlinear~networks with the square loss.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item For overparameterized nonlinear networks, Oymak~and~"Sol-tanol-ko-tabi" (2019) showed that, under some assumptions on the initial loss, first order methods (such as GD or stochastic GD) converge to a global minima even when the loss is nonconvex, and that the converged solution has a near minimal distance to the initial point (among all global minima).
+            \item \cite{vardi2021implicit} showed that in ReLU networks of width $1$ (namely, ReLU networks with a single~neuron~or~hidden-neuron), the implicit~regularization cannot be expressed by any non-trivial~regularization~function. Namely, for any function of the model's parameters $\calr(\btheta)$, if GF with the square~loss converges to a global~minima of the loss, and it is also a global~minima of~$\calr$, then $\calr$ is necessarily trivial.
+            \item Their negative result rules~out the existence of a non-trivial~regularization~function which expresses the implicit~bias for all possible datasets and initializations. However, it does~not rule~out the possibility that GF acts as a heuristic that induces bias for ``most" datasets and initializations.
+            \item Moreover, in their width-$1$ setting, the notation of \emph{rank} is undefined. Hence, implicit bias towards low~ranks would not contradict their negative result.
+        \end{enumerate}
+        There are also other works, like \cite{williams2019gradient} and \cite{jin2020implicit}, that study the dynamics and implicit~bias of GD in wide~depth-$2$ ReLU~networks with input~dimension~$1$.
     }
 \end{frame}
 
@@ -495,16 +495,24 @@
     \end{exampleblock}
     \pause
     \begin{exampleblock}{Thm. (informal) \hfill\checkmark}
-          GF does~not converge to a low-rank~solution for size-$2$ datasets, under mild assumptions on the dataset and initialization.
+          GF does~not converge to a low-rank~solution for ``most'' size-$2$ datasets.
     \end{exampleblock}
-    \pause
-    \begin{itemize}
-        \item $\Rightarrow$ No rank~minimization for ``most'' size-$2$ datasets.
-    \end{itemize}
     \pause
     \begin{exampleblock}{Thm. (informal) \hfill\checkmark}
           W.p. at least constant, the solutions that GF converges to are not even close to have low~rank.
     \end{exampleblock}
+    
+    \note{
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item Now, I would like to informally introduce our results on depth-$2$~width-$2$~ReLU~networks with multiple~outputs, trained with the square~loss.
+            \item Recall the prior results on matrix factorization we mentioned. They gave evidence that in \emph{linear} networks of this depth-$2$~width-$2$~architecture, GF acts as a heuristic for rank~minimization.
+            \item In contrast to the linear case, we show that in ReLU~networks, the situation is quite different: We show that GF does~not converge to a low-rank~solution, already for the simple case of datasets of size~$2$. Our result has only mild assumptions on the training dataset and that the initialization is sufficiently close-to-$0$. The assumptions on the data are so weak that they allow us to consider ``most'' datasets of size $2$. Soon we will see it formally.
+            \item To completely rule~out the possibility of low-rank bias, we show that with at least constant probability, the solutions GF converges to are not even close to having low~rank for any reasonable rank-approximation metric (e.g., the ratio of the Frobenius and spectral norms).
+        \end{enumerate}
+        We also demonstrate these results empirically.
+    }
 \end{frame}
 
 
