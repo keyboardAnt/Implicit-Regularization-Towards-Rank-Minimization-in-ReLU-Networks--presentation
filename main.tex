@@ -415,14 +415,14 @@
 
 \begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks w/ square~loss}
     \pause
-    \begin{exampleblock}{Empirical evidences}
+    \begin{exampleblock}{Neural network compression (empirical evidences)}
         Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
-        \newline \newline
+        \newline
         (cf., \cite{denton2014exploiting,yu2017compressing,alvarez2017compression,arora2018stronger,tukan2020compressed})
     \end{exampleblock}
     \pause
     \begin{itemize}
-        \item This suggests: In~practice, weight~matrices are not too far from being low-rank.
+        \item $\Rightarrow$ In~practice, weight~matrices are not too far from being low-rank.
         \pause
         \item Today: Are they \textbf{provably} behave this way?
     \end{itemize}
@@ -431,8 +431,22 @@
     Our proofs:
     \begin{itemize}
         \item \alert{NO!} \pause (not always)
-        \item BUT, in some reasonable settings, \true{YES}: sufficient depth $\Rightarrow$ low-rank bias.
+        \item BUT, in some reasonable settings, \true{YES}:\\
+        sufficient depth $\Rightarrow$ low-rank bias.
     \end{itemize}
+    
+    \note{
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item For nonlinear networks, there is a line of empirical research on ``neural network compression". That is a post-training procedure aiming to reduce the trained model's size or inference time. They demonstrate that one can replace the weight~matrices by their low-rank~approximations without suffering a significant accuracy drop.
+            \item This suggests that, in~practice, the weight~matrices are not too far from being low-rank.
+            \item However, the open question is: Can we prove it? Can we guarantee that the weight~matrices at the end of training are low rank? Today, we will see our proofs addressing this question.
+            \item On the negative side, we show that already for small~ReLU~networks (namely, of depth~and~width~$2$), GF does not bias towards rank-minimization.
+            \item BUT, on the positive side, we prove that for sufficiently~deeper and possibly~wider overparameterized~networks, GF is biased towards low-rank~solutions.
+        \end{enumerate}
+        So, our contribution is to reveal that, in general, GF over ReLU networks is not biased towards low ranks. Also, we provide novel proof that large enough depth leads to rank-minimization.
+    }
 \end{frame}
 
 
