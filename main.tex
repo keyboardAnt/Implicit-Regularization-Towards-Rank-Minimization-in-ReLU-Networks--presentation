@@ -148,7 +148,6 @@
     \pause
     \begin{itemize}
         \item \alert{Many} global minima w/ $0$ training loss.
-        \pause
     \end{itemize}
     \pause
     \begin{block}{Phenomenon in practice (\cite{zhang2017understanding})}
@@ -318,11 +317,11 @@
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices $W^{(\ell)}$. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{d\out}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called ``the output of the first layer" or ``the input to the second layer".
+            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices $W^{(\ell)}$. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{\dout}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called ``the output of the first layer" or ``the input to the second layer".
             \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
             \item This continues until we compute the input to the last layer.\\
+            \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.\\
             The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} equals $d_\ell$ (the number of rows in $W^{(\ell)}$) and the \emph{width of the network} is the maximal width of its layers.
-            \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.
             \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
             \item A main focus in recent years was on the matrix~fact.~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
         \end{enumerate}
@@ -486,9 +485,7 @@
 
 \begin{frame}{Our results}{GF does~not even approximately minimize ranks}
     \pause
-    Setting: \true{ReLU}~networks of depth $2$ and width $2$ w/ multiple outputs,\\
-    \pause
-    trained w/ the square~loss.
+    Setting: \true{ReLU}~networks of depth $2$ and width $2$ w/ multiple outputs, trained w/ the square~loss.
     \pause
     \begin{exampleblock}{\cite{li2020towards,razin2020implicit} (matrix/tensor~fact.)}
         \alert{Linear} networks of this architecture are implicitly biased towards low-rank. (GF can be viewed as a "heuristic for rank~minimization".)
@@ -522,12 +519,13 @@
 \begin{frame}
     \pause
     \begin{itemize}
-        \item Setting: $(X, Y) \in \mathbb{R}^{2 \times 2} \times \mathbb{R}^{2 \times 2}$ (a training dataset), and $W,V\in \reals^{2 \times 2}$ s.t. $N_{W,V}(X)=V\sigma(WX)$ is a 0-loss~solution.
+        \item Setting: 0-loss network $N_{W,V}(X)=V\sigma(WX)$ of depth and width $2$ ($W,V,X,Y \in \reals^{2 \times 2}$ s.t. $Y=V\sigma(WX)$).
         \pause
-        \item \emph{"low-rank"} $:= \rank W \leq 1$. Why?
+        \item \emph{``low-rank"} $:= \rank W < 2$. Why?
         \pause
         \begin{itemize}
-            \item $\rank Y = 2 \Rightarrow \rank V = 2$.\\(Since $\rank Y =\rank N_{W,V}(X)  \leq \rank V$).
+            \item $\rank(Y) = 2 \Rightarrow \rank(V) = 2$.
+            \\(Since $\rank (Y) =\rank (V\sigma(WX))  \leq \rank (V)$).
             \pause
             \item Trivially, $\rank W \leq 2$.
         \end{itemize}
@@ -543,21 +541,28 @@
     Proof idea:
     \pause
     \begin{itemize}
-        \item Construct (the weight~vectors of) the neurons in the $1$st~layer to have opposite directions (hence $\rank W = 1$), s.t. each neuron is active for exactly one input.
+        \item Construct $w_2 = -w_1$ (hence $\rank(W) = 1$), s.t. $w_j x_i > 0 \Leftrightarrow i = j$.
         \pause
-        \item An appropriate choice of the $2$nd layer’s weights achieves 0~loss.
+        \item Choose $V$ s.t. $Y=V\sigma(WX)$.
     \end{itemize}
     \pause
-    Does GF converges to such solutions?
+    Does GF converge to such solutions?
     \note{
-        2nd click:
-        \begin{itemize}
-            \item To understand rank~minimization in this simple setting, we consider the rank of $W$ in a zero-loss~solution. Why?
-        \end{itemize}
-        After the 3rd click:
-        \begin{itemize}
-            \item Otherwise, this setting is trivial.
-        \end{itemize}
+        \begin{enumerate}
+            \footnotesize
+            \itemsep=0pt
+            \topsep=0pt
+            \item We have two $2$-by-$2$ weight matrices, $W$ and $V$, that parameterize a (depth-$2$~width-$2$)~network~$N_{W,V}$. We assume that the network induces $0$~loss after training via GF w.r.t. the square~loss over the given training~dataset of size~$2$, $(X, Y)$.
+            \item To understand rank~minimization in this simple setting, we consider the rank of $W$. The rank of the network is ``low" when $\rank(W) < 2$. Why?
+            \item By the $0$-loss assumption, if $\rank(Y)=2$, then necessarily $\rank(V)=2$.
+            \item But trivially, $\rank(W)\leq 2$.
+            \item To convince that this setting is non-trivial, I would first have to answer the question: Whether such low-rank~zero-loss~solutions exist at all?
+            \item The following theorem shows that the answer is YES, for almost all size-$2$ datasets.\\
+            Formally, we have a training dataset $(X, Y)$ with two input vectors $\bx_i$ and their corresponding target vectors. By the theorem, if we only assume that the two inputs are positively correlated, we can already prove the existence of a $0$-loss solution that is rank deficient.
+            \item The main idea is to construct a rank-deficient network, where its two neurons in the first layer, $w_1, w_2$ have precisely opposite directions s.t. each neuron is active for exactly one input. 
+            \item Then, it is possible to show that for an appropriate choice of the weights in the second layer, $V$, the network achieves zero~loss.
+            \item The question is: Does GF converge to such low-rank solutions?
+        \end{enumerate}
     }
 \end{frame}
 
