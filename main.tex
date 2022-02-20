@@ -627,12 +627,13 @@
     \end{exampleblock}
     
     \note{
-        Before: \\
-        In the following theorem, we show that under the aforementioned assumptions, for any fixed dataset, with at~least constant probability, GF converges to a zero-loss~solution, where the two row vectors $w_i$ are bounded away from~$0$, the ratio of their norms are bounded, and the angle between them is bounded (away from~$0$ and from~$\pi$; all by explicit constants that depend just on the dataset and are large in general). Thus, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
+        The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, GF converges to a zero-loss~solution that is not even close to a low-rank~solution. In particular, it guarantees that the norms of the row vectors $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$. All those bounds consist of explicit large constants that depend only on the dataset.
         \newline
         \newline
-        After:\\
-        We note that in \thmref{T3} the weights in the second layer are initialized to zero ($v_i(0) = \zero$), while in \thmref{T2} the assumption on the initialization is weaker. This difference is for technical convenience, and we believe that \thmref{T3} should hold also under weaker assumptions on the initialization, as the next empirical result demonstrates.
+        The conclusion is that, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
+        \newline
+        \newline
+        Note that, in this theorem, the weights in the second layer, $\bv_i$, are initialized to zero, unlike the previous theorem, which uses a weaker assumption that their norms are $< \frac{1}{2}$. This difference is for technical convenience, and we believe that this theorem would also hold for other initializations, as the following empirical result demonstrates.
     }
 \end{frame}
 
