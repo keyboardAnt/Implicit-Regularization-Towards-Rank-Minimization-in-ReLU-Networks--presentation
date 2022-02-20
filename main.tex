@@ -598,7 +598,7 @@
             \item For technical convenience, we also assume that both $\bx_i$ and $\by_i$ have the unit length, but we believe it is not essential.
             \item Our theorem shows that GF does~not minimize the rank even in this elementary setting, as long as the initialization is sufficiently close~to~$0$. Note that if we sample the dataset from the uniform distribution on the sphere, the two assumptions hold w.p. $1/2$.
             \item Although the theorem reveals that GF does~not minimize the rank, it does~not rule~out the possibility that it converges to a solution that is close-to-a-low-rank~solution.\\
-            There are many ways to define such closeness. For example, the ratio of the Frobenius and spectral~norms, or what is known as the ``essential/stable rank" (it is the exponential of the entropy of the normalized singular~values).\\
+            There are many ways to define such closeness. For example, the ratio of the Frobenius and spectral~norms, or what is known as the ``essential rank" (it is the exponential of the entropy of the normalized singular~values).\\
             However, for $2 \times 2$~matrices they all boil down to either having the two rows~or~columns of the matrix being nearly~aligned or having at~least one of them very~small (compared to the other).
         \end{enumerate}
     }
@@ -641,24 +641,30 @@
 
 
 \begin{frame}{GF does~not even approximately minimize~ranks}{An empirical result}
+    \emph{``stable (numerical) rank"} $:= {\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$.
+    \pause
     \begin{figure}[t]
-        \begin{columns}
-            \column{0.5\textwidth}
-            \frame{\includegraphics[scale=.45]{figures/final_f2s_displot.png}}
-            
-            \column{0.3\textwidth}
-            \emph{"stable rank"} $:= {\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$.
-        \end{columns}
+        \frame{\includegraphics[scale=.45]{figures/final_f2s_displot.png}}
         \centering
-        \caption{A histogram of the stable (numerical) ranks at convergence. In all runs, we converge to networks with stable~ranks which seem bounded away from $1$. Namely, GD does~not even approximately minimize the ranks.}
+        \caption{A histogram of the stable ranks at $0$-loss convergence.}
     \label{fig:empirical-high-f2s}
     \end{figure}
     
     \note{
-        Start: Our theorems imply that for reasonable initialization schemes, GF will not converge close~to low-rank~solutions, with some positive~probability. We now present a simple experiment that corroborates this and suggests that, furthermore, this holds with~high~probability and for standard initializations.
-        \newline \newline
-        Only if asked: We trained ReLU~networks in the same setup as in the previous section (w.r.t. two $2\times 2$~weight~matrices~$W^{(1)},W^{(2)}$) on the two data~points~$\{(\bx_i,\by_i)\}_{i=1}^{2}$ where~$\by_1,\by_2$ are the standard~basis vectors in~$\reals^2$, and~$\bx_1,\bx_2$ are~$(1,0.99)$ and~$(-1,0.99)$ normalized to have unit~norm. At initialization, every row of~$W^{(1)}$ and every column of~$W^{(2)}$ is sampled uniformly~at~random from the sphere of radius~$10^{-4}$ around the origin. To simulate GF, we performed~$3\cdot 10^{6}$ epochs of full-batch~GD of step~size~$10^{-4}$, w.r.t. the square~loss. Of~$288$~repeats of this experiment, $79$~converged to negligible~loss~(defined~as~$<10^{-4}$). In 
-        the figure, we plot a histogram of the \emph{stable~(numerical)~ranks} of the resulting weight~matrices, i.e. the ratio~${\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$ of layer~$\ell \in [2]$. The figure clearly suggests that whenever convergence to zero~loss occurs, the solutions are all of rank~$2$, and none are even close~to being low-rank (in~terms of the stable~rank).
+        We saw that, for reasonable initialization schemes, GF does not converge close~to low-rank~solutions, with some positive~probability. We now present a simple experiment that corroborates this and suggests that, furthermore, this holds with~high~probability and for standard initializations.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case.
+            \item The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats. It counts the number of runs that converged to some stable rank. 
+            The figure clearly suggests that whenever convergence to $0$~loss occurs, GD converges to networks with stable~ranks bounded~away from~$1$.
+        \end{enumerate}
+        \newline
+        {   
+            \tiny
+            \alert{Setup:}
+            ReLU networks; $W^{(1)},W^{(2)} \in \reals^{2 \times 2}$. \textbf{Dataset:} $\{(\bx_i,\by_i)\}_{i=1}^{2}$ ; $\by_1,\by_2$ are the standard~basis of~$\reals^2$; $\bx_1,\bx_2$ are~$(1,0.99), (-1,0.99)$ normalized to have unit~norm. \textbf{Initialization:} Every row of~$W^{(1)}$ and every column of~$W^{(2)}$ is drawn uniformly from the sphere of radius~$10^{-4}$ at the origin. \textbf{To simulate GF}: Do $3\cdot 10^{6}$~epochs of full-batch~GD of step~size~$10^{-4}$, w.r.t. the square~loss. Of~$288$~repeats, $79$~converged to \textbf{negligible~loss}~(defined~as~$<10^{-4}$).
+        }
     }
 \end{frame}
 
