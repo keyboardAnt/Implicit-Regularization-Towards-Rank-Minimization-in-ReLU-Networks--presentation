@@ -651,12 +651,12 @@
     \end{figure}
     
     \note{
-        We saw that, for reasonable initialization schemes, GF does not converge close~to low-rank~solutions, with some positive~probability. We now present a simple experiment that corroborates this and suggests that, furthermore, this holds with~high~probability and for standard initializations.
+        We saw that, for small enough initialization schemes, GF does not converge close~to low-rank~solutions, with some positive~probability. We now present a simple experiment that corroborates this and suggests that, furthermore, this holds with~high~probability and for standard initializations.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
             \item We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case.
-            \item The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats. It counts the number of runs that converged to some stable rank. 
+            \item The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats with a unique initialization. It counts the number of runs that converged to some stable rank. 
             The figure clearly suggests that whenever convergence to $0$~loss occurs, GD converges to networks with stable~ranks bounded~away from~$1$.
         \end{enumerate}
         \newline
@@ -673,18 +673,26 @@
 \begin{frame}{Proof ideas}
     Recall:
     \pause
-    \begin{exampleblock}{Thm. \hfill\checkmark}\label{T2}
-        Let $(X,Y) \in \mathbb{R}^{2 \times 2} \times \mathbb{R}^{2 \times 2}$ be a labeled dataset that satisfies Assumptions~\ref{assumption:ys_linearly_independent},~\ref{assumption:xs_bounded_angle}.
-        Consider GF w.r.t. the square~loss~$L_{X,Y}(W,V)$. Suppose that $W,V \in \reals^{2 \times 2}$ are initialized s.t. 
-        $\norm{\bw_i(0)} < \min \left\{ \frac{1}{2}, \frac{\sqrt{3}}{2} \cos{\frac{\measuredangle(\bx_1, \bx_2)}{2}} \right\}$ 
-        and $\norm{\bv_i(0)} < \frac{1}{2}$ for all $i \in \{1,2\}$. If GF converges to a $0$-loss~solution~$N_{W(\infty),V(\infty)}$, then $\rank W(\infty) = 2$.
-    \end{exampleblock}
     \begin{assumption}
         The two target~vectors~$\by_1, \by_2$ are on the unit~sphere~$\mathbb{S}^1$ and are linearly~independent.
     \end{assumption}
     \begin{assumption}
         The two inputs~$\bx_1, \bx_2$ are on the unit~sphere~$\mathbb{S}^1$ and $\frac{\pi}{2} < \measuredangle(\bx_1, \bx_2) < \pi$.
     \end{assumption}
+    \begin{exampleblock}{Thm. \hfill\checkmark}\label{T2}
+        Let $(X,Y) \in \mathbb{R}^{2 \times 2} \times \mathbb{R}^{2 \times 2}$ be a labeled dataset that satisfies Assumptions~\ref{assumption:ys_linearly_independent},~\ref{assumption:xs_bounded_angle}.
+        Consider GF w.r.t. the square~loss~$L_{X,Y}(W,V)$. Suppose that $W,V \in \reals^{2 \times 2}$ are initialized s.t. 
+        $\norm{\bw_i(0)} < \min \left\{ \frac{1}{2}, \frac{\sqrt{3}}{2} \cos{\frac{\measuredangle(\bx_1, \bx_2)}{2}} \right\}$ 
+        and $\norm{\bv_i(0)} < \frac{1}{2}$ for all $i \in \{1,2\}$. If GF converges to a $0$-loss~solution~$N_{W(\infty),V(\infty)}$, then $\rank W(\infty) = 2$.
+    \end{exampleblock}
+    
+    \note{
+        Now, to the main ideas in the proofs. We start with the first theorem. I~will briefly remind the statement.
+        \begin{enumerate}
+            \item We have a training dataset on the unit sphere: Two linearly~independent target~vectors, denoted by~$\by_i$, and two input~vectors having an obtuse~angle between them,~$\bx_i$. We initialize two weight~matrices~$W,V$ that parameterize a depth-$2$~ReLU~network s.t. the rows of~$W$, which we denote by~$\bw_i$, and the columns of~$V$, marked by~$\bv_i$, are all small. The guarantee is that if GF converges to a $0$-loss~solution, then $W(\infty)$ is full-ranked. In other words, the network at~convergence is full-ranked.
+        \end{enumerate}
+        The proof begins with defining four non-empty~regions that split the 2D~plain.
+    }
 \end{frame}
 
 
@@ -695,6 +703,7 @@
             \begin{figure}[t]
                 \centering
                 \frame{\includegraphics[scale=.25]{figures/D_and_Ss_regions.png}}
+                \caption{Regions $\cd, \cs, \cs_1, \cs_2$.}
                 \label{fig:D_and_Ss_regions}
             \end{figure}
             \pause
@@ -709,16 +718,9 @@
             \end{align*}
             }
     \end{columns}
-    \pause
-    {\fontsize{10}{10} \selectfont
-    \[
-        \mathcal{S}_1 := \{ \bw  \mid \sigma(\bw^\top \bx_1) > 0, \sigma(\bw^\top \bx_2) \leq 0\},
-        \mathcal{S}_2 := \{ \bw  \mid \sigma(\bw^\top \bx_2) > 0, \sigma(\bw^\top \bx_1) \leq 0\}
-    \]
-    }
     
     \note{
-        Intuitively,~$\mathcal{D}$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$; $\mathcal{S}$~is the ``active''~region where a neuron outputs a positive~output on both~$\bx_1,\bx_2$; and $\mathcal{S}_1,\mathcal{S}_2$~are the ``partially~active''~regions, where the relevant neuron outputs a positive~output on one point, and~$0$ on the other. 
+        The figure depicts the 2D plain and the given input vectors $\bx_1, \bx_2$ on the unit sphere. Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and negatively correlated with $\bx_2$.
     }
 \end{frame}
 
@@ -761,7 +763,6 @@
         \pause
         \begin{itemize}
             \item $\alpha > 0 \Rightarrow \sigma(\bw_2(\infty)^\top \bx_j) = \alpha \sigma(\bw_1(\infty)^\top \bx_j), \forall j \in [2] \Rightarrow$ contradiction!
-            \pause
             \item $\Rightarrow \alpha < 0$.
         \end{itemize}
         \pause
@@ -769,16 +770,19 @@
     \end{itemize}
     
     \note{
-        Starting from the 4th point: \newline
-        \begin{itemize}
-            \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in the region~$\cd$. Indeed, if $\bw_1(\infty)$ or~$\bw_2(\infty)$ are in~$\cd$, then at~least one of the rows of~$\sigma(W(\infty) X)$ is~zero, in~contradiction.
-            \item In~particular, it implies that~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are non-zero.
-            \item Since by our assumption we have~$\rank(W(\infty))<2$, then we conclude that~$\rank(W(\infty))=1$. 
-            \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where~$\alpha \neq 0$.
-            \item Note that if~$\alpha > 0$, then~$\sigma(\bw_2(\infty)^\top \bx_j) = \alpha \sigma(\bw_1(\infty)^\top \bx_j)$ for~all~$j \in \{1,2\}$, in~contradiction
-            \item Thus,~$\alpha < 0$.
-            \item Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in~$\cs_1 \setminus \partial \cs_1$ and the other is in~$\cs_2 \setminus \partial \cs_2$ (as can be seen in the figure). Assume~w.l.o.g. that~$\bw_1(\infty) \in \cs_1 \setminus \partial \cs_1$ and $\bw_2(\infty) \in \cs_2 \setminus \partial \cs_2$.
-        \end{itemize}
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item Assume towards~contradiction that GF converges to some $0$-loss~network~$N_{W(\infty),V(\infty)}$ where~$\rank(W(\infty))<2$. 
+            \item The $0$-loss assumption means that $Y = V(\infty) \sigma \left( W(\infty) X \right)$.
+            \item Hence, the rank of both sides equals $2$. It implies that the first layer's output matrix, $\sigma(W(\infty)X)$ is full-ranked.
+            \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in region~$\cd$. Indeed, if $\bw_1(\infty)$ or~$\bw_2(\infty)$ are in~$\cd$, then at~least one of the rows of~$\sigma(W(\infty) X)$ is~$\zero$, in~contradiction.
+            \item In~particular, it implies that~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are non-zero.\\
+            By our first assumption that $\rank(W(\infty))<2$, we can conclude that its rank equals $1$ ((N.T.:~$\rank(W(\infty))=1$)).
+            \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha$ is non-zero.
+            \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the first layer's output matrix, $\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
+            \item Imagine the line between $\bw_1(\infty), \bw_2(\infty)$. It must go through the origin. Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g. $\bw_j(\infty) \in \cs_j$'s interior.
+        \end{enumerate}
     }
 \end{frame}
 
