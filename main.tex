@@ -1,4 +1,4 @@
-\documentclass[handout,usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
+\documentclass[usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
 \usetheme{Boadilla}
 \usecolortheme{default}
 \usepackage{pgfpages}
@@ -730,13 +730,7 @@
     \begin{columns}
         \column{0.6\textwidth}
         \begin{itemize}
-            \setlength{\parskip}{0pt}
-            \setlength{\abovedisplayskip}{0pt}
-            \setlength{\belowdisplayskip}{0pt}
-            \setlength{\abovedisplayshortskip}{0pt}
-            \setlength{\belowdisplayshortskip}{0pt}
-            
-            \item Assume towards~contradiction:\\GF converges to some 0-loss~network~$N_{W(\infty),V(\infty)}$ s.t. ~$\rank(W(\infty))<2$. 
+            \item Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$. 
             \pause
             \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
             \pause
@@ -782,6 +776,44 @@
             \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha$ is non-zero.
             \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the first layer's output matrix, $\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
             \item Imagine the line between $\bw_1(\infty), \bw_2(\infty)$. It must go through the origin. Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g. $\bw_j(\infty) \in \cs_j$'s interior.
+        \end{enumerate}
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    \begin{columns}
+        \begin{column}{0.55\textwidth}
+            \pause
+            \begin{itemize}[<+->]
+                \item $\bw_i(t) \not\in \cd, \forall t$. (Otherwise, $\frac{d}{dt}~\bw_i(t)=\zero, \forall t : \bw_i(t) \in \cd$ $\Rightarrow \bw_i(\infty) \in \cd$ in contradiction.)
+                \item $\bw_i(t) \in \cs_i \Rightarrow \frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$.
+                \item $t_i' := \inf \{t \mid \bw_i(t') \in \mathcal{S}_i, \forall t' \geq t\}$.
+                \item $\Rightarrow \frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}, \forall t \geq t_i'$.
+                \item $\Rightarrow \bw_i(\infty) \in \ca_i$.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{center}
+                \includegraphics<1-4>[width=\textwidth]{figures/D_and_Ss_regions.png}%
+                \includegraphics<5->[width=\textwidth]{figures/F_and_A_regions.png}%
+            \end{center}
+        \end{column}
+    \end{columns}
+    
+    \note{
+        By observing the gradients of the loss function w.r.t.~$\bw_i$, the following facts follow for all $i$.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item First, if~$\bw_i(t) \in \cd$ at some time~$t$, then its derivative, $\frac{d}{dt} \bw_i(t)$, is $\zero$. Hence, $\bw_i$~remains at~$\cd$ indefinitely, so it does not converge in $\cs_i$'s interior, in~contradiction. Thus, the trajectory~$\bw_i(t)$ does~not visit~$\cd$.
+            \item Second, if~$\bw_i \in \cs_i$ at time~$t$, then $\bx_i$ spans its derivative.
+            \item Since~$\bw_i(\infty) \in \cs_i$'s interior, we can consider the last~time~$t_i'$ that~$\bw_i$ enters~$\cs_i$. It can be either at the initialization (i.e.,~$t_i'=0$) or when moving from~$\cs$ (i.e.,~$t_i'>0$).
+            \item For~all time~$t \geq t_i'$ we have~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$.
+            \item It allows us to conclude that~$\bw_i(\infty)$ must be in a region~$\ca_i$. It is the union of the orange and green regions in the figure.
         \end{enumerate}
     }
 \end{frame}
