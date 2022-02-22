@@ -1,4 +1,4 @@
-\documentclass[usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
+\documentclass[handout,usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
 \usetheme{Boadilla}
 \usecolortheme{default}
 \usepackage{pgfpages}
@@ -699,24 +699,27 @@
 
 \begin{frame}
     \begin{columns}
-            \column{0.5\textwidth}
-            \begin{figure}[t]
-                \centering
-                \frame{\includegraphics[scale=.25]{figures/D_and_Ss_regions.png}}
-                \caption{Regions $\cd, \cs, \cs_1, \cs_2$.}
-                \label{fig:D_and_Ss_regions}
-            \end{figure}
+            \begin{column}{0.5\textwidth}
+                \begin{figure}[t]
+                    \centering
+                    \frame{\includegraphics[scale=.25]{figures/D_and_Ss_regions.png}}
+                    \caption{Regions $\cd, \cs, \cs_1, \cs_2$.}
+                    \label{fig:D_and_Ss_regions}
+                \end{figure}
+            \end{column}
             \pause
-            \column{0.7\textwidth}
-            {\fontsize{10}{10} \selectfont
-            \begin{align*}
-                &\mathcal{D} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) \le 0\}\\
-                \pause
-                &\mathcal{S} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) > 0 \}\\
-                \pause
-                &\mathcal{S}_j := \{ \bw  \mid  i=j \Leftrightarrow \sigma(\bw^\top \bx_i) > 0 \}
-            \end{align*}
-            }
+            
+            \begin{column}{0.7\textwidth}
+                {\fontsize{10}{10} \selectfont
+                \begin{eqnarray*}
+                    &\mathcal{D} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) \le 0\}\\
+                    \pause
+                    &\mathcal{S} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) > 0 \}\\
+                    \pause
+                    &\mathcal{S}_j := \{ \bw  \mid  i=j \Leftrightarrow \sigma(\bw^\top \bx_i) > 0 \}
+                \end{eqnarray*}
+                }
+            \end{column}
     \end{columns}
     
     \note{
@@ -728,23 +731,23 @@
 
 \begin{frame}
     \begin{columns}
-        \column{0.6\textwidth}
-        \begin{itemize}
-            \item Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$. 
-            \pause
-            \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
-            \pause
-            \item $\Rightarrow$ 
-            \begin{align*}
-                2 &= \rank(Y) = \rank \left( V(\infty) \sigma \left(W(\infty) X \right) \right) \\
-                &\leq \rank \left( \sigma \left( W(\infty) X \right) \right).
-            \end{align*}
-        \end{itemize}    
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}[<+->]
+                \item Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$. 
+                \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
+                \item $\Rightarrow$ 
+                \begin{align*}
+                    2 &= \rank(Y) = \rank \left( V(\infty) \sigma \left(W(\infty) X \right) \right) \\
+                    &\leq \rank \left( \sigma \left( W(\infty) X \right) \right).
+                \end{align*}
+            \end{itemize}
+        \end{column}
 
-        \column{0.4\textwidth}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
-        \end{center}
+        \begin{column}{0.4\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
+            \end{center}
+        \end{column}
     \end{columns}
     
     \begin{itemize}
@@ -798,8 +801,8 @@
 
         \begin{column}{0.45\textwidth}
             \begin{center}
-                \includegraphics<1-4>[width=\textwidth]{figures/D_and_Ss_regions.png}%
-                \includegraphics<5->[width=\textwidth]{figures/F_and_A_regions.png}%
+                \includegraphics<handout:0|1-5>[width=\textwidth]{figures/D_and_Ss_regions.png}%
+                \includegraphics<6->[width=\textwidth]{figures/F_and_A_regions.png}%
             \end{center}
         \end{column}
     \end{columns}
