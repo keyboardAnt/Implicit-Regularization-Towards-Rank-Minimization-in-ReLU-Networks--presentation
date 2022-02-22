@@ -787,6 +787,7 @@
 
 
 \begin{frame}
+    We saw: $\bw_i(\infty) \in \cs_i \setminus \partial \cs_i$, and $\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha \neq 0$.
     \begin{columns}
         \begin{column}{0.55\textwidth}
             \pause
@@ -796,6 +797,7 @@
                 \item $t_i' := \inf \{t \mid \bw_i(t') \in \mathcal{S}_i, \forall t' \geq t\}$.
                 \item $\Rightarrow \frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}, \forall t \geq t_i'$.
                 \item $\Rightarrow \bw_i(\infty) \in \ca_i$.
+                \item Show: $\bw_i(\infty) \in \cf_i$. $\Rightarrow \bw_2(\infty) \ne \alpha \bw_1(\infty)$!
             \end{itemize}
         \end{column}
 
@@ -817,6 +819,7 @@
             \item Since~$\bw_i(\infty) \in \cs_i$'s interior, we can consider the last~time~$t_i'$ that~$\bw_i$ enters~$\cs_i$. It can be either at the initialization (i.e.,~$t_i'=0$) or when moving from~$\cs$ (i.e.,~$t_i'>0$).
             \item For~all time~$t \geq t_i'$ we have~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$.
             \item It allows us to conclude that~$\bw_i(\infty)$ must be in a region~$\ca_i$. It is the union of the orange and green regions in the figure.
+            \item We could show a lower bound on~$\norm{\bw_i(\infty)}$ so that $\bw_i(\infty)$ is in region~$\cf_i$ as in the figure. Then, we have $\bw_1(\infty) \in \cf_1$ and $\bw_2(\infty) \in \cf_2$, implying that the angle between the neurons must be smaller than $\pi$, in~contradiction to $\bw_2(\infty) = \alpha \bw_1(\infty)$.
         \end{enumerate}
     }
 \end{frame}
@@ -825,20 +828,43 @@
 
 
 \begin{frame}
-    \begin{figure}[t]
-        \centering
-        \frame{\includegraphics[scale=.25]{figures/F_and_A_regions.png}}
-        \caption{Regions~$\cf_i$~(in~green) and~$\ca_i$ (the union of the green and orange regions). A dashed line marks an open~boundary.}
-        \label{fig:F_and_A_regions}
-    \end{figure} 
+    We saw: $\bw_i(\infty) \in \ca_i$, and $\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha \neq 0$.\\
+    Show: $\norm{\bw_i(\infty)}$ cannot be too~small. ($\Rightarrow \bw_i(\infty) \in \cf_i$.)
+    \begin{itemize}[<+->]
+        \item \cite{du2018algorithmic}: $\norm{\bw_i(t)}^2 - \norm{\bv_i(t)}^2$ is constant.
+        \begin{itemize}[<+->]
+            \item $\norm{\bv_i(\infty)}$ is small $\Leftrightarrow \norm{\bw_i(\infty)}$ is small. ($\norm{\bw_i(0)}, \norm{\bv_i(0)}$ are small)
+        \end{itemize}
+    \end{itemize}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \begin{itemize}[<+->]
+                
+                \item $0$~loss and~$\bw_i(\infty) \in \cs_i$ $\Rightarrow \by_i = \bv_i(\infty) (\bw_i(\infty)^\top \bx_i)$.
+                \item Recall that $\norm{\by_i}=\norm{\bx_i}=1$.
+                \item $\Rightarrow \norm{\bw_i(\infty)}, \norm{\bv_i(\infty)}$ are not both small.
+            \end{itemize}
+        \end{column}
 
+        \begin{column}{0.45\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{figures/F_and_A_regions.png}%
+            \end{center}
+        \end{column}
+    \end{columns}
+    
     \note{
-        By observing the gradients of~$L_{X,Y}$ w.r.t.~$\bw_i$ for~$i \in \{1,2\}$, the following facts follow. First, if~$\bw_i(t) \in \cd$ at some time~$t$, then~$\frac{d}{dt} \bw_i(t) = \zero$, hence $\bw_i$~remains at~$\cd$ indefinitely, in~contradiction to~$\bw_i(\infty) \in \cs_i \setminus \partial \cs_i$. Thus, the trajectory~$\bw_i(t)$ does~not visit~$\cd$. Second, if~$\bw_i(t) \in \cs_i$ at time~$t$, then~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$. Since~$\bw_i(\infty) \in \cs_i \setminus \partial \cs_i$, we can consider the last~time~$t'$ that~$\bw_i$ enters~$\cs_i$, which can be either at the initialization (i.e.,~$t'=0$) or when moving from~$\cs$ (i.e.,~$t'>0$). For~all time~$t \geq t'$ we have~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$. It allows us to conclude that~$\bw_i(\infty)$ must be in a region~$\ca_i$ which is illustrated in \figref{fig:F_and_A_regions} (by the union of the orange and green regions).
-        
-        Furthermore, we show that~$\norm{\bw_i(\infty)}$ cannot be too~small, namely, obtaining a lower~bound on~$\norm{\bw_i(\infty)}$. First, a theorem from \cite{du2018algorithmic} implies that~$\norm{\bw_i(t)}^2 - \norm{\bv_i(t)}^2$ remains constant throughout the training. Since at the initialization both~$\norm{\bw_i(0)}$ and~$\norm{\bv_i(0)}$ are small, the consequence is that~$\norm{\bv_i(\infty)}$ is small if~$\norm{\bw_i(\infty)}$ is small.
-        Also, since~$N_{W(\infty),V(\infty)}$ attains zero~loss and~$\bw_i(\infty) \in \cs_i$ for all $i \in \{1,2\}$, then we have~$\by_i = \bv_i(\infty) (\bw_i(\infty)^\top \bx_i)$, namely, only the $i$-th~hidden~neuron contributes to the output of~$N_{W(\infty),V(\infty)}$ for the input~$\bx_i$. Since~$\norm{\by_i}=\norm{\bx_i}=1$, it is impossible that both~$\norm{\bw_i(\infty)}$ and~$\norm{\bv_i(\infty)}$ are small. Hence, we are able to obtain a lower~bound on~$\norm{\bw_i(\infty)}$, which implies that~$\bw_i(\infty)$ is in a region~$\cf_i$ which is illustrated in \figref{fig:F_and_A_regions}.
-        
-        Finally, we show that since $\bw_1(\infty) \in \cf_1$ and $\bw_2(\infty) \in \cf_2$ then the angle between $\bw_1(\infty)$ and $\bw_2(\infty)$ is smaller than $\pi$, in~contradiction to $\bw_2(\infty) = \alpha \bw_1(\infty)$.
+        Informally speaking, we prove that $\bw_i(\infty) \in \cf_i$ by showing that $\norm{\bw_i(\infty)}$ cannot be too~small. 
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item To do so, we apply a theorem from \cite{du2018algorithmic} that guarantees that the difference in the squared norms of $\bw_i$ and $\bv_i$ remains constant throughout the training. Namely, for all $t$.
+            \item Since at the initialization both~$\norm{\bw_i(0)}$ and~$\norm{\bv_i(0)}$ are small, the consequence is that $\norm{\bv_i(\infty)}$ is~small if~and~only~if $\norm{\bw_i(\infty)}$ is~small.
+            \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, only the $i$-th~hidden~neuron $\bw_i(\infty)$ contributes to the network's output for the input~$\bx_i$. Moreover, the network's output equals $\by_i$.
+            \item Recall our assumption that the inputs and targets lie on the unit sphere.
+            \item It implies that it is impossible that, at convergence, both $\bw_i$ and $\bv_i$ are small.
+            \item The lower bound on~$\norm{\bw_i(\infty)}$ follows, and it completes the proof.
+        \end{enumerate}
     }
 \end{frame}
 
