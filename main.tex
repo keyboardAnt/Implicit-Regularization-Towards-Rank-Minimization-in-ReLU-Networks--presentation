@@ -1,4 +1,4 @@
-\documentclass[handout,usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
+\documentclass[usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
 \usetheme{Boadilla}
 \usecolortheme{default}
 \usepackage{pgfpages}
@@ -687,7 +687,7 @@
     \end{exampleblock}
     
     \note{
-        Now, to the main ideas in the proofs. We start with the first theorem. I~will briefly remind the statement.
+        Now, to the main ideas in the proofs. We start with the this theorem. I~will briefly remind the statement.
         \begin{enumerate}
             \item We have a training dataset on the unit sphere: Two linearly~independent target~vectors, denoted by~$\by_i$, and two input~vectors having an obtuse~angle between them,~$\bx_i$. We initialize two weight~matrices~$W,V$ that parameterize a depth-$2$~ReLU~network s.t. the rows of~$W$, which we denote by~$\bw_i$, and the columns of~$V$, marked by~$\bv_i$, are all small. The guarantee is that if GF converges to a $0$-loss~solution, then $W(\infty)$ is full-ranked. In other words, the network at~convergence is full-ranked.
         \end{enumerate}
@@ -723,7 +723,7 @@
     \end{columns}
     
     \note{
-        The figure depicts the 2D plain and the given input vectors $\bx_1, \bx_2$ on the unit sphere. Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and negatively correlated with $\bx_2$.
+        The figure depicts the 2D plain and the given input vectors $\bx_1, \bx_2$ on the unit sphere. Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and non-positively correlated with $\bx_2$.
     }
 \end{frame}
 
@@ -864,6 +864,80 @@
             \item Recall our assumption that the inputs and targets lie on the unit sphere.
             \item It implies that it is impossible that, at convergence, both $\bw_i$ and $\bv_i$ are small.
             \item The lower bound on~$\norm{\bw_i(\infty)}$ follows, and it completes the proof.
+        \end{enumerate}
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    \begin{exampleblock}{Thm. \hfill\checkmark} \label{T3}
+        Let $(X,Y) \in \mathbb{R}^{2 \times 2} \times \mathbb{R}^{2 \times 2}$ be a labeled dataset that satisfies Assumptions~\ref{assumption:ys_linearly_independent} and~\ref{assumption:xs_bounded_angle}.
+        Consider GF w.r.t. the square loss~function $L_{X,Y}(W,V)$. Suppose that $W,V \in \reals^{2 \times 2}$ are initialized s.t. for all $i \in \{1,2\}$ we have $\bv_i(0) = \zero$, and $\bw_i(0)$ is drawn from a spherically~symmetric distribution with 
+        \begin{align*}
+            \norm{\bw_i(0)} 
+            \leq \frac{\sqrt{3}}{2} \min \left\{ 
+            \sin\left(\frac{\pi - \measuredangle(\bx_1,\bx_2)}{4} \right), 
+            \sin \left(\measuredangle(\bx_1,\bx_2) - \frac{\pi}{2}\right)
+            \right\} ~.
+        \end{align*}
+        Let $E$ be the event that GF converges to a 0-loss~solution~$N_{W(\infty),V(\infty)}$ s.t.
+        \begin{itemize}
+            \item[(i)] $\measuredangle \left( \bw_1(\infty), \bw_2(\infty) \right) \in \left[ \frac{\pi}{2} - \left(\measuredangle(\bx_1, \bx_2) - \frac{\pi}{2} \right), \frac{3\pi}{4} + \frac{\measuredangle(\bx_1, \bx_2) - \pi/2}{2} \right]$,
+            \item[(ii)] $\norm{\bw_i(\infty)} \in \left( \frac{\sqrt{3}}{2}, \sqrt{ \frac{1}{4} + \frac{4}{3 \left(\sin \measuredangle(\bx_1, \bx_2) \right)^2 } } \right)$ for all $i \in \set{1, 2}$.
+        \end{itemize}
+        Then, $\Pr \left[E \right] \ge 2 \cdot \left(\frac{\measuredangle(\bx_1,\bx_2)}{2\pi} \right)^2$.
+    \end{exampleblock}
+    
+    \note{
+        The following theorem and its proof have much in common with what we just saw. The statement is now probabilistic over the randomness of the initialization, under the same assumptions on the dataset. That is, the inputs and targets lie on the unit sphere. Also, the targets are linearly independent, and the angle between the inputs is obtuse. The guarantee is that small enough random~initialization leads to high ranks for any rank-approximation metric. Specifically, we assure that, at convergence, the norm of the hidden neurons, $\bw_1, \bw_2$, is in a bounded interval, as well as the angle between them.\\
+        The main difference from the previous theorem is that now we consider rank-approximation like the stable/essential rank. To guarantee that the essential rank is bounded away from $1$, it is necessary to bound the norms and angle.
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    If $\bw_1(0) \in \cs_1 \setminus \partial \cs_1, \bw_2(0) \in \cs_2 \setminus \partial \cs_2$:
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \pause
+            \begin{itemize}[<+->]
+                \item $\forall t:$
+                \begin{enumerate}
+                    \item $\frac{d}{dt} \bw_i(t) = C_i(t) \bx_i, C_i(t) \geq 0$.
+                    \item $\bw_i(t) \in \cs_i \setminus \partial \cs_i$.
+                \end{enumerate}
+                \item $\Rightarrow$ $N_{W(\infty),V(\infty)}$ exists, w/ $0$ loss.
+                \item $\Rightarrow \bw_i(\infty) \in \cf_i$.
+            \end{itemize}
+            \pause
+            \hline \newline
+            $\bw_i(0) \sim$ a spherically~symmetric distribution.
+            \begin{itemize}[<+->]
+                \item $\Rightarrow$ $\Pr \left[ \forall i : \bw_i(0) \in \cs_i \setminus \partial \cs_i \right] \ge 2 \cdot \left(\frac{\measuredangle(\bx_1,\bx_2)}{2\pi} \right)^2$.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{center}
+                \includegraphics<handout:0|1-5>[width=\textwidth]{figures/D_and_Ss_regions.png}%
+                \includegraphics<6->[width=\textwidth]{figures/F_and_A_regions.png}%
+            \end{center}
+        \end{column}
+    \end{columns}
+    
+    \note{
+        The key observation in the proof is analyzing the dynamics where $\bw_i(\infty) \in \cs_i$'s interior for all $i$. Suppose that, indeed, $\bw_1(0) \in \cs_1 \setminus \partial \cs_1$ and~$\bw_2(0) \in \cs_2 \setminus \partial \cs_2$.
+        \begin{enumerate}
+            \item Then, it is possible to show that the dynamics are such that $\bw_i$ moves towards $\bx_i$ until convergence and never leaves the interior of $\cs_i$.
+            \item We prove that these properties of the hidden neurons‘ trajectories imply that GF converges to a $0$-loss~network.
+            \item Similar to what we saw for the previous theorem, we complete by proving that $\bw_i(\infty) \in \cf_i$.\\
+            Therefore, it is sufficient to argue that $\bw_i$ is in the interior of $\cs_i$ at initialization.
+            \item Recall that the distribution of the random initialization of the hidden neurons is spherically symmetric.
+            \item Hence, simple geometric arguments allow us to bound the probability that the hidden neurons lie in the interiors as required. The exact lower bound depends only on the angle between the two inputs.
         \end{enumerate}
     }
 \end{frame}
