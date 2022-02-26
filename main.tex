@@ -267,7 +267,7 @@
     \note{
         Let's try to understand implicit regularization by the following illustration:
         \begin{enumerate}
-            \item The points in $\reals^d$ that we marked by $\btheta(\zero)$ are different possible initial parameterizations of a neural network.
+            \item The points in $\reals^d$ that we marked by $\btheta(0)$ are different possible initial parameterizations of a neural network.
             \item We know that GF (e.g., w.r.t. square loss) guarantee convergence to a local minima. 
             \item The question is: When GF converges to a global minima, can we guarantee to which one?
         \end{enumerate}
@@ -321,7 +321,7 @@
             \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
             \item This continues until we compute the input to the last layer.\\
             \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.\\
-            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} equals $d_\ell$ (the number of rows in $W^{(\ell)}$) and the \emph{width of the network} is the maximal width of its layers.
+            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $\ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} equals $d_\ell$ (the number of rows in $W^{(\ell)}$) and the \emph{width of the network} is the maximal width of its layers.
             \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
             \item A main focus in recent years was on the matrix~fact.~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
         \end{enumerate}
@@ -402,7 +402,7 @@
             \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
             \item \cite{li2020towards} formally refuted it.
             \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
-            \item Then, \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
+            \item The work of \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
             \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: Tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
         \end{enumerate}
         Therefore, in a sense, the implicit bias in this linear setting seems to be solved. However, once we move to nonlinear~networks, things are less~clear.
@@ -552,14 +552,14 @@
             \footnotesize
             \itemsep=0pt
             \topsep=0pt
-            \item We have two $2$-by-$2$ weight matrices, $W$ and $V$, that parameterize a (depth-$2$~width-$2$)~network~$N_{W,V}$. We assume that the network induces $0$~loss after training via GF w.r.t. the square~loss over the given training~dataset of size~$2$, $(X, Y)$.
+            \item We have $2$-by-$2$ weight matrices, $W$ and $V$, that parameterize a (depth-$2$~width-$2$)~network~$N_{W,V}$. We assume that the network induces $0$~loss after training via GF w.r.t. the square~loss over the given training~dataset of size~$2$, $(X, Y)$.
             \item To understand rank~minimization in this simple setting, we consider the rank of $W$. The rank of the network is ``low" when $\rank(W) < 2$. Why?
             \item By the $0$-loss assumption, if $\rank(Y)=2$, then necessarily $\rank(V)=2$.
             \item But trivially, $\rank(W)\leq 2$.
             \item To convince that this setting is non-trivial, I would first have to answer the question: Whether such low-rank~zero-loss~solutions exist at all?
             \item The following theorem shows that the answer is YES, for almost all size-$2$ datasets.\\
             Formally, we have a training dataset $(X, Y)$ with two input vectors $\bx_i$ and their corresponding target vectors. By the theorem, if we only assume that the two inputs are positively correlated, we can already prove the existence of a $0$-loss solution that is rank deficient.
-            \item The main idea is to construct a rank-deficient network, where its two neurons in the first layer, $w_1, w_2$ have precisely opposite directions s.t. each neuron is active for exactly one input. 
+            \item The main idea is to construct a rank-deficient network, where its two hidden neurons, $w_1, w_2$ have precisely opposite directions s.t. each neuron is active for exactly one input. 
             \item Then, it is possible to show that for an appropriate choice of the weights in the second layer, $V$, the network achieves zero~loss.
             \item The question is: Does GF converge to such low-rank solutions?
         \end{enumerate}
@@ -594,8 +594,8 @@
         \begin{enumerate}
             \item Our result answers NO, under the following assumptions.
             \item First, the two target vectors $\by_i$ are linearly independent.
-            \item Second, an obtuse angle between the two input vectors.
-            \item For technical convenience, we also assume that both $\bx_i$ and $\by_i$ have the unit length, but we believe it is not essential.
+            \item Second, an obtuse angle between the two input vectors.\\
+            For technical convenience, we also assume that both $\bx_i$ and $\by_i$ have the unit length, but we believe it is not essential.
             \item Our theorem shows that GF does~not minimize the rank even in this elementary setting, as long as the initialization is sufficiently close~to~$0$. Note that if we sample the dataset from the uniform distribution on the sphere, the two assumptions hold w.p. $1/2$.
             \item Although the theorem reveals that GF does~not minimize the rank, it does~not rule~out the possibility that it converges to a solution that is close-to-a-low-rank~solution.\\
             There are many ways to define such closeness. For example, the ratio of the Frobenius and spectral~norms, or what is known as the ``essential rank" (it is the exponential of the entropy of the normalized singular~values).\\
@@ -627,13 +627,13 @@
     \end{exampleblock}
     
     \note{
-        The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, GF converges to a zero-loss~solution that is not even close to a low-rank~solution. In particular, it guarantees that the norms of the row vectors $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$. All those bounds consist of explicit large constants that depend only on the dataset.
+        The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, if GF converges to a zero-loss~solution, then it is not even close to a low-rank~solution. In particular, it guarantees that the norms of the hidden neurons $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$. All those bounds consist of explicit large constants that depend only on the dataset.
         \newline
         \newline
         The conclusion is that, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
         \newline
         \newline
-        Note that, in this theorem, the weights in the second layer, $\bv_i$, are initialized to zero, unlike the previous theorem, which uses a weaker assumption that their norms are $< \frac{1}{2}$. This difference is for technical convenience, and we believe that this theorem would also hold for other initializations, as the following empirical result demonstrates.
+        Note that, in this theorem, the weights in the second layer, $\bv_i$, are initialized to $\zero$, unlike the previous theorem, which uses a weaker assumption that their norms are $< \frac{1}{2}$. This difference is for technical convenience, and we believe that this theorem would also hold for other initializations, as the following empirical result demonstrates.
     }
 \end{frame}
 
@@ -641,6 +641,7 @@
 
 
 \begin{frame}{GF does~not even approximately minimize~ranks}{An empirical result}
+    \pause
     \emph{``stable (numerical) rank"} $:= {\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$.
     \pause
     \begin{figure}[t]
@@ -687,7 +688,7 @@
     \end{exampleblock}
     
     \note{
-        Now, to the main ideas in the proofs. We start with the this theorem. I~will briefly remind the statement.
+        Now, to the main ideas in the proofs. I~will briefly remind the first statement.
         \begin{enumerate}
             \item We have a training dataset on the unit sphere: Two linearly~independent target~vectors, denoted by~$\by_i$, and two input~vectors having an obtuse~angle between them,~$\bx_i$. We initialize two weight~matrices~$W,V$ that parameterize a depth-$2$~ReLU~network s.t. the rows of~$W$, which we denote by~$\bw_i$, and the columns of~$V$, marked by~$\bv_i$, are all small. The guarantee is that if GF converges to a $0$-loss~solution, then $W(\infty)$ is full-ranked. In other words, the network at~convergence is full-ranked.
         \end{enumerate}
@@ -723,7 +724,12 @@
     \end{columns}
     
     \note{
-        The figure depicts the 2D plain and the given input vectors $\bx_1, \bx_2$ on the unit sphere. Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and non-positively correlated with $\bx_2$.
+        The figure depicts the 2D plain, the given input vectors $\bx_1, \bx_2$ on the unit sphere, and the following four regions $\cd, \cs, \cs_1, \cs_2$.
+        \begin{enumerate}
+            \item Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. 
+            \item $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. 
+            \item $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and non-positively correlated with $\bx_2$.
+        \end{enumerate}
     }
 \end{frame}
 
@@ -732,8 +738,8 @@
 \begin{frame}
     \begin{columns}
         \begin{column}{0.6\textwidth}
+        Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$.
             \begin{itemize}[<+->]
-                \item Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$. 
                 \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
                 \item $\Rightarrow$ 
                 \begin{align*}
@@ -751,7 +757,6 @@
     \end{columns}
     
     \begin{itemize}
-        \pause
         \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \notin \cd$. (Otherwise, $\zero^T$ is a row in~$\sigma(W(\infty) X)$.)
         \pause
         \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \ne \zero$ $\Rightarrow \rank(W(\infty))=1$. 
@@ -767,10 +772,10 @@
     \end{itemize}
     
     \note{
+        Assume towards~contradiction that GF converges to some $0$-loss~network~$N_{W(\infty),V(\infty)}$ where~$\rank(W(\infty))<2$.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item Assume towards~contradiction that GF converges to some $0$-loss~network~$N_{W(\infty),V(\infty)}$ where~$\rank(W(\infty))<2$. 
             \item The $0$-loss assumption means that $Y = V(\infty) \sigma \left( W(\infty) X \right)$.
             \item Hence, the rank of both sides equals $2$. It implies that the first layer's output matrix, $\sigma(W(\infty)X)$ is full-ranked.
             \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in region~$\cd$. Indeed, if $\bw_1(\infty)$ or~$\bw_2(\infty)$ are in~$\cd$, then at~least one of the rows of~$\sigma(W(\infty) X)$ is~$\zero$, in~contradiction.
@@ -778,7 +783,7 @@
             By our first assumption that $\rank(W(\infty))<2$, we can conclude that its rank equals $1$ ((N.T.:~$\rank(W(\infty))=1$)).
             \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha$ is non-zero.
             \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the first layer's output matrix, $\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
-            \item Imagine the line between $\bw_1(\infty), \bw_2(\infty)$. It must go through the origin. Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g. $\bw_j(\infty) \in \cs_j$'s interior.
+            \item Imagine the line between $\bw_1(\infty), \bw_2(\infty)$. It must go through the origin. Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g., $\bw_j(\infty) \in \cs_j$'s interior.
         \end{enumerate}
     }
 \end{frame}
@@ -830,6 +835,7 @@
 \begin{frame}
     We saw: $\bw_i(\infty) \in \ca_i$, and $\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha \neq 0$.\\
     Show: $\norm{\bw_i(\infty)}$ cannot be too~small. ($\Rightarrow \bw_i(\infty) \in \cf_i$.)
+    \pause
     \begin{itemize}[<+->]
         \item \cite{du2018algorithmic}: $\norm{\bw_i(t)}^2 - \norm{\bv_i(t)}^2$ is constant.
         \begin{itemize}[<+->]
@@ -863,8 +869,8 @@
             \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, only the $i$-th~hidden~neuron $\bw_i(\infty)$ contributes to the network's output for the input~$\bx_i$. Moreover, the network's output equals $\by_i$.
             \item Recall our assumption that the inputs and targets lie on the unit sphere.
             \item It implies that it is impossible that, at convergence, both $\bw_i$ and $\bv_i$ are small.
-            \item The lower bound on~$\norm{\bw_i(\infty)}$ follows, and it completes the proof.
         \end{enumerate}
+        The lower bound on~$\norm{\bw_i(\infty)}$ follows, and it completes the proof.
     }
 \end{frame}
 
@@ -903,7 +909,6 @@
     If $\bw_1(0) \in \cs_1 \setminus \partial \cs_1, \bw_2(0) \in \cs_2 \setminus \partial \cs_2$:
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
-            \pause
             \begin{itemize}[<+->]
                 \item $\forall t:$
                 \begin{enumerate}
@@ -912,28 +917,24 @@
                 \end{enumerate}
                 \item $\Rightarrow$ $N_{W(\infty),V(\infty)}$ exists, w/ $0$ loss.
                 \item $\Rightarrow \bw_i(\infty) \in \cf_i$.
-            \end{itemize}
-            \pause
-            \hline \newline
-            $\bw_i(0) \sim$ a spherically~symmetric distribution.
-            \begin{itemize}[<+->]
+                \item Recall: $\bw_i(0) \sim$ some~spherically symmetric distribution.
                 \item $\Rightarrow$ $\Pr \left[ \forall i : \bw_i(0) \in \cs_i \setminus \partial \cs_i \right] \ge 2 \cdot \left(\frac{\measuredangle(\bx_1,\bx_2)}{2\pi} \right)^2$.
             \end{itemize}
         \end{column}
 
         \begin{column}{0.45\textwidth}
             \begin{center}
-                \includegraphics<handout:0|1-5>[width=\textwidth]{figures/D_and_Ss_regions.png}%
-                \includegraphics<6->[width=\textwidth]{figures/F_and_A_regions.png}%
+                \includegraphics[width=\textwidth]{figures/F_and_A_regions.png}%
             \end{center}
         \end{column}
     \end{columns}
     
     \note{
-        The key observation in the proof is analyzing the dynamics where $\bw_i(\infty) \in \cs_i$'s interior for all $i$. Suppose that, indeed, $\bw_1(0) \in \cs_1 \setminus \partial \cs_1$ and~$\bw_2(0) \in \cs_2 \setminus \partial \cs_2$.
+        The key analysis in the proof is of the dynamics where $\bw_i$ is in the interior of $\cs_i$, for all $i$. Suppose that, at initialization, we have $\bw_i(0)$ is in the interior of $\cs_i$, for all $i$.
         \begin{enumerate}
-            \item Then, it is possible to show that the dynamics are such that $\bw_i$ moves towards $\bx_i$ until convergence and never leaves the interior of $\cs_i$.
-            \item We prove that these properties of the hidden neurons‘ trajectories imply that GF converges to a $0$-loss~network.
+            \item Then, it is possible to show that the dynamics are such that: (1) $\bw_i$ moves towards $\bx_i$ until convergence, and
+            \item (2) never leaves the interior of $\cs_i$.
+            \item We prove that these properties of the hidden neurons' trajectories imply that GF converges to a $0$-loss~network.
             \item Similar to what we saw for the previous theorem, we complete by proving that $\bw_i(\infty) \in \cf_i$.\\
             Therefore, it is sufficient to argue that $\bw_i$ is in the interior of $\cs_i$ at initialization.
             \item Recall that the distribution of the random initialization of the hidden neurons is spherically symmetric.
