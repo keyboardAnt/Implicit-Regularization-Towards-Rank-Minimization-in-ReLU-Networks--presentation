@@ -1042,6 +1042,30 @@
 
 
 
+\begin{frame}{Proof idea}
+    \begin{itemize}[<+->]
+        \item Suppose $\exists$ a $0$-loss network s.t. each layer has Frobenius~norm~$B$.
+        \item $\Rightarrow \exists$ a deeper $0$-loss network $N_\btheta$ s.t. each layer has Frobenius~norm~$1 \lessapprox B^* << B$.
+        \item Recall: $\exists i \in [n]$ s.t. $\norm{\bx_i} \leq 1, y_i \geq 1$.
+        \item $\Rightarrow N_\btheta(\bx_i) \ge 1$.
+        \item $\Rightarrow$ The average~spectral~norm of the layers $\ge 1$.
+        \item $\Rightarrow$ The average ratio of spectral-to-Frobenius~norms cannot be too small.
+    \end{itemize}
+    
+    \note{
+    Suppose the dataset is realizable by some network such that the Frobenius~norm of each of its weight~matrices equals~$B$.
+    \begin{enumerate}
+        \item On the one hand, we upper bound the Frobenius norm. We show that the dataset is also realizable by a deeper~network, $N_\btheta$, where the Frobenius~norm of each layer is~$B^*$, while~$B^*$ is much~smaller than~$B$. Moreover, if the network is sufficiently~deep, then~$B^*$ is~not much~larger than~$1$.
+        \item On the other hand, we lower bound the spectral norm. Recall that we assumed to have an input of norm at~most~$1$ with a corresponding target of size at~least~$1$.
+        \item Thus, given this input, the output of the network is also of size at~least~$1$.
+        \item Therefore, the average~spectral~norm of the layers is at~least~$1$.
+        \item Hence, the average~ratio between the spectral and the Frobenius~norms cannot be too small, as required.
+    \end{enumerate}
+    }
+\end{frame}
+
+
+
 \AtBeginSection[]
 {
     \begin{frame}{Table of Contents}
