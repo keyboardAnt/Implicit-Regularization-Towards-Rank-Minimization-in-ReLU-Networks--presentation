@@ -1,4 +1,4 @@
-\documentclass[usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
+\documentclass[handout,usenames,dvipsnames]{beamer} % To enable \pause: remove the "handout" preamble
 \usetheme{Boadilla}
 \usecolortheme{default}
 \usepackage{pgfpages}
@@ -651,11 +651,11 @@
     \end{figure}
     
     \note{
-        We saw that, for small enough initialization schemes, GF does not converge close~to low-rank~solutions, with some positive~probability. We now present a simple experiment that corroborates this and suggests that, furthermore, this holds with~high~probability and for standard initializations.
+        We saw that GF does not converge close~to low-rank~solutions for small enough initialization schemes, with some positive~probability. A simple experiment we conducted corroborates this and suggests that it holds with~high~probability for standard~initializations.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case.
+            \item We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case. The stable rank equals~$1$ if~and~only~if the matrix has rank~$1$.
             \item The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats with a unique initialization. It counts the number of runs that converged to some stable rank. 
             The figure clearly suggests that whenever convergence to $0$~loss occurs, GD converges to networks with stable~ranks bounded~away from~$1$.
         \end{enumerate}
@@ -947,6 +947,100 @@
 
 
 
+\begin{frame}{Our results}{Rank~min. in deep~networks w/ small~$\ell_2$~norm}
+    \pause
+    Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained w/ the square~loss.
+    \pause
+    \begin{exampleblock}{Thm. (informal)}
+        For sufficiently deep networks, if $\btheta(\infty)$ exists and $\btheta(\infty) \in \arg\min_{\btheta} \norm{\btheta}$ s.t. $L_{X,Y}(\btheta(\infty)) = 0$, then 
+        \[
+        \frac{1}{k}\sum_{i=1}^{k} \frac{\norm{W^{(i)}(\infty)}_\sigma}{\norm{W^{(i)}(\infty)}_F}
+        \approx 1
+        \]
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item Recall: The \emph{stable~rank} of $W := {\norm{W}^2_F} / {\norm{W}^2_\sigma}$.
+        \pause
+        \item $\Rightarrow$ There is a bias towards \true{low~ranks}.
+        \pause
+        \item GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm.
+        \pause
+        \item In practice: Commonly use explicit $\ell_2$~regularization, which encourages norm~minimization.
+    \end{itemize}
+    
+    \note{
+    Next, for ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
+    \begin{enumerate}
+        \itemsep=0pt
+        \topsep=0pt
+        \item First, we consider ReLU~networks trained w.r.t. the square~loss.
+        \item We show that for sufficiently deep networks, if GF converges to a network that attains $0$~loss and minimizes the $\ell_2$~norm of the parameters, then the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
+        \item The squared inverse of this ratio is the \emph{stable~rank} that we introduced previously. As said, it is a continuous approximation of the rank. The stable rank of $W$ is~$1$ if~and~only~if $\rank(W)$ is~$1$.
+        \item Therefore, our result reveals a bias towards low~ranks.
+        \item A possible critique on the statement of the theorem might be: ``Why assume that $\norm{\btheta}$ is minimal? GF in ReLU~networks w.r.t. the square~loss is \textbf{not}~known to be biased towards solutions that minimize the $\ell_2$~norm."
+        \item While this is generally true, in practice, it is common to use explicit $\ell_2$~regularization, which encourages norm~minimization. Thus, our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$~regularization encourages rank~minimization.
+    \end{enumerate}
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    \begin{exampleblock}{Thm. \hfill\checkmark}
+        Let~$\left\{ \left( \bx_i, y_i \right) \right\}_{i=1}^n \subseteq \mathbb{R}^{\din} \times \reals_+$ s.t. $\exists i \in [n]$ satisfying~$\norm{\bx_i} \leq 1$ and $y_i \geq 1$. 
+        \pause
+        Assume that $\exists N$, a fully-connected~neural~network of width~$m \geq 2$ and depth~$k \geq 2$, s.t. $\forall i \in [n]$ we have~$N(\bx_i) = y_i$, and the weight matrices $W_1,\ldots,W_k$ of $N$ satisfy $\norm{W_i}_F \leq B$ for some~$B>0$.
+        \pause
+        Let~$N_\btheta$ be a fully-connected~neural~network of width~$m' \geq m$ and depth~$k' > k$ parameterized by~$\btheta$.
+        \pause
+        Let~$\btheta^* = \left[W_1^*,\ldots,W_{k'}^*\right]$ be a global~optimum of the following problem: $\min_\btheta \norm{\btheta} \;\;\;\; \text{s.t. } \;\;\; \forall i \in [n] \;\; N_\btheta(\bx_i)=y_i$.
+        \pause
+        Then, 
+        \setcounter{equation}{0}
+        {\setlength{\abovedisplayskip}{0pt}
+        \setlength{\belowdisplayskip}{0pt}
+        \begin{equation}  \label{eq:average ratio square}
+            \frac{1}{k'}\sum_{i=1}^{k'} \frac{\norm{W_i^*}_\sigma}{\norm{W_i^*}_F} 
+            \geq \left( \frac{1}{B} \right)^{\frac{k}{k'}}~.
+        \end{equation}
+        Equivalently,
+        \begin{equation}  \label{eq:harmonic ratio square}
+            \frac{k'}{\mathlarger{\sum}_{i=1}^{k'} \left( \frac{\norm{W_i^*}_F}{\norm{W_i^*}_\sigma} \right)^{-1} }
+            \leq 
+            B^{\frac{k}{k'}}~.
+        \end{equation}
+        }
+    \end{exampleblock}
+    \pause
+    \begin{itemize}
+        \item If $k' >> k$: The RHS of \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square} is roughly~$1$. 
+        \pause
+        $\Rightarrow$ \true{low rank}.
+        \pause
+        \item Does~not depend on the width of either network or the rank of $N$.
+    \end{itemize}
+    
+    \note{
+    \footnotesize
+    I will present the formal statement of the theorem step by step.\\
+    First, we assume that the dataset consists of input vectors with a corresponding positive~scalar~target, such that there exists at least one input-output pair having their norms at~most and at~least~$1$, respectively.
+    \begin{enumerate}
+        \itemsep=0pt
+        \topsep=0pt
+        \item We assume that there~exists a fully-connected~neural~network~$N$ of width~and~depth at~least~$2$, that attains $0$ loss, and its weight~matrices have their Frobenius norm uniformly bounded by some constant B.
+        \item We define a new fully-connected~neural~network, denoted by~$N_\btheta$, which is deeper than~$N$ and possibly wider.
+        \item $\btheta^*$ is a $0$-loss parameterization of $N_\btheta$ with minimal norm.
+        \item The guarantee is that the average ratio of spectral~to~Frobenius~norm is lower~bounded. Equivalently, the harmonic mean of the Frobenius~to~spectral~norm~ratio is upper~bounded.
+        \item Hence, if $k'$ is much larger than $k$, namely, $N_\btheta$ is much deeper than $N$, than the right-hand side in both expressions, \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, is roughly~$1$.
+        \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ of the trained~network increases.
+        \item Note that the result does~not depend on the width of the networks. Even if train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ have high~ranks (e.g., all its weight~matrices have full rank).
+    \end{enumerate}
+    }
+\end{frame}
+
+
 
 \AtBeginSection[]
 {
@@ -963,40 +1057,6 @@
 
 \section{Classification}
 \subsection{Previous work}
-
-\begin{frame}{Our results}{Rank~min. in deep~networks w/ small~$\ell_2$~norm}
-    \pause
-    Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained w/ the square~loss.
-    \pause
-    \begin{exampleblock}{Thm. (informal)}
-        For sufficiently deep networks, if $\btheta(\infty)$ exists and $\btheta(\infty) \in \arg\min_{\btheta} \norm{\btheta}$ s.t. $L_{X,Y}(\btheta(\infty)) = 0$, then 
-        \[
-        \frac{1}{k}\sum_{i=1}^{k} \frac{\norm{W^{(i)}(\infty)}_\sigma}{\norm{W^{(i)}(\infty)}_F}
-        \approx 1
-        \]
-    \end{exampleblock}
-    \pause
-    \begin{itemize}
-        \item The squared inverse of this ratio is the \emph{stable~rank} (a continuous approx. of the rank: equals~$1$ iff the matrix has rank~$1$).
-        \pause
-        \item $\Rightarrow$ The result implies a bias towards \true{low~ranks}.
-        \pause
-        \item GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm.
-        \pause
-        \item In practice, it is common to use explicit $\ell_2$~regularization, which encourages norm~minimization.
-    \end{itemize}
-    
-    \note{
-    \begin{enumerate}
-        \item "GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm...":\\
-        ... in ReLU~networks w/ square~loss
-        \item At the end:\\
-        $\Rightarrow$ Our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$~regularization encourages rank~minimization.
-    \end{enumerate}
-    }
-\end{frame}
-
-
 
 
 
