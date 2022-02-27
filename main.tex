@@ -1023,7 +1023,7 @@
     \end{itemize}
     
     \note{
-    \footnotesize
+    \scriptsize
     I will present the formal statement of the theorem step by step.\\
     First, we assume that the dataset consists of input vectors with a corresponding positive~scalar~target, such that there exists at least one input-output pair having their norms at~most and at~least~$1$, respectively.
     \begin{enumerate}
@@ -1035,7 +1035,7 @@
         \item The guarantee is that the average ratio of spectral~to~Frobenius~norm is lower~bounded. Equivalently, the harmonic mean of the Frobenius~to~spectral~norm~ratio is upper~bounded.
         \item Hence, if $k'$ is much larger than $k$, namely, $N_\btheta$ is much deeper than $N$, than the right-hand side in both expressions, \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, is roughly~$1$.
         \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ of the trained~network increases.
-        \item Note that the result does~not depend on the width of the networks. Even if train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ have high~ranks (e.g., all its weight~matrices have full rank).
+        \item Note that the result does~not depend on the width of the networks. That is, even if train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ has high~ranks (e.g., all its weight~matrices are full-ranked). By the theorem, once we consider deep enough networks, the dataset becomes realizable even by a network of small average~rank, and GF converges to such a network.
     \end{enumerate}
     }
 \end{frame}
