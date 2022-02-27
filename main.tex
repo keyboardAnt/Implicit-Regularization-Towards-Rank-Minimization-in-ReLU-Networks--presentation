@@ -438,7 +438,7 @@
             \topsep=0pt
             \item For nonlinear networks, there is a line of empirical research on ``neural network compression". That is a post-training procedure aiming to reduce the trained model's size or inference time. They demonstrate that one can replace the weight~matrices by their low-rank~approximations without suffering a significant accuracy drop.
             \item This suggests that, in~practice, the weight~matrices are not too far from being low-rank.
-            \item However, the open question is: Can we prove it? Can we guarantee that the weight~matrices at the end of training are low rank? Today, we will see our proofs addressing this question.
+            \item However, the open question is: Can we prove it? Can we guarantee that the weight~matrices in the end of training are low rank? Today, we will see our proofs addressing this question.
             \item On the negative side, we show that already for small~ReLU~networks (namely, of depth~and~width~$2$), GF does not bias towards rank-minimization.
             \item BUT, on the positive side, we prove that for sufficiently~deeper and possibly~wider overparameterized~networks, GF is biased towards low-rank~solutions.
         \end{enumerate}
@@ -539,7 +539,6 @@
     \end{exampleblock}
     \pause
     Proof idea:
-    \pause
     \begin{itemize}
         \item Construct $w_2 = -w_1$ (hence $\rank(W) = 1$), s.t. $w_j x_i > 0 \Leftrightarrow i = j$.
         \pause
@@ -594,7 +593,7 @@
         \begin{enumerate}
             \item Our result answers NO, under the following assumptions.
             \item First, the two target vectors $\by_i$ are linearly independent.
-            \item Second, an obtuse angle between the two input vectors.\\
+            \item Second, the angle between the two input vectors is obtuse.\\
             For technical convenience, we also assume that both $\bx_i$ and $\by_i$ have the unit length, but we believe it is not essential.
             \item Our theorem shows that GF does~not minimize the rank even in this elementary setting, as long as the initialization is sufficiently close~to~$0$. Note that if we sample the dataset from the uniform distribution on the sphere, the two assumptions hold w.p. $1/2$.
             \item Although the theorem reveals that GF does~not minimize the rank, it does~not rule~out the possibility that it converges to a solution that is close-to-a-low-rank~solution.\\
@@ -738,8 +737,8 @@
 \begin{frame}
     \begin{columns}
         \begin{column}{0.6\textwidth}
-        Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$.
             \begin{itemize}[<+->]
+                \item Assume towards~contradiction: GF converges to some 0-loss~network $N_{W(\infty),V(\infty)}$ s.t. $\rank(W(\infty))<2$.
                 \item 0-loss $\Rightarrow Y = V(\infty) \sigma \left( W(\infty) X \right)$.
                 \item $\Rightarrow$ 
                 \begin{align*}
@@ -748,15 +747,18 @@
                 \end{align*}
             \end{itemize}
         \end{column}
-
-        \begin{column}{0.4\textwidth}
-            \begin{center}
-                \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
-            \end{center}
-        \end{column}
+        
+        \onslide<1->{
+            \begin{column}{0.4\textwidth}
+                \begin{center}
+                    \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
+                \end{center}
+            \end{column}
+        }
     \end{columns}
     
     \begin{itemize}
+        \pause
         \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \notin \cd$. (Otherwise, $\zero^T$ is a row in~$\sigma(W(\infty) X)$.)
         \pause
         \item $\Rightarrow \bw_1(\infty), \bw_2(\infty) \ne \zero$ $\Rightarrow \rank(W(\infty))=1$. 
@@ -946,6 +948,22 @@
 
 
 
+\AtBeginSection[]
+{
+    \begin{frame}{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+    
+    \note{
+        Now
+    }
+}
+
+
+
+\section{Classification}
+\subsection{Previous work}
+
 \begin{frame}{Our results}{Rank~min. in deep~networks w/ small~$\ell_2$~norm}
     \pause
     Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained w/ the square~loss.
@@ -980,17 +998,7 @@
 
 
 
-\AtBeginSection[]
-{
-    \begin{frame}{Table of Contents}
-        \tableofcontents[currentsection]
-    \end{frame}
-}
 
-
-
-\section{Classification}
-\subsection{Previous work}
 
 \begin{frame}{Implicit bias in linear~networks: Classification}
     \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
