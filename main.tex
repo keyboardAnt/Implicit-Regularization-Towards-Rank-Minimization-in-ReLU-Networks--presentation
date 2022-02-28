@@ -160,8 +160,8 @@
     \note{
         We focus on overparameterized neural networks, namely, 
         \begin{enumerate}
-            \item there are far more learnable~parameters than training~examples.
-            \item Then, we face an underdetermined optimization~problem with many global~minima of zero~training~loss.
+            \item models with far more learnable~parameters than training~examples.
+            \item In this setting of learning, we face an underdetermined optimization~problem with many global~minima of $0$~training~loss.
             \item A central puzzle in the theory~of~deep~learning is how such overparameterized neural~networks generalize, even when trained without explicit regularization, as \cite{zhang2017understanding}  demonstrated.
             \item A possible explanation is that GD induces an {\em implicit~regularization}~(or~\emph{implicit~bias}).
         \end{enumerate}
@@ -362,7 +362,7 @@
         \footnotesize
         \begin{enumerate}
             \item The \emph{empirical square loss} is half of the sum of the squared L2 norm of the differences between the network’s prediction, $N_\btheta(\bx_i)$, and the corresponding target vector, $\by_i$. For convenience, we sometimes use the matrix notation and take the Frobenius norm. Then, the input and target vectors are the columns of the matrices $X$ and $Y$.
-            \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining zero~loss.
+            \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining $0$~loss.
             \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
             \item We consider GF on the square loss. It captures the behavior of GD with an infinitesimally small step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial point~$\btheta(0)$. The dynamics of~$\btheta(t)$ is given by the differential equation: $\frac{d \btheta(t)}{dt}$ equals the minus of the gradient of the objective function $L_{X,Y}$ with respect to vector of parameters $\btheta(t)$.
             \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.
@@ -555,11 +555,11 @@
             \item To understand rank~minimization in this simple setting, we consider the rank of $W$. The rank of the network is ``low" when $\rank(W) < 2$. Why?
             \item By the $0$-loss assumption, if $\rank(Y)=2$, then necessarily $\rank(V)=2$.
             \item But trivially, $\rank(W)\leq 2$.
-            \item To convince that this setting is non-trivial, I would first have to answer the question: Whether such low-rank~zero-loss~solutions exist at all?
+            \item To convince that this setting is non-trivial, I would first have to answer the question: Whether such low-rank~$0$-loss~solutions exist at all?
             \item The following theorem shows that the answer is YES, for almost all size-$2$ datasets.\\
             Formally, we have a training dataset $(X, Y)$ with two input vectors $\bx_i$ and their corresponding target vectors. By the theorem, if we only assume that the two inputs are positively correlated, we can already prove the existence of a $0$-loss solution that is rank deficient.
             \item The main idea is to construct a rank-deficient network, where its two hidden neurons, $w_1, w_2$ have precisely opposite directions s.t. each neuron is active for exactly one input. 
-            \item Then, it is possible to show that for an appropriate choice of the weights in the second layer, $V$, the network achieves zero~loss.
+            \item Then, it is possible to show that for an appropriate choice of the weights in the second layer, $V$, the network achieves $0$~loss.
             \item The question is: Does GF converge to such low-rank solutions?
         \end{enumerate}
     }
@@ -626,11 +626,8 @@
     \end{exampleblock}
     
     \note{
-        The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, if GF converges to a zero-loss~solution, then it is not even close to a low-rank~solution. In particular, it guarantees that the norms of the hidden neurons $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$. All those bounds consist of explicit large constants that depend only on the dataset.
-        \newline
-        \newline
-        The conclusion is that, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
-        \newline
+        The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, if GF converges to a $0$-loss~solution, then it is not even close to a low-rank~solution. In particular, it guarantees that the norms of the hidden neurons $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$.\\
+        All those bounds consist of explicit constants that depend only on the dataset and are large. The conclusion is that, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
         \newline
         Note that, in this theorem, the weights in the second layer, $\bv_i$, are initialized to $\zero$, unlike the previous theorem, which uses a weaker assumption that their norms are $< \frac{1}{2}$. This difference is for technical convenience, and we believe that this theorem would also hold for other initializations, as the following empirical result demonstrates.
     }
@@ -640,9 +637,7 @@
 
 
 \begin{frame}{GF does~not even approximately minimize~ranks}{An empirical result}
-    \pause
     \emph{``stable (numerical) rank"} $:= {\norm{W^{(\ell)}}^2_F} / {\norm{W^{(\ell)}}^2_\sigma}$.
-    \pause
     \begin{figure}[t]
         \frame{\includegraphics[scale=.45]{figures/final_f2s_displot.png}}
         \centering
@@ -652,13 +647,12 @@
     
     \note{
         We saw that GF does not converge close~to low-rank~solutions for small enough initialization schemes, with some positive~probability. A simple experiment we conducted corroborates this and suggests that it holds with~high~probability for standard~initializations.
-        \begin{enumerate}
-            \itemsep=0pt
-            \topsep=0pt
-            \item We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case. The stable rank equals~$1$ if~and~only~if the matrix has rank~$1$.
-            \item The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats with a unique initialization. It counts the number of runs that converged to some stable rank. 
-            The figure clearly suggests that whenever convergence to $0$~loss occurs, GD converges to networks with stable~ranks bounded~away from~$1$.
-        \end{enumerate}
+        \newline
+        We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case. The stable rank equals~$1$ if~and~only~if the matrix has rank~$1$.
+        \newline
+        The figure is a histogram of the stable ranks of the two weight~matrices at convergence, $W1$ and $W2$, based on a few hundred repeats with a unique initialization. It counts the number of runs that converged to some stable rank.
+        \newline
+        The figure clearly suggests that whenever convergence to $0$~loss occurs, GD converges to networks with stable~ranks bounded~away from~$1$.
         \newline
         {   
             \tiny
@@ -748,7 +742,7 @@
             \end{itemize}
         \end{column}
         
-        \onslide<1->{
+        \onslide<0->{
             \begin{column}{0.4\textwidth}
                 \begin{center}
                     \includegraphics[width=\textwidth]{figures/D_and_Ss_regions.png}
@@ -774,18 +768,20 @@
     \end{itemize}
     
     \note{
+        \footnotesize
         Assume towards~contradiction that GF converges to some $0$-loss~network~$N_{W(\infty),V(\infty)}$ where~$\rank(W(\infty))<2$.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item The $0$-loss assumption means that $Y = V(\infty) \sigma \left( W(\infty) X \right)$.
-            \item Hence, the rank of both sides equals $2$. It implies that the first layer's output matrix, $\sigma(W(\infty)X)$ is full-ranked.
-            \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in region~$\cd$. Indeed, if $\bw_1(\infty)$ or~$\bw_2(\infty)$ are in~$\cd$, then at~least one of the rows of~$\sigma(W(\infty) X)$ is~$\zero$, in~contradiction.
+            \item The $0$-loss assumption means that the output of the network, $V(\infty) \sigma(W(\infty)X)$, equals the targets, $Y$.
+            \item Since the targets are linearly independent, the rank of both sides equals $2$. It implies that the output of the first layer, $\sigma(W(\infty)X)$ is full-ranked.
+            \item
+            \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in region~$\cd$. Otherwise, at~least one of the rows of~$\sigma(W(\infty) X)$ is~$\zero$, in~contradiction.
             \item In~particular, it implies that~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are non-zero.\\
             By our first assumption that $\rank(W(\infty))<2$, we can conclude that its rank equals $1$ ((N.T.:~$\rank(W(\infty))=1$)).
             \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha$ is non-zero.
-            \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the first layer's output matrix, $\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
-            \item Imagine the line between $\bw_1(\infty), \bw_2(\infty)$. It must go through the origin. Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g., $\bw_j(\infty) \in \cs_j$'s interior.
+            \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the output~matrix of the first~layer~$\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
+            \item Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g., $\bw_j(\infty)$ is in the interior of $\cs_j$.
         \end{enumerate}
     }
 \end{frame}
