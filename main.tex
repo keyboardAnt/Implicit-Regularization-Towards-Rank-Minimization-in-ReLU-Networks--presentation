@@ -817,12 +817,12 @@
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item First, if~$\bw_i(t) \in \cd$ at some time~$t$, then its derivative, $\frac{d}{dt} \bw_i(t)$, is $\zero$. Hence, $\bw_i$~remains at~$\cd$ indefinitely, so it does not converge in $\cs_i$'s interior, in~contradiction. Thus, the trajectory~$\bw_i(t)$ does~not visit~$\cd$.
+            \item First, if~$\bw_i \in \cd$ at some time~$t$, then its derivative equals $\zero$. Hence, $\bw_i$~remains at~$\cd$ indefinitely, so it does not converge in the interior of $\cs_i$, in~contradiction. Thus, the trajectory~$\bw_i(t)$ does~not visit~$\cd$.
             \item Second, if~$\bw_i \in \cs_i$ at time~$t$, then $\bx_i$ spans its derivative.
-            \item Since~$\bw_i(\infty) \in \cs_i$'s interior, we can consider the last~time~$t_i'$ that~$\bw_i$ enters~$\cs_i$. It can be either at the initialization (i.e.,~$t_i'=0$) or when moving from~$\cs$ (i.e.,~$t_i'>0$).
-            \item For~all time~$t \geq t_i'$ we have~$\frac{d}{dt} \bw_i(t) \in \spn\{\bx_i\}$.
-            \item It allows us to conclude that~$\bw_i(\infty)$ must be in a region~$\ca_i$. It is the union of the orange and green regions in the figure.
-            \item We could show a lower bound on~$\norm{\bw_i(\infty)}$ so that $\bw_i(\infty)$ is in region~$\cf_i$ as in the figure. Then, we have $\bw_1(\infty) \in \cf_1$ and $\bw_2(\infty) \in \cf_2$, implying that the angle between the neurons must be smaller than $\pi$, in~contradiction to $\bw_2(\infty) = \alpha \bw_1(\infty)$.
+            \item Since~$\bw_i(\infty)$ is in the interior of $\cs_i$, we can consider the last~time~$t_i'$ that~$\bw_i$ enters~$\cs_i$. It can be either at the initialization (i.e.,~$t_i'=0$) or when moving from~$\cs$ (i.e.,~$t_i'>0$).
+            \item For~all time~$t$ at~$t_i'$~or~later, we have that the derivative of $\bw_i$ is in the span of $\bx_i$.
+            \item It allows us to conclude that~$\bw_i(\infty)$ must be in the region~$\ca_i$ that you see in the figure. (It is the union of the orange and green regions.)
+            \item Lastly, we show a lower bound on~$\norm{\bw_i(\infty)}$ so that $\bw_i(\infty)$ is in region~$\cf_i$ as in the figure. Then, we have $\bw_1(\infty) \in \cf_1$ and $\bw_2(\infty) \in \cf_2$, implying that the angle between the neurons must be smaller than $\pi$, in~contradiction to $\bw_2(\infty) = \alpha \bw_1(\infty)$.
         \end{enumerate}
     }
 \end{frame}
@@ -863,8 +863,8 @@
             \itemsep=0pt
             \topsep=0pt
             \item To do so, we apply a theorem from \cite{du2018algorithmic} that guarantees that the difference in the squared norms of $\bw_i$ and $\bv_i$ remains constant throughout the training. Namely, for all $t$.
-            \item Since at the initialization both~$\norm{\bw_i(0)}$ and~$\norm{\bv_i(0)}$ are small, the consequence is that $\norm{\bv_i(\infty)}$ is~small if~and~only~if $\norm{\bw_i(\infty)}$ is~small.
-            \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, only the $i$-th~hidden~neuron $\bw_i(\infty)$ contributes to the network's output for the input~$\bx_i$. Moreover, the network's output equals $\by_i$.
+            \item Recall that, at the initialization, the norms of both~$\bw_i$ and~$\bv_i$ are small. The consequence is that, also at convergence, their norms have only a small difference between them. Hence, at convergence, the norm of $\bv_i$ is~small if~and~only~if the norm of $\bw_i$ is~small.
+            \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, the output of the network is determined only by the $i$-th~hidden~neuron $\bw_i(\infty)$, and it equals the target, $\by_i$.
             \item Recall our assumption that the inputs and targets lie on the unit sphere.
             \item It implies that it is impossible that, at convergence, both $\bw_i$ and $\bv_i$ are small.
         \end{enumerate}
@@ -931,12 +931,12 @@
         The key analysis in the proof is of the dynamics where $\bw_i$ is in the interior of $\cs_i$, for all $i$. Suppose that, at initialization, we have $\bw_i(0)$ is in the interior of $\cs_i$, for all $i$.
         \begin{enumerate}
             \item Then, it is possible to show that the dynamics are such that: (1) $\bw_i$ moves towards $\bx_i$ until convergence, and
-            \item (2) never leaves the interior of $\cs_i$.
-            \item We prove that these properties of the hidden neurons' trajectories imply that GF converges to a $0$-loss~network.
+            \item (2) $\bw_i$ never leaves the interior of $\cs_i$.
+            \item We prove that these properties of the hidden neurons trajectory imply that GF converges to a $0$-loss~network.
             \item Similar to what we saw for the previous theorem, we complete by proving that $\bw_i(\infty) \in \cf_i$.\\
             Therefore, it is sufficient to argue that $\bw_i$ is in the interior of $\cs_i$ at initialization.
             \item Recall that the distribution of the random initialization of the hidden neurons is spherically symmetric.
-            \item Hence, simple geometric arguments allow us to bound the probability that the hidden neurons lie in the interiors as required. The exact lower bound depends only on the angle between the two inputs.
+            \item Hence, simple geometric arguments allow us to bound the probability that the hidden~neurons initially lie in the interiors as required. The exact lower~bound depends only on the angle~between~the~two~inputs.
         \end{enumerate}
     }
 \end{frame}
@@ -1030,8 +1030,8 @@
         \item $\btheta^*$ is a $0$-loss parameterization of $N_\btheta$ with minimal norm.
         \item The guarantee is that the average ratio of spectral~to~Frobenius~norm is lower~bounded. Equivalently, the harmonic mean of the Frobenius~to~spectral~norm~ratio is upper~bounded.
         \item Hence, if $k'$ is much larger than $k$, namely, $N_\btheta$ is much deeper than $N$, than the right-hand side in both expressions, \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, is roughly~$1$.
-        \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ of the trained~network increases.
-        \item Note that the result does~not depend on the width of the networks. That is, even if train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ has high~ranks (e.g., all its weight~matrices are full-ranked). By the theorem, once we consider deep enough networks, the dataset becomes realizable even by a network of small average~rank, and GF converges to such a network.
+        \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ increases.
+        \item Note that the result does~not depend on the width of the networks. That is, even if we train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ has high~ranks (e.g., all its weight~matrices are full-ranked). By the theorem, once we consider deep enough networks, the dataset becomes realizable even by a network of small average~rank, and GF converges to such a network.
     \end{enumerate}
     }
 \end{frame}
