@@ -1041,22 +1041,63 @@
 \begin{frame}{Proof idea}
     \begin{itemize}[<+->]
         \item Suppose $\exists$ a $0$-loss network s.t. each layer has Frobenius~norm~$B$.
-        \item $\Rightarrow \exists$ a deeper $0$-loss network $N_\btheta$ s.t. each layer has Frobenius~norm~$1 \lessapprox B^* << B$.
-        \item Recall: $\exists i \in [n]$ s.t. $\norm{\bx_i} \leq 1, y_i \geq 1$.
-        \item $\Rightarrow N_\btheta(\bx_i) \ge 1$.
-        \item $\Rightarrow$ The average~spectral~norm of the layers $\ge 1$.
-        \item $\Rightarrow$ The average ratio of spectral-to-Frobenius~norms cannot be too small.
+        \item $\Rightarrow \exists$ a deeper $0$-loss network $N_\btheta$ s.t. each layer has Frobenius~norm~$B^* << B$. ($B^* \lessapprox 1$)
+        \item $\exists i \in [n]$ s.t. $\norm{\bx_i} \leq 1, y_i \geq 1$. $\Rightarrow N_\btheta(\bx_i) \ge 1$.
+        \item $\Rightarrow$ The average~spectral~norm of the layers in $N_\btheta$ is $\ge 1$.
+        \item $\Rightarrow$ The average ratio of spectral-to-Frobenius~norms in $N_\btheta$ cannot be too small.
     \end{itemize}
     
     \note{
-    Suppose the dataset is realizable by some network such that the Frobenius~norm of each of its weight~matrices equals~$B$.
+    At a very high level, the idea of the proof is the following: On the one hand, upper~bounding the Frobenius norm of the layers in $N_\theta$. On the other hand, lower~bounding the average spectral norm.\\
+    We start by assuming that the dataset is realizable by some network such that the Frobenius~norm of each of its weight~matrices equals~$B$.
     \begin{enumerate}
-        \item On the one hand, we upper bound the Frobenius norm. We show that the dataset is also realizable by a deeper~network, $N_\btheta$, where the Frobenius~norm of each layer is~$B^*$, while~$B^*$ is much~smaller than~$B$. Moreover, if the network is sufficiently~deep, then~$B^*$ is~not much~larger than~$1$.
-        \item On the other hand, we lower bound the spectral norm. Recall that we assumed to have an input of norm at~most~$1$ with a corresponding target of size at~least~$1$.
-        \item Thus, given this input, the output of the network is also of size at~least~$1$.
+        \itemsep=0pt
+        \topsep=0pt
+        \item We show that the dataset is also realizable by a deeper~network, $N_\btheta$, where the Frobenius~norm of each layer is~$B^*$, while~$B^*$ is much~smaller than~$B$. Moreover, if the network is sufficiently~deep, then~$B^*$ is~not much~larger than~$1$.
+        \item On the other hand, we lower~bound the spectral~norm in~$N_\theta$. Recall that we assumed to have an input of norm at~most~$1$ with a corresponding target of size at~least~$1$. Since $N_\theta$ attains $0$ loss, the output of the network for this input is also of size at~least~$1$.
         \item Therefore, the average~spectral~norm of the layers is at~least~$1$.
-        \item Hence, the average~ratio between the spectral and the Frobenius~norms cannot be too small, as required.
+        \item It allows us to complete the proof by concluding that the average~ratio between the spectral and Frobenius~norms cannot be too small.
     \end{enumerate}
+    The main trick here hides in our claim that $N_\btheta$~exists. Namely, a $0$-loss network that all its layers have Frobenius~norm~$B^*$, which is almost~$1$.\\
+    The following construction proves it.
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+    Assume: $\exists N$ of width~$m$, depth~$k$, $0$ loss, Frobenius~norm~$B$ in all layers.\\
+    Construct: $N'$ of width~$m$, depth~$k' > k$, $0$ loss, Frobenius~norm~$B^* \lessapprox 1$ in all layers.
+    \pause
+    \begin{itemize}
+        \item $\forall i \in [k], W'_i := \alpha W_i$ where $\alpha = \left( \frac{1}{B} \right)^{\frac{k'-k}{k'}}$.
+        \pause
+        \item $\forall i \in \set{k, k+1, \ldots, k'}, W'_i \in \reals$.
+        \pause
+        \item $\forall i \in \set{k+1, \ldots, k'}, W'_i := \beta$, where $\beta = \left( \frac{1}{B} \right)^{-\frac{k}{k'}}$.
+        \pause
+        \item $\Rightarrow N'(\bx_i) = N(\bx_i) \cdot \alpha^k \cdot \beta^{k'-k} = N(\bx_i)$. 
+        \pause
+        $\Rightarrow N'$ has $0$ loss.
+        \pause
+        \item Let $\btheta^* = \left[W^*_1,\ldots,W^*_{k'} \right] \in \min_\btheta \norm{\btheta} \text{ s.t. } \forall i \in [n], N_\btheta(\bx_i)=y_i$.
+        \item $\Rightarrow B^* = \norm{W^*_i}_F = \norm{W^*_j}_F, \forall i, j \in [k']$.
+        \item $\norm{\btheta^*} \leq \norm{\btheta'} \Rightarrow$ By calculation, $B^* \leq B^{\frac{k}{k'}}$.
+    \end{itemize}
+    
+    \note{
+        We use the given $0$-loss network~$N$ of width~$m$ and depth~$k$ to construct a deeper $0$-loss network,~$N'$, of width~$m$ and depth~$k'$ as follows.
+        \begin{enumerate}
+            \item The first~$k$~layers of~$N'$ are obtained by scaling the layers of~$N$ by a factor~$\alpha$.
+            \item Since the output~dimension of~$N$ is~$1$, the $k$-th hidden~layer of~$N'$ has width~$1$. The rest of the layers in~$N'$ are also of width~$1$.
+            \item The weight in each of these last $k'-k$ layers is~$\beta$.
+            \item Therefore, given an input~$\bx_i$, the output of $N'$ equals the output of $N$. 
+            \item In other words, $N'$ induces $0$ loss.
+            \item Let~$\btheta^*$ be a $0$-loss parameterization with minimal $\ell_2$ norm.
+            \item By the optimality of~$\btheta^*$, we show that its layers must be balanced. Namely, the Frobenius~norm of any pair of layers is equal. We denote the Frobenius~norm of the layers by~$B^*$.
+            \item Since the norm of $\btheta^*$ is minimal, the parameterization of $N'$, denoted by $\btheta'$, cannot be smaller. Then, by a calculation, we can obtain the required upper bound on $B^*$. Note that as long as $N_\btheta$ is sufficiently deep, namely, $k'$ is large, then $B^*$ cannot be much~greater than~$1$, as required.
+        \end{enumerate}
     }
 \end{frame}
 
