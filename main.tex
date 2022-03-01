@@ -134,7 +134,7 @@
 \begin{frame}
     \frametitle{Implicit~Regularization Towards Rank~Minimization\\in ReLU~Networks}
     A joint paper under review @ ICML 2022,\\
-    w/ Gal Vardi and Ohad Shamir.
+    with Gal Vardi and Ohad Shamir.
 \end{frame}
 
 
@@ -147,11 +147,11 @@
     If \#[learnable parameters] $>>$ \#[training examples]:
     \pause
     \begin{itemize}
-        \item \alert{Many} global minima w/ $0$ training loss.
+        \item \alert{Many} global minima with $0$ training loss.
     \end{itemize}
     \pause
     \begin{block}{Phenomenon in practice (\cite{zhang2017understanding})}
-        GD over such overparameterized neural networks generalize well even when trained \true{w/o~explicit~regularization}.
+        GD over such overparameterized neural networks generalize well even when trained \true{without~explicit~regularization}.
     \end{block}
     \textbf{Q:} How?\\
     \pause
@@ -174,7 +174,7 @@
         \alert{If asked:}
         \begin{itemize}
             \item \cite{zhang2017understanding}: Large CNNs,\\
-            trained w/ stochastic~gradient~methods\\
+            trained with stochastic~gradient~methods\\
             fit a random~labeling (of the training~data), or even completely~unstructured random~noise.\\
             Unaffected by explicit~regularization.
         \end{itemize}
@@ -375,7 +375,7 @@
 
 
 
-\begin{frame}{Previous work}{Implicit regularization in linear networks w/ square~loss}
+\begin{frame}{Previous work}{Implicit regularization in linear networks with square~loss}
     \pause
     \begin{block}{\cite{gunasekar2018implicit}’s conjecture \onslide<3->{\hfill\alert{X}}}
         The implicit~bias in \emph{matrix~fact.} can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
@@ -414,7 +414,7 @@
 
 
 
-\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks w/ square~loss}
+\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks with square~loss}
     \pause
     \begin{exampleblock}{Neural network compression (empirical evidences)}
         Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
@@ -450,14 +450,14 @@
 \end{frame}
 
 
-\begin{frame}{More previous work...}{Implicit regularization in *nonlinear* networks w/ square~loss}
+\begin{frame}{More previous work...}{Implicit regularization in *nonlinear* networks with square~loss}
     \pause
     \begin{block}{\cite{oymak2019overparameterized}}
-         GD over certain overparameterized nonlinear models is guaranteed to converge to a 0-loss~solution w/ a bounded $\ell_2$~norm, under some assumptions.
+         GD over certain overparameterized nonlinear models is guaranteed to converge to a 0-loss~solution with a bounded $\ell_2$~norm, under some assumptions.
     \end{block}
     \pause
     \begin{block}{\cite{vardi2021implicit}}
-         In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}.
+         In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF with the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}.
     \end{block}
     \pause
     \begin{itemize}
@@ -488,7 +488,7 @@
 
 \begin{frame}{Our results}{GF does~not even approximately minimize ranks}
     \pause
-    Setting: \true{ReLU}~networks of depth $2$ and width $2$ w/ multiple outputs, trained w/ the square~loss.
+    Setting: \true{ReLU}~networks of depth $2$ and width $2$ with multiple outputs, trained with the square~loss.
     \pause
     \begin{exampleblock}{\cite{li2020towards,razin2020implicit} (matrix/tensor~fact.)}
         \alert{Linear} networks of this architecture are implicitly biased towards low-rank. (GF can be viewed as a "heuristic for rank~minimization".)
@@ -924,7 +924,7 @@
                     \item $\frac{d}{dt} \bw_i(t) = C_i(t) \bx_i, C_i(t) \geq 0$.
                     \item $\bw_i(t) \in \cs_i \setminus \partial \cs_i$.
                 \end{enumerate}
-                \item $\Rightarrow$ $N_{W(\infty),V(\infty)}$ exists, w/ $0$ loss.
+                \item $\Rightarrow$ $N_{W(\infty),V(\infty)}$ exists with $0$ loss.
                 \item $\Rightarrow \bw_i(\infty) \in \cf_i$.
                 \item Recall: $\bw_i(0) \sim$ some~spherically symmetric distribution.
                 \item $\Rightarrow$ $\Pr \left[ \forall i : \bw_i(0) \in \cs_i \setminus \partial \cs_i \right] \ge 2 \cdot \left(\frac{\measuredangle(\bx_1,\bx_2)}{2\pi} \right)^2$.
@@ -956,9 +956,9 @@
 
 
 
-\begin{frame}{Our results}{Rank~min. in deep~networks w/ small~$\ell_2$~norm}
+\begin{frame}{Our results}{Rank~min. in deep~networks with small~$\ell_2$~norm}
     \pause
-    Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained w/ the square~loss.
+    Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained with the square~loss.
     \pause
     \begin{exampleblock}{Thm. (informal)}
         For sufficiently deep networks, if $\btheta(\infty)$ exists and $\btheta(\infty) \in \arg\min_{\btheta} \norm{\btheta}$ s.t. $L_{X,Y}(\btheta(\infty)) = 0$, then 
@@ -1141,7 +1141,7 @@
 
 
 
-\begin{frame}{Previous work}{Implicit bias in linear~networks w/ exponentially-tailed~losses}
+\begin{frame}{Previous work}{Implicit bias in linear~networks with exponentially-tailed~losses}
     \begin{definition}[classification loss]
         Given a binary~classification dataset $\{(\bx_i,y_i)\}_{i=1}^n \subseteq \reals^d \times \set{\pm 1}$, a network $N_\btheta$ and a loss function $\ell:\reals \to \reals$,
         \begin{equation*}\label{eq:objective classification}
@@ -1229,16 +1229,136 @@
 
 
 \begin{frame}
-
+    \begin{exampleblock}{Paraphrased from \cite{lyu2019gradient,ji2020directional} \hfill\checkmark}
+        \pause
+        Let~$N_{\btheta}$ be a homogeneous~ReLU~neural~network.
+        \pause
+        Consider minimizing the average of either the exponential or the logistic~loss over a binary~classification dataset using~GF.
+        \pause
+        Suppose that the average~loss converges to zero as~$t \to \infty$.
+        \pause
+        Then, GF converges~in~direction to a first~order stationary~point (KKT~point) of the following maximum~margin~problem in parameter~space:
+        \begin{equation*}
+        \label{eq:optimization problem}
+        	\min_\btheta \frac{1}{2} \norm{\btheta}^2 \;\;\;\; \text{s.t. } \;\;\; \forall i \in [n] \;\; y_i N_\btheta(\bx_i) \geq 1~.
+        \end{equation*}
+    \end{exampleblock}
+        
     
     \note{
-        
+        \footnotesize
+        We phrase the following lemma based on \cite{lyu2019gradient,ji2020directional}.
+        \begin{enumerate}
+            \item For a homogeneous~ReLU~neural~network,
+            \item given a binary~classification dataset, GF minimizes the average of either the exponential or the logistic~loss.
+            \item Assume that, eventually, the average~loss converges to~$0$.
+            \item Then, GF converges~in~direction to a KKT~point of this maximum~margin~problem.\\
+        \end{enumerate}
+        This lemma suggests that GF tends to converge~in~direction to networks with margin~$1$ and small~$\ell_2$~norm.\\
+        Our following theorem shows the~implication~of~the~lemma for deep~overparameterized~ReLU~networks. It guarantees that if GF converges~in~direction to an optimal~solution of this max-margin~problem, its layers tend to have low~rank.
     }
 \end{frame}
 
 
 
 \subsection{Our results}
+
+\begin{frame}
+    \begin{exampleblock}{Thm. \hfill\checkmark}
+        \setlength{\abovedisplayskip}{0pt}
+        \setlength{\belowdisplayskip}{0pt}
+        \pause
+        Let $\left\{ \left( \bx_i, y_i \right) \right\}_{i=1}^n \subseteq \mathbb{R}^{\din} \times \set{\pm 1}$ be a binary classification dataset, and assume that $\exists i \in [n]$ with $\norm{\bx_i} \leq 1$. 
+        \pause
+        Assume that $\exists$ a fully-connected neural network~$N$ of width~$m \geq 2$, depth~$k \geq 2$, s.t. $\forall i \in [n], y_i N(\bx_i) \geq 1$ and its weight matrices~$W_1,\ldots,W_k$ satisfy~$\norm{W_i}_F \leq B$ for some~$B>0$.
+        \pause
+        Let $N_\btheta$ be a fully-connected neural~network of width~$m' \geq m$, depth~$k' > k$, parameterized by~$\btheta$. 
+        \pause
+        Let~$\btheta^* = \left[W_1^*,\ldots,W_{k'}^*\right]$ be a global optimum of the maximum $\ell_2$-margin problem. Namely, $\btheta^*$ parameterizes a minimum-norm fully-connected network of width~$m'$, depth~$k'$, that labels the dataset correctly with margin~$1$.
+        \pause
+        Then,
+        \begin{equation*} \label{eq:average ratio exp}
+            \frac{1}{k'} \sum_{i=1}^{k'} \frac{\norm{W_i^*}_\sigma}{\norm{W_i^*}_F} \geq \frac{1}{\sqrt{2}} \cdot \left( \frac{\sqrt{2}}{B} \right)^{\frac{k}{k'}} \cdot \sqrt{\frac{k'}{k'+1}}
+        \end{equation*}
+        \pause
+        Equivalently, 
+        \begin{equation*} \label{eq:harmonic ratio exp}
+            \frac{k'}{\mathlarger{\sum}_{i=1}^{k'} \left( \frac{\norm{W_i^*}_F}{\norm{W_i^*}_\sigma} \right)^{-1}}
+            \leq \sqrt{2} \cdot \left( \frac{B}{\sqrt{2}} \right)^{\frac{k}{k'}} \cdot \sqrt{\frac{k'+1}{k'}}
+        \end{equation*}
+    \end{exampleblock}
+    
+    \note{
+        \scriptsize
+        \begin{enumerate}
+            \item Let a binary~classification dataset consists of targets~$\pm 1$ and at~least~one input~vector of norm at~most~$1$.
+            \item We assume that $N$ is a fully-connected~neural~network of width~and~depth of at~least~$2$ that correctly~classifies the dataset. Also, all the weight~matrices of $N$ are uniformly~bounded by some positive~constant~$B$.
+            \item $N_\btheta$ is a deeper, fully-connected~neural~network that may also be wider than the~network~$N$.
+            \item $\btheta^*$ is a parameterization of $N_\btheta$ that is also a global~optimum of the maximum-margin~problem~in~the~parameter~space we saw earlier. Namely, $\btheta^*$ is a minimal-norm~parameterization that correctly~classifies the dataset by a~margin~of~$1$.
+            \item The guarantee is that the average~ratio of the spectral-to-Frobenius~norms is lower~bounded such~that whenever the depth~$k'$ of the trained network~$N_\btheta$ is sufficiently large, this average~ratio is at~least roughly~$1/\sqrt{2}$.
+            \item Equivalently, we have the following upper~bound on the harmonic~mean of the Frobenius-to-spectral~ratios. As remembered, this ratio is the square~root of the stable~rank. For sufficiently large depth~$k'$, it is at~most roughly~$\sqrt{2}$.
+        \end{enumerate}
+        Note that the result does~not depend on the width~of~the~networks or their ranks, as in our previous~theorem.
+    }
+\end{frame}
+
+
+
+\begin{frame}
+    \pause
+    \begin{itemize}
+        \item \cite{lyu2019gradient,ji2020directional} + our Thm. $\Rightarrow$\\
+        GF over overparameterized~deep~fully-connected~networks tends to converge~in~direction to networks with \true{low~ranks}.
+        \pause
+        \item In exponential/logistic~loss, if $\lim_{t \to \infty} \text{loss} = 0 \Rightarrow \norm{\btheta(t)} \to \infty$.
+        \item $\Rightarrow$ The parameters tend to
+        \begin{enumerate}
+            \item have an infinite~norm, and 
+            \item converge~in~direction to a \true{low-rank}~solution.
+        \end{enumerate}
+        \item The spectral-to-Frobenius~norms ratio is invariant~to~scaling $\Rightarrow$
+        \pause
+        After a sufficiently~long~time, GF tends to reach networks with low~ranks.
+    \end{itemize}
+
+    \note{
+        \footnotesize
+        \begin{enumerate}
+            \item Combining our result with the lemma on directional~convergence suggests that, in overparameterized,~deep,~fully-connected~networks, GF tends to converge~in~direction to networks with low~ranks.
+            \item Since we consider the exponential and the logistic~losses, if the loss tends~to~$0$ as~$t \to \infty$, the norm of~$\btheta$ diverges to $\infty$.
+            \item Therefore, in our case, the parameters tend to have an infinite~norm and converge~in~direction to a low-rank~solution.
+            \item Note that the ratio of spectral-to-Frobenius~norms is invariant~to~scaling.
+            \item Hence, it suggests that after a sufficiently~long~time, GF tends to reach networks with low~ranks.
+        \end{enumerate}
+        
+    }
+\end{frame}
+
+
+
+\begin{frame}{Proof idea}
+    \begin{itemize}
+        \item Similar to the previous theorem.
+        \pause
+        \item Main difference: $y_i \in \set{\pm 1}$.
+        \pause
+        \item $\Rightarrow$ The width of the constructed network $>$ 1.
+        \pause
+        \item We construct: $N'$ with layers~$k+1, \ldots, k'$ of width $2$ s.t. $N'(\bx_i)=N(\bx_i), \forall i \in [n]$.
+        \hfill\qedsymbol
+    \end{itemize}
+    
+    \note{
+        \footnotesize
+        The proof follows the approach of the previous theorem.
+        \begin{enumerate}
+            \item The main difference is that the predictions are no longer necessarily positive.
+            \item It means that the network~$N'$ we are constructing cannot have width~$1$ as before because the ReLU~activation does~not propagate negative~values.
+            \item Still, we show that we can construct a network~$N'$ such that the width in layers~$k+1, \ldots, k'$ is $2$ and has the same predictions as the given network~$N$.\\
+            The rest of the proof is similar, with the required modifications.
+        \end{enumerate}
+    }
+\end{frame}
 
 
 
@@ -1252,7 +1372,6 @@ Special thanks to
     \item Prof. Ohad Shamir
     \item Dr. Gal Vardi
 \end{itemize}
-and my family.
 \end{frame}
 
 
