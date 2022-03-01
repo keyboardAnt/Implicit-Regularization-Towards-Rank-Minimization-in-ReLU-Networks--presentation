@@ -158,6 +158,7 @@
     \textbf{Possible A:} \emph{``implicit regularization''} (or \emph{``implicit bias''}).
     
     \note{
+        \footnotesize
         We focus on overparameterized neural networks, namely, 
         \begin{enumerate}
             \item models with far more learnable~parameters than training~examples.
@@ -265,6 +266,7 @@
     \end{tikzpicture}
     
     \note{
+        \footnotesize
         Let's try to understand implicit regularization by the following illustration:
         \begin{enumerate}
             \item The points in $\reals^d$ that we marked by $\btheta(0)$ are different possible initial parameterizations of a neural network.
@@ -321,7 +323,7 @@
             \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
             \item This continues until we compute the input to the last layer.\\
             \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.\\
-            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $\ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} equals $d_\ell$ (the number of rows in $W^{(\ell)}$) and the \emph{width of the network} is the maximal width of its layers.
+            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $\ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} is the number of its neurons, and the \emph{width of the network} is the maximal width of all layers.
             \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
             \item A main focus in recent years was on the matrix~fact.~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
         \end{enumerate}
@@ -361,7 +363,7 @@
     \note{
         \footnotesize
         \begin{enumerate}
-            \item The \emph{empirical square loss} is half of the sum of the squared L2 norm of the differences between the network’s prediction, $N_\btheta(\bx_i)$, and the corresponding target vector, $\by_i$. For convenience, we sometimes use the matrix notation and take the Frobenius norm. Then, the input and target vectors are the columns of the matrices $X$ and $Y$.
+            \item The \emph{empirical square loss} is half the sum of the squared~$\ell_2$-norm of the differences between the network’s prediction,~$N_\btheta(\bx_i)$, and the corresponding target~vector,~$\by_i$. For~convenience, we sometimes use the matrix~notation and take the Frobenius~norm. Then, we stack the input~and~target~vectors as the columns of the matrices~$X, Y$.
             \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining $0$~loss.
             \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
             \item We consider GF on the square loss. It captures the behavior of GD with an infinitesimally small step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial point~$\btheta(0)$. The dynamics of~$\btheta(t)$ is given by the differential equation: $\frac{d \btheta(t)}{dt}$ equals the minus of the gradient of the objective function $L_{X,Y}$ with respect to vector of parameters $\btheta(t)$.
@@ -433,12 +435,13 @@
     \end{itemize}
     
     \note{
+        \footnotesize
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item For nonlinear networks, there is a line of empirical research on ``neural network compression". That is a post-training procedure aiming to reduce the trained model's size or inference time. They demonstrate that one can replace the weight~matrices by their low-rank~approximations without suffering a significant accuracy drop.
+            \item For nonlinear networks, there is a line of empirical research on ``neural network compression". That is, a post-training procedure aiming to reduce the size of the trained model or its inference time. They demonstrate that one can replace the weight~matrices by their low-rank~approximations without suffering a significant accuracy drop.
             \item This suggests that, in~practice, the weight~matrices are not too far from being low-rank.
-            \item However, the open question is: Can we prove it? Can we guarantee that the weight~matrices in the end of training are low rank? Today, we will see our proofs addressing this question.
+            \item However, the open question is: Can we prove it? Can we guarantee that the weight~matrices in the end~of~training are low-ranked? Today, we will see our proofs addressing this question.
             \item On the negative side, we show that already for small~ReLU~networks (namely, of depth~and~width~$2$), GF does not bias towards rank-minimization.
             \item BUT, on the positive side, we prove that for sufficiently~deeper and possibly~wider overparameterized~networks, GF is biased towards low-rank~solutions.
         \end{enumerate}
@@ -454,7 +457,7 @@
     \end{block}
     \pause
     \begin{block}{\cite{vardi2021implicit}}
-         In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}. %($\btheta :=$ model's parameters.)
+         In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF w/ the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}.
     \end{block}
     \pause
     \begin{itemize}
@@ -470,7 +473,7 @@
             \itemsep=0pt
             \topsep=0pt
             \item For overparameterized nonlinear networks, Oymak~and~"Sol-tanol-ko-tabi" (2019) showed that, under some assumptions on the initial loss, first order methods (such as GD or stochastic GD) converge to a global minima even when the loss is nonconvex, and that the converged solution has a near minimal distance to the initial point (among all global minima).
-            \item \cite{vardi2021implicit} showed that in ReLU networks of width $1$ (namely, ReLU networks with a single~neuron~or~hidden-neuron), the implicit~regularization cannot be expressed by any non-trivial~regularization~function. Namely, for any function of the model's parameters $\calr(\btheta)$, if GF with the square~loss converges to a global~minima of the loss, and it is also a global~minima of~$\calr$, then $\calr$ is necessarily trivial.
+            \item \cite{vardi2021implicit} showed that in ReLU networks of width $1$ (namely, ReLU networks with a single~neuron~or~hidden-neuron), the implicit~regularization cannot be expressed by any non-trivial~regularization~function. Namely, for any function of the parameters $\calr(\btheta)$, if GF with the square~loss converges to a global~minima of the loss, and it is also a global~minima of~$\calr$, then $\calr$ is necessarily trivial.
             \item Their negative result rules~out the existence of a non-trivial~regularization~function which expresses the implicit~bias for all possible datasets and initializations. However, it does~not rule~out the possibility that GF acts as a heuristic that induces bias for ``most" datasets and initializations.
             \item Moreover, in their width-$1$ setting, the notation of \emph{rank} is undefined. Hence, implicit bias towards low~ranks would not contradict their negative result.
         \end{enumerate}
@@ -543,6 +546,7 @@
         \item Construct $w_2 = -w_1$ (hence $\rank(W) = 1$), s.t. $w_j x_i > 0 \Leftrightarrow i = j$.
         \pause
         \item Choose $V$ s.t. $Y=V\sigma(WX)$.
+        \hfill\qedsymbol
     \end{itemize}
     \pause
     Does GF converge to such solutions?
@@ -590,8 +594,9 @@
     Does GF converge to a \alert{close-to-low-rank} solution?
     
     \note{
+        \footnotesize
+        Our result answers NO, under the following assumptions.
         \begin{enumerate}
-            \item Our result answers NO, under the following assumptions.
             \item First, the two target vectors $\by_i$ are linearly independent.
             \item Second, the angle between the two input vectors is obtuse.\\
             For technical convenience, we also assume that both $\bx_i$ and $\by_i$ have the unit length, but we believe it is not essential.
@@ -626,6 +631,7 @@
     \end{exampleblock}
     
     \note{
+        \footnotesize
         The following theorem shows that for any given dataset satisfying the two said assumptions and small enough initialization, with at~least constant probability, if GF converges to a $0$-loss~solution, then it is not even close to a low-rank~solution. In particular, it guarantees that the norms of the hidden neurons $\bw_i$ are bounded away from~$0$ s.t. the ratio between the norms is bounded. Moreover, the angle between $\bw_1$ and $\bw_2$ is bounded away from~$0$ and from~$\pi$.\\
         All those bounds consist of explicit constants that depend only on the dataset and are large. The conclusion is that, with at least constant probability, GF does~not minimize any reasonable approximate notion of rank.
         \newline
@@ -646,6 +652,7 @@
     \end{figure}
     
     \note{
+        \footnotesize
         We saw that GF does not converge close~to low-rank~solutions for small enough initialization schemes, with some positive~probability. A simple experiment we conducted corroborates this and suggests that it holds with~high~probability for standard~initializations.
         \newline
         We consider the ``stable/numerical~rank" that approximates the standard~algebraic~rank. Intuitively, it measures the concentration of the singular values in the first singular value. Its image ranges between $1$ and the maximal standard~rank, which equals $2$ in our case. The stable rank equals~$1$ if~and~only~if the matrix has rank~$1$.
@@ -717,6 +724,7 @@
     \end{columns}
     
     \note{
+        \footnotesize
         The figure depicts the 2D plain, the given input vectors $\bx_1, \bx_2$ on the unit sphere, and the following four regions $\cd, \cs, \cs_1, \cs_2$.
         \begin{enumerate}
             \item Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. 
@@ -764,7 +772,7 @@
             \item $\Rightarrow \alpha < 0$.
         \end{itemize}
         \pause
-        \item $\Rightarrow$ w.l.o.g., $\bw_1(\infty) \in \cs_1 \setminus \partial \cs_1, \bw_2(\infty) \in \cs_2 \setminus \partial \cs_2$.
+        \item $\Rightarrow$ W.l.o.g., $\bw_1(\infty) \in \cs_1 \setminus \partial \cs_1, \bw_2(\infty) \in \cs_2 \setminus \partial \cs_2$.
     \end{itemize}
     
     \note{
@@ -774,13 +782,13 @@
             \itemsep=0pt
             \topsep=0pt
             \item The $0$-loss assumption means that the output of the network, $V(\infty) \sigma(W(\infty)X)$, equals the targets, $Y$.
-            \item Since the targets are linearly independent, the rank of both sides equals $2$. It implies that the output of the first layer, $\sigma(W(\infty)X)$ is full-ranked.
+            \item Since the targets are linearly independent, the rank of both sides equals~$2$. It implies that the output of the first layer, $\sigma(W(\infty)X)$ is full-ranked.
             \item
             \item Therefore, the weight~vectors~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are~not in region~$\cd$. Otherwise, at~least one of the rows of~$\sigma(W(\infty) X)$ is~$\zero$, in~contradiction.
             \item In~particular, it implies that~$\bw_1(\infty)$ and~$\bw_2(\infty)$ are non-zero.\\
             By our first assumption that $\rank(W(\infty))<2$, we can conclude that its rank equals $1$ ((N.T.:~$\rank(W(\infty))=1$)).
             \item We denote~$\bw_2(\infty) = \alpha \bw_1(\infty)$ where $\alpha$ is non-zero.
-            \item Note that if $\alpha$ was~positive, we could move it outside the $\sigma$, then we have the two rows of the output~matrix of the first~layer~$\sigma(W(\infty)X)$ linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
+            \item Note that if $\alpha$ was~positive, we could move it outside the ReLU. Then, the output~matrix of the first~layer,~$\sigma(W(\infty)X)$, would have its two rows linearly dependent, contradicting what we showed (i.e., that it is full-ranked). Therefore, $\alpha$ is strictly negative.
             \item Since we also have~$\bw_1(\infty),\bw_2(\infty) \not \in \cd$, then one of these weight~vectors is in interior~of~$\cs_1$ and the other is in interior~of~$\cs_2$. W.l.o.g., $\bw_j(\infty)$ is in the interior of $\cs_j$.
         \end{enumerate}
     }
@@ -813,6 +821,7 @@
     \end{columns}
     
     \note{
+        \footnotesize
         By observing the gradients of the loss function w.r.t.~$\bw_i$, the following facts follow for all $i$.
         \begin{enumerate}
             \itemsep=0pt
@@ -858,13 +867,14 @@
     \end{columns}
     
     \note{
+        \footnotesize
         Informally speaking, we prove that $\bw_i(\infty) \in \cf_i$ by showing that $\norm{\bw_i(\infty)}$ cannot be too~small. 
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
             \item To do so, we apply a theorem from \cite{du2018algorithmic} that guarantees that the difference in the squared norms of $\bw_i$ and $\bv_i$ remains constant throughout the training. Namely, for all $t$.
             \item Recall that, at the initialization, the norms of both~$\bw_i$ and~$\bv_i$ are small. The consequence is that, also at convergence, their norms have only a small difference between them. Hence, at convergence, the norm of $\bv_i$ is~small if~and~only~if the norm of $\bw_i$ is~small.
-            \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, the output of the network is determined only by the $i$-th~hidden~neuron $\bw_i(\infty)$, and it equals the target, $\by_i$.
+            \item Since the network attains $0$~loss and~$\bw_i(\infty) \in \cs_i$ for~all~$i$, then the following equation holds. Namely, the output of the network is determined only by the $i$-th~neuron, and it equals the target, $\by_i$.
             \item Recall our assumption that the inputs and targets lie on the unit sphere.
             \item It implies that it is impossible that, at convergence, both $\bw_i$ and $\bv_i$ are small.
         \end{enumerate}
@@ -895,8 +905,9 @@
     \end{exampleblock}
     
     \note{
-        The following theorem and its proof have much in common with what we just saw. The statement is now probabilistic over the randomness of the initialization, under the same assumptions on the dataset. That is, the inputs and targets lie on the unit sphere. Also, the targets are linearly independent, and the angle between the inputs is obtuse. The guarantee is that small enough random~initialization leads to high ranks for any rank-approximation metric. Specifically, we assure that, at convergence, the norm of the hidden neurons, $\bw_1, \bw_2$, is in a bounded interval, as well as the angle between them.\\
-        The main difference from the previous theorem is that now we consider rank-approximation like the stable/essential rank. To guarantee that the essential rank is bounded away from $1$, it is necessary to bound the norms and angle.
+        \footnotesize
+        This theorem (that we already introduced) has much in common with what we just saw. The statement is now probabilistic over the randomness of the initialization and holds the same assumptions on the dataset: The inputs and targets lie on the unit sphere, the targets are linearly independent, and the angle between the inputs is obtuse. The guarantee is that, with positive probability, small enough random~initializations lead to high~ranks for any rank-approximation~metric. Specifically, we assure that, at~convergence, the norm of the hidden~neurons, $\bw_1, \bw_2$, is in~a~bounded~interval, as~well~as the angle~between~them.\\
+        The main~difference from the previous~theorem is that now we consider rank-approximation like the stable/essential~rank. To guarantee that any such~rank~approximation is~bounded~away~from~$1$, it is necessary to~bound the norms~and~angle.
     }
 \end{frame}
 
@@ -917,6 +928,7 @@
                 \item $\Rightarrow \bw_i(\infty) \in \cf_i$.
                 \item Recall: $\bw_i(0) \sim$ some~spherically symmetric distribution.
                 \item $\Rightarrow$ $\Pr \left[ \forall i : \bw_i(0) \in \cs_i \setminus \partial \cs_i \right] \ge 2 \cdot \left(\frac{\measuredangle(\bx_1,\bx_2)}{2\pi} \right)^2$.
+                \hfill\qedsymbol
             \end{itemize}
         \end{column}
 
@@ -928,6 +940,7 @@
     \end{columns}
     
     \note{
+        \footnotesize
         The key analysis in the proof is of the dynamics where $\bw_i$ is in the interior of $\cs_i$, for all $i$. Suppose that, at initialization, we have $\bw_i(0)$ is in the interior of $\cs_i$, for all $i$.
         \begin{enumerate}
             \item Then, it is possible to show that the dynamics are such that: (1) $\bw_i$ moves towards $\bx_i$ until convergence, and
@@ -960,23 +973,24 @@
         \pause
         \item $\Rightarrow$ There is a bias towards \true{low~ranks}.
         \pause
-        \item GF is \alert{not}~known to be biased to minimize the $\ell_2$~norm.
+        \item GF is \alert{not}~known to be biased to minimize the $\ell_2$ norm.
         \pause
-        \item In practice: Commonly use explicit $\ell_2$~regularization, which encourages norm~minimization.
+        \item In practice: Commonly use explicit $\ell_2$ regularization, which encourages norm~minimization.
     \end{itemize}
     
     \note{
-    Next, for ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
-    \begin{enumerate}
-        \itemsep=0pt
-        \topsep=0pt
-        \item First, we consider ReLU~networks trained w.r.t. the square~loss.
-        \item We show that for sufficiently deep networks, if GF converges to a network that attains $0$~loss and minimizes the $\ell_2$~norm of the parameters, then the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
-        \item The squared inverse of this ratio is the \emph{stable~rank} that we introduced previously. As said, it is a continuous approximation of the rank. The stable rank of $W$ is~$1$ if~and~only~if $\rank(W)$ is~$1$.
-        \item Therefore, our result reveals a bias towards low~ranks.
-        \item A possible critique on the statement of the theorem might be: ``Why assume that $\norm{\btheta}$ is minimal? GF in ReLU~networks w.r.t. the square~loss is \textbf{not}~known to be biased towards solutions that minimize the $\ell_2$~norm."
-        \item While this is generally true, in practice, it is common to use explicit $\ell_2$~regularization, which encourages norm~minimization. Thus, our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$~regularization encourages rank~minimization.
-    \end{enumerate}
+        \footnotesize
+        Next, for ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item First, we consider ReLU~networks trained w.r.t. the square~loss.
+            \item We show that for sufficiently deep networks, if GF converges to a network that attains $0$~loss and minimizes the $\ell_2$-norm~of~the~parameters, then the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
+            \item The squared inverse of this ratio is the \emph{stable~rank} that we introduced previously. As said, it is a continuous approximation of the rank. The stable rank of $W$ is~$1$ if~and~only~if $\rank(W)$ is~$1$.
+            \item Therefore, our result reveals a bias towards low~ranks.
+            \item A possible critique on the statement of the theorem might be: ``Why assume that $\norm{\btheta}$ is minimal? GF in ReLU~networks w.r.t. the square~loss is \textbf{not}~known to be biased towards solutions that minimize the $\ell_2$~norm."
+            \item While this is generally true, in practice, it is common to use explicit $\ell_2$-regularization, which encourages norm~minimization. Thus, our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$-regularization encourages rank~minimization.
+        \end{enumerate}
     }
 \end{frame}
 
@@ -1019,20 +1033,20 @@
     \end{itemize}
     
     \note{
-    \scriptsize
-    I will present the formal statement of the theorem step by step.\\
-    First, we assume that the dataset consists of input vectors with a corresponding positive~scalar~target, such that there exists at least one input-output pair having their norms at~most and at~least~$1$, respectively.
-    \begin{enumerate}
-        \itemsep=0pt
-        \topsep=0pt
-        \item We assume that there~exists a fully-connected~neural~network~$N$ of width~and~depth at~least~$2$, that attains $0$ loss, and its weight~matrices have their Frobenius norm uniformly bounded by some constant B.
-        \item We define a new fully-connected~neural~network, denoted by~$N_\btheta$, which is deeper than~$N$ and possibly wider.
-        \item $\btheta^*$ is a $0$-loss parameterization of $N_\btheta$ with minimal norm.
-        \item The guarantee is that the average ratio of spectral~to~Frobenius~norm is lower~bounded. Equivalently, the harmonic mean of the Frobenius~to~spectral~norm~ratio is upper~bounded.
-        \item Hence, if $k'$ is much larger than $k$, namely, $N_\btheta$ is much deeper than $N$, than the right-hand side in both expressions, \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, is roughly~$1$.
-        \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ increases.
-        \item Note that the result does~not depend on the width of the networks. That is, even if we train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ has high~ranks (e.g., all its weight~matrices are full-ranked). By the theorem, once we consider deep enough networks, the dataset becomes realizable even by a network of small average~rank, and GF converges to such a network.
-    \end{enumerate}
+        \scriptsize
+        I will present the formal statement of the theorem step by step.\\
+        First, we assume that the dataset consists of input vectors with a corresponding positive~scalar~target, such that there exists at least one input-output pair having their norms at~most and at~least~$1$, respectively.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item We assume that there~exists a fully-connected~neural~network~$N$ of width~and~depth at~least~$2$, that attains $0$ loss, and its weight~matrices have their Frobenius norm uniformly bounded by some constant B.
+            \item We define a new fully-connected~neural~network, denoted by~$N_\btheta$, which is deeper than~$N$ and possibly wider.
+            \item $\btheta^*$ is a $0$-loss parameterization of $N_\btheta$ with minimal norm.
+            \item The guarantee is that the average ratio of spectral~to~Frobenius~norm is lower~bounded. Equivalently, the harmonic mean of the Frobenius~to~spectral~norm~ratio is upper~bounded.
+            \item Hence, if $k'$ is much larger than $k$, namely, $N_\btheta$ is much deeper than $N$, than the right-hand side in both expressions, \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, is roughly~$1$.
+            \item These two ratios in \eqref{eq:average ratio square} and \eqref{eq:harmonic ratio square}, namely, the spectral-to-Frobenius and  Frobenius-to-spectral, equal~$1$ if~and~only~if the matrix is of rank~$1$. Therefore, there is a bias towards low-rank~solutions as the depth~$k'$ increases.
+            \item Note that the result does~not depend on the width of the networks. That is, even if we train an extremely~wide network, the bias towards low~ranks exists as~long~as its depth,~$k'$, is~large. Also, the theorem holds even if the network~$N$ has high~ranks (e.g., all its weight~matrices are full-ranked). By the theorem, once we consider deep enough networks, the dataset becomes realizable even by a network of small average~rank, and GF converges to such a network.
+        \end{enumerate}
     }
 \end{frame}
 
@@ -1048,18 +1062,19 @@
     \end{itemize}
     
     \note{
-    At a very high level, the idea of the proof is the following: On the one hand, upper~bounding the Frobenius norm of the layers in $N_\theta$. On the other hand, lower~bounding the average spectral norm.\\
-    We start by assuming that the dataset is realizable by some network such that the Frobenius~norm of each of its weight~matrices equals~$B$.
-    \begin{enumerate}
-        \itemsep=0pt
-        \topsep=0pt
-        \item We show that the dataset is also realizable by a deeper~network, $N_\btheta$, where the Frobenius~norm of each layer is~$B^*$, while~$B^*$ is much~smaller than~$B$. Moreover, if the network is sufficiently~deep, then~$B^*$ is~not much~larger than~$1$.
-        \item On the other hand, we lower~bound the spectral~norm in~$N_\theta$. Recall that we assumed to have an input of norm at~most~$1$ with a corresponding target of size at~least~$1$. Since $N_\theta$ attains $0$ loss, the output of the network for this input is also of size at~least~$1$.
-        \item Therefore, the average~spectral~norm of the layers is at~least~$1$.
-        \item It allows us to complete the proof by concluding that the average~ratio between the spectral and Frobenius~norms cannot be too small.
-    \end{enumerate}
-    The main trick here hides in our claim that $N_\btheta$~exists. Namely, a $0$-loss network that all its layers have Frobenius~norm~$B^*$, which is almost~$1$.\\
-    The following construction proves it.
+        \footnotesize
+        At a very high level, the idea of the proof is the following: On the one hand, upper~bounding the Frobenius norm of the layers in $N_\theta$. On the other hand, lower~bounding the average spectral norm.\\
+        We start by assuming that the dataset is realizable by some network such that the Frobenius~norm of each of its weight~matrices equals~$B$.
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item We show that the dataset is also realizable by a deeper~network, $N_\btheta$, where the Frobenius~norm of each layer is~$B^*$, while~$B^*$ is much~smaller than~$B$. Moreover, if the network is sufficiently~deep, then~$B^*$ is~not much~larger than~$1$.
+            \item On the other hand, we lower~bound the spectral~norm in~$N_\theta$. Recall that we assumed to have an input of norm at~most~$1$ with a corresponding target of size at~least~$1$. Since $N_\theta$ attains $0$ loss, the output of the network for this input is also of size at~least~$1$.
+            \item Therefore, the average~spectral~norm of the layers is at~least~$1$.
+            \item It allows us to complete the proof by concluding that the average~ratio between the spectral and Frobenius~norms cannot be too small.
+        \end{enumerate}
+        The main trick here hides in our claim that $N_\btheta$~exists. Namely, a $0$-loss network that all its layers have Frobenius~norm~$B^*$, which is almost~$1$.\\
+        The following construction proves it.
     }
 \end{frame}
 
@@ -1082,11 +1097,15 @@
         $\Rightarrow N'$ has $0$ loss.
         \pause
         \item Let $\btheta^* = \left[W^*_1,\ldots,W^*_{k'} \right] \in \min_\btheta \norm{\btheta} \text{ s.t. } \forall i \in [n], N_\btheta(\bx_i)=y_i$.
+        \pause
         \item $\Rightarrow B^* = \norm{W^*_i}_F = \norm{W^*_j}_F, \forall i, j \in [k']$.
+        \pause
         \item $\norm{\btheta^*} \leq \norm{\btheta'} \Rightarrow$ By calculation, $B^* \leq B^{\frac{k}{k'}}$.
+        \hfill\qedsymbol
     \end{itemize}
     
     \note{
+        \footnotesize
         We use the given $0$-loss network~$N$ of width~$m$ and depth~$k$ to construct a deeper $0$-loss network,~$N'$, of width~$m$ and depth~$k'$ as follows.
         \begin{enumerate}
             \item The first~$k$~layers of~$N'$ are obtained by scaling the layers of~$N$ by a factor~$\alpha$.
@@ -1096,7 +1115,7 @@
             \item In other words, $N'$ induces $0$ loss.
             \item Let~$\btheta^*$ be a $0$-loss parameterization with minimal $\ell_2$ norm.
             \item By the optimality of~$\btheta^*$, we show that its layers must be balanced. Namely, the Frobenius~norm of any pair of layers is equal. We denote the Frobenius~norm of the layers by~$B^*$.
-            \item Since the norm of $\btheta^*$ is minimal, the parameterization of $N'$, denoted by $\btheta'$, cannot be smaller. Then, by a calculation, we can obtain the required upper bound on $B^*$. Note that as long as $N_\btheta$ is sufficiently deep, namely, $k'$ is large, then $B^*$ cannot be much~greater than~$1$, as required.
+            \item Since the norm of $\btheta^*$ is minimal, the parameterization of~$N'$, denoted by~$\btheta'$, cannot be smaller. Then, by a calculation, we can obtain the required upper~bound on~$B^*$. Note that as~long~as~$N_\btheta$ is~sufficiently~deep, namely, $k'$~is~large, then~$B^*$ cannot be much~greater~than~$1$, as~required.
         \end{enumerate}
     }
 \end{frame}
@@ -1110,7 +1129,8 @@
     \end{frame}
     
     \note{
-        Now
+        \footnotesize
+        The last part of our work is about ReLU~networks in binary~classification~problems.
     }
 }
 
@@ -1121,15 +1141,12 @@
 
 
 
-\begin{frame}{Implicit bias in linear~networks: Classification}
-    \item Setting: GF over linear~networks of output~dimension~$1$, \pause \\
-        w.r.t. exponentially-tailed~classification~losses.
-    \pause
+\begin{frame}{Previous work}{Implicit bias in linear~networks w/ exponentially-tailed~losses}
     \begin{definition}[classification loss]
         Given a binary~classification dataset $\{(\bx_i,y_i)\}_{i=1}^n \subseteq \reals^d \times \set{\pm 1}$, a network $N_\btheta$ and a loss function $\ell:\reals \to \reals$,
-        \begin{equation}\label{eq:objective classification}
+        \begin{equation*}\label{eq:objective classification}
         	L_{X,\by}(\btheta) := \sum_{i=1}^n \ell\left(y_i N_\btheta(\bx_i)\right)~.
-        \end{equation}
+        \end{equation*}
     \end{definition}
     \pause
     \begin{description}
@@ -1137,51 +1154,85 @@
         \item[logistic~loss] \, \, \, \, \, $\ell(q) := \log(1+e^{-q})$.
     \end{description}
     \pause
-    \begin{exampleblock}{\cite{ji2018gradient, ji2020directional} \hfill\checkmark}
-        GF converges s.t. the weight~matrix of every layer has rank~$1$.
+    \newline
+    \newline
+    \begin{itemize}
+        \item $N_\btheta$ \emph{correctly~classifying} a dataset if $y_i N_\btheta(\bx_i) > 0, \forall i \in [n]$.
+        \pause
+        \item A~trajectory~$\btheta(t)$~of~GF {\em converges~in~direction}~to~$\tilde{\btheta}$ if 
         \[
-            \rank W^{(l)}(\infty) = 1, ~\forall l \in [k].
+            \lim_{t \to \infty}\frac{\btheta(t)}{\norm{\btheta(t)}} = \frac{\tilde{\btheta}}{\snorm{\tilde{\btheta}}}
         \]
-    \end{exampleblock}
-    
+    \end{itemize}
     
     \note{
-    NEW: (from the Introduction section)\newline
-    Going beyond factorization~problems,  \cite{ji2018gradient, ji2020directional} showed that in linear~networks of output~dimension~$1$, gradient~flow~(GF) w.r.t. exponentially-tailed~classification~losses converges to networks where the weight~matrix of every layer is of rank~$1$.
-    
-    \begin{itemize}
-        \item \true{Empirical} classification loss.
-    \end{itemize}
+        \footnotesize
+        In this setting of binary~classification, the output~dimension of the network equals~$1$, and we consider empirical~classification~losses that are exponentially~tailed.
+        \begin{enumerate}
+            \item We focus on the exponential~loss and the logistic~loss.
+            \item We say that a given dataset is \emph{correctly~classified} by the network~$N_\btheta$ if the inner~product of the~prediction~of~the~network and the~target is~positive for all inputs.
+            \item We say that a~trajectory~$\btheta(t)$~of~GF {\em converges~in~direction}~to~$\tilde{\btheta}$ if, when~$t \to \infty$, $\tilde{\btheta}$ is the limit of the~direction~of~$\btheta(t)$.
+        \end{enumerate}
     }
 \end{frame}
 
 
 
-\begin{frame}{Implicit bias in nonlinear networks w/ exponentially-tailed losses}
-    \begin{exampleblock}{\cite{soudry2018implicit}}
-         GD on linearly-separable~binary~classification~problems converges to the maximum~$\ell_2$-margin~direction.
+
+\begin{frame}
+    % NOTE: \cite{soudry2018implicit} is less relevant comparing to the following prior results 
+    % \begin{exampleblock}{\cite{soudry2018implicit}}
+    %      GD on linearly-separable~binary~classification~problems converges to the maximum~$\ell_2$-margin~direction.
+    % \end{exampleblock}
+    % \pause
+    % \begin{itemize}
+    %     \item Extended to other loss~functions, tighter convergence~rates, non-separable~data, and variants of gradient-based~optimization~algorithms \citep{nacson2019convergence,ji2018risk,ji2020gradient,gunasekar2018characterizing,shamir2021gradient,ji2021characterizing}.
+    % \end{itemize}
+    \pause
+    \begin{exampleblock}{\cite{ji2018gradient, ji2020directional} \hfill\checkmark}
+        In linear networks, GF converges s.t. every layer has rank~$1$, namely, $\rank W^{(i)}(\infty) = 1, ~\forall i \in [k]$.
     \end{exampleblock}
     \pause
+    \begin{definition}[homogeneous neural network]
+        $N_\btheta$~is~\emph{homogeneous} if $\exists M > 0$ s.t. $N_{\alpha \btheta}(\bx) = \alpha^M N_\btheta(\bx), \forall \btheta,\bx$ and $\alpha>0$.
+    \end{definition}
+    \pause
     \begin{itemize}
-        \item Extended to other loss~functions, tighter convergence~rates, non-separable~data, and variants of gradient-based~optimization~algorithms \citep{nacson2019convergence,ji2018risk,ji2020gradient,gunasekar2018characterizing,shamir2021gradient,ji2021characterizing}.
+        \item ReLU networks are homogeneous.
     \end{itemize}
     \pause
-    \begin{exampleblock}{\cite{lyu2019gradient,ji2020directional}}
-          GF on homogeneous~networks converges~in~direction to a KKT~point of the maximum-margin~problem in the parameter~space.
+    \begin{exampleblock}{\cite{lyu2019gradient,ji2020directional} (informal) \hfill\checkmark}
+          In homogeneous~networks, GF converges~in~direction to a KKT~point of the maximum~$\ell_2$-margin~problem in the parameter~space.
     \end{exampleblock}
     \pause
-    \begin{itemize}
-        \item \cite{vardi2021margin}: In which settings this KKT~point is guaranteed to be a global/local~optimum of the maximum-margin~problem?
-    \end{itemize}
+    \begin{exampleblock}{Thm. (informal)}
+        For sufficiently~deep~networks, maximizing~the~$\ell_2$-margin $\Rightarrow$ \true{rank~minimization}.
+    \end{exampleblock}
     
     \note{
-        More works:
+        \scriptsize
         \begin{enumerate}
-            \item \cite{gunasekar2018bimplicit,moroshko2020implicit,yun2020unifying}: \\
-            The implicit~bias in \alert{diagonal} and \alert{convolutional~linear~networks}. 
-            \item \cite{chizat2020implicit}:\\
-            The implicit~bias in \alert{infinitely-wide~two-layer~homogeneous~networks}.
+            \item For linear networks of output~dimension~$1$, \cite{ji2018gradient, ji2020directional} showed that gradient~flow~(GF) w.r.t. exponentially-tailed~classification~losses converges to networks where the weight~matrix of every layer is of rank~$1$.
+            \item In \emph{homogeneous}~neural~networks, like the ReLU networks, a well-known result characterizes the implicit~bias for the~logistic~or~the~exponential~losses.\\
+            We say that a network~$N_\btheta$~is~\emph{homogeneous} if there~exists a~positive~constant~$M$ that satisfies the following. Multiplying any parameterization of the network,~$\btheta$, by a~positive~scalar,~$\alpha$, always results in just multiplying the prediction of the network by $\alpha^M$. 
+            \item As mentioned, fully-connected~ReLU~networks are homogeneous.
+            \item \cite{lyu2019gradient} and \cite{ji2020directional} showed that GF on homogeneous~neural~networks, with exponentially-tailed~losses, converges~in~direction to a KKT~point of the maximum-margin~problem in the parameter~space.\\
+            It means that GF in such networks is biased towards networks that maximize~the~$\ell_2$-margin. 
+            \item Our~result shows that for sufficiently~deep~networks, maximizing~the~margin implies rank~minimization, where the rank is measured by the~ratio~between~the~norms as~we~saw.
         \end{enumerate}
+        We won't cover other prior works that studied the implicit~bias in diagonal and convolutional~linear~networks, as well as in infinitely-wide~homogeneous~networks.\\
+        ((N.T: \cite{gunasekar2018bimplicit,moroshko2020implicit,yun2020unifying} \& \cite{chizat2020implicit}))
+    }
+\end{frame}
+
+
+
+
+\begin{frame}
+
+    
+    \note{
+        
     }
 \end{frame}
 
