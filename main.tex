@@ -270,8 +270,8 @@
         Let's try to understand implicit regularization by the following illustration:
         \begin{enumerate}
             \item The points in $\reals^d$ that we marked by $\btheta(0)$ are different possible initial parameterizations of a neural network.
-            \item We know that GF (e.g., w.r.t. square loss) guarantee convergence to a local minima. 
-            \item The question is: When GF converges to a global minima, can we guarantee to which one?
+            \item We know that GF (e.g., w.r.t. square loss) \textbf{usually} converges to local~minima.
+            \item The question is: When GF converges to a global minimum, can we guarantee to which one?
         \end{enumerate}
         But please remember that the "implicit bias" we are looking for may not even exist!
     }
@@ -356,8 +356,8 @@
     \begin{itemize}
         \pause
         \item GF \emph{converges} $\Leftrightarrow \btheta(\infty) := \lim_{t \to \infty}\btheta(t)$.
-        \pause
-        \item Assume $\sigma'(0) = 0$ for convenience.
+        % \pause
+        % \item Assume $\sigma'(0) = 0$ for convenience.
     \end{itemize}
     
     \note{
@@ -367,8 +367,9 @@
             \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining $0$~loss.
             \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
             \item We consider GF on the square loss. It captures the behavior of GD with an infinitesimally small step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial point~$\btheta(0)$. The dynamics of~$\btheta(t)$ is given by the differential equation: $\frac{d \btheta(t)}{dt}$ equals the minus of the gradient of the objective function $L_{X,Y}$ with respect to vector of parameters $\btheta(t)$.
-            \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.
-            \item Another note is that, by default, the derivative of the ReLU~function at $\zero$ is ambiguous. However, practical implementations of gradient~methods define its derivative~at~$\zero$ to be some constant in the closed~interval between $0$~and~$1$ ((N.T.:~$\sigma'(0) \in [0,1]$)). For convenience, we assume that the derivative~at~$\zero$ equals~$0$.
+            \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.\\
+            Note that we assume that the derivative~of~the~ReLU at~$\zero$ equals~$0$.
+            % \item Another note is that, by default, the derivative of the ReLU~function at $\zero$ is ambiguous. However, practical implementations of gradient~methods define its derivative~at~$\zero$ to be some constant in the closed~interval between $0$~and~$1$ ((N.T.:~$\sigma'(0) \in [0,1]$)). For convenience, we assume that the derivative~at~$\zero$ equals~$0$.
         \end{enumerate}
     }
 \end{frame}
