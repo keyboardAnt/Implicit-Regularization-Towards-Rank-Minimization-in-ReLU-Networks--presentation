@@ -236,7 +236,7 @@
 
 
 
-\section{What is implicit regularization?}
+
 
 \begin{frame}{What is \emph{implicit regularization}?}{Generalization despite overparameterization}
     \pause
@@ -1167,18 +1167,16 @@
     
     \note{
         \footnotesize
-        The last part of our work is about ReLU~networks in binary~classification~problems.
+        The last part of our work is about ReLU~networks in binary~classification~problems. We start with some additional,~necessary~preliminaries.
     }
 }
 
 
 
 \section{Classification}
-\subsection{Previous work}
+\subsection{Preliminaries}
 
-
-
-\begin{frame}{Previous work}{Implicit bias in linear~networks with exponentially-tailed~losses}
+\begin{frame}{Preliminaries}{Implicit bias in \textbf{exponentially-tailed~losses}}
     \begin{definition}[classification loss]
         Given a binary~classification dataset $\{(\bx_i,y_i)\}_{i=1}^n \subseteq \reals^d \times \set{\pm 1}$, a network $N_\btheta$ and a loss function $\ell:\reals \to \reals$,
         \begin{equation*}\label{eq:objective classification}
@@ -1208,15 +1206,16 @@
         \begin{enumerate}
             \item We focus on the exponential~loss and the logistic~loss.
             \item We say that a given dataset is \emph{correctly~classified} by the network~$N_\btheta$ if the inner~product of the~prediction~of~the~network and the~target is~positive for all inputs.
-            \item We say that a~trajectory~$\btheta(t)$~of~GF {\em converges~in~direction}~to~$\tilde{\btheta}$ if, when~$t \to \infty$, $\tilde{\btheta}$ is the limit of the~direction~of~$\btheta(t)$.
+            \item We say that a~trajectory~$\btheta(t)$~of~GF {\em converges~in~direction} if the limit as~$t \to \infty$ of the~direction~of~$\btheta(t)$ exists.\\
+            Note that with exponentially-tailed losses, $\norm{\btheta(t)} \to \infty$ as $t \to \infty$. Therefore, the emph{convergence~in~direction} is the only notation~of~converges in this~setting.
         \end{enumerate}
     }
 \end{frame}
 
 
 
-
-\begin{frame}
+\subsection{Previous work}
+\begin{frame}{Previous work}{Implicit bias in linear~networks with exponentially-tailed~losses}
     % NOTE: \cite{soudry2018implicit} is less relevant comparing to the following prior results 
     % \begin{exampleblock}{\cite{soudry2018implicit}}
     %      GD on linearly-separable~binary~classification~problems converges to the maximum~$\ell_2$-margin~direction.
