@@ -120,7 +120,13 @@
     Advisor: Prof. Ohad Shamir
 }
 \institute[Weizmann Institute]{Weizmann Institute of Science}
-\date[March 2022]{March 2022}
+\date[March 2022]{
+    March 2022 \newline \newline \newline \newline \newline
+    {
+        \footnotesize
+        Based on a joint paper with Gal Vardi and Ohad Shamir (under review in ICML'22).
+    }
+}
 % \logo{\includegraphics[height=.75cm]{WeizmannLogo.png}}
 
 
@@ -130,14 +136,6 @@
 
 
 \frame{\titlepage}
-
-\begin{frame}
-    \frametitle{Implicit~Regularization Towards Rank~Minimization\\in ReLU~Networks}
-    A joint paper under review @ ICML 2022,\\
-    with Gal Vardi and Ohad Shamir.
-\end{frame}
-
-
 
 
 
@@ -707,7 +705,7 @@
 
 
 
-\begin{frame}{Proof ideas}
+\begin{frame}{Proof ideas I}
     Recall:
     \pause
     \begin{assumption}
@@ -739,7 +737,7 @@
             \begin{column}{0.5\textwidth}
                 \begin{figure}[t]
                     \centering
-                    \frame{\includegraphics[scale=.25]{figures/D_and_Ss_regions.png}}
+                    \frame{\includegraphics[scale=.24]{figures/D_and_Ss_regions.png}}
                     \caption{Regions $\cd, \cs, \cs_1, \cs_2$.}
                     \label{fig:D_and_Ss_regions}
                 \end{figure}
@@ -950,7 +948,7 @@
 
 
 
-\begin{frame}
+\begin{frame}{Proof ideas II}
     If $\bw_1(0) \in \cs_1 \setminus \partial \cs_1, \bw_2(0) \in \cs_2 \setminus \partial \cs_2$:
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
@@ -1398,15 +1396,12 @@
 
 
 
-\begin{frame}{Questions?}
-\end{frame}
-
 
 \begin{frame}{Thank you for listening!}
 Special thanks to
 \begin{itemize}
-    \item Prof. Ohad Shamir
-    \item Dr. Gal Vardi
+    \item Ohad Shamir
+    \item Gal Vardi
 \end{itemize}
 \end{frame}
 
@@ -1415,7 +1410,7 @@ Special thanks to
 \section*{References}
 \begin{frame}[allowframebreaks]{References} % To disable the frame counter, add the preamble: noframenumbering
     \bibliography{bib}
-    \bibliographystyle{abbrvnat}    
+    \bibliographystyle{abbrvnat}
 \end{frame}
 
 \end{document}
