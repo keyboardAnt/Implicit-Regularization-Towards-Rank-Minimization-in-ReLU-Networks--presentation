@@ -139,15 +139,111 @@
 
 
 
+
+
+\section{Preliminaries}
+
+\begin{frame}{Preliminaries}
+    \pause
+    \begin{definition}[fully-connected~neural~network]
+        A fully-connected~neural~network $N_\btheta$ of depth~$k \geq 2$ is parameterized by a collection~$\btheta := [W^{(\ell)}]_{\ell=1}^k$ of weight~matrices\\
+        ($\forall \ell \in [k] : W^{(\ell)} \in \reals^{d_\ell \times d_{\ell-1}}$), and computes a function $N_\btheta : \reals^\din \to \reals^\dout$:
+        \[
+            N_\btheta(\bx) := 
+            \onslide<5->{W^{(k)}}
+                \onslide<4->{\sigma\Big( W^{(k-1)} \ldots }
+                    \onslide<3->{\sigma\Big( W^{(2)}~} 
+                        \sigma\Big( W^{(1)} \bx \Big) 
+                    \onslide<3->{\Big)}
+                \onslide<4->{ \Big)} 
+            \onslide<5->{\Big)}
+            , \forall \bx
+        \]
+        where $\sigma:\reals \to \reals$ is an activation~function that acts coordinate-wise.
+    \end{definition}
+    \onslide<6->{
+        \begin{description}
+            \item[fully-connected \emph{linear} neural~network] $N_\btheta$, where $\sigma$ is the identity.
+            \item[fully-connected \emph{ReLU} neural~network] $N_\btheta$, where $\sigma(z) := \max\set{0, z}$.
+        \end{description}
+    }
+    \onslide<7->{
+        \begin{description}
+            \item[overparameterized neural network] $N_\btheta$, where $\prod_{\ell = 1}^k d_\ell \cdot d_{\ell-1} >> n \cdot \din$.
+        \end{description}
+    }
+    
+    \note{
+        \scriptsize
+        \begin{enumerate}
+            \itemsep=0pt
+            \topsep=0pt
+            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices $W^{(\ell)}$. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{\dout}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called ``the output of the first layer" or ``the input to the second layer".
+            \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
+            \item This continues until we compute the input to the last layer.\\
+            \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.\\
+            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $\ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} is the number of its neurons, and the \emph{width of the network} is the maximal width of all layers.
+            \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
+            \item An \emph{overparameterized}~network~$N_\btheta$ has far more learnable~parameters than training~examples.
+        \end{enumerate}
+    }
+\end{frame}
+
+
+
+\begin{frame}
+    \pause
+    \begin{definition}[square loss]
+        
+        Given a network $N_\btheta$ and a dataset $\{(\bx_i,\by_i)\}_{i=1}^n \subseteq \reals^\din \times \reals^\dout$,
+        \begin{align*} \label{eq:objective}
+        	 L_{X,Y}(\btheta) 
+        	 := \frac{1}{2} \sum_{i=1}^n \norm{N_\btheta(\bx_i) - \by_i}^2
+        	 = \frac{1}{2} \norm{N_\btheta(X) - Y}_F^2~.
+        \end{align*}
+        $(X,Y) \in \reals^{\din \times n} \times \reals^{\dout \times n}$ are the corresponding data matrices.
+    \end{definition}
+    \pause
+    \begin{itemize}
+            \item Assume $\min_\btheta L(\btheta)=0$.
+            \pause
+            \item Overparameterization $\Rightarrow$ Multiple (or even $\infty$) global minima.
+        \end{itemize}
+    \pause
+    \begin{definition}[gradient flow (w.r.t. square loss)]
+        Let~$\btheta(t)$ be the trajectory of GF. Starting from $\btheta(0)$, the dynamics is given by $\frac{d \btheta(t)}{dt} = -\nabla L_{X,Y}(\btheta(t))$.
+    \end{definition}
+    \begin{itemize}
+        \pause
+        \item GF \emph{converges} $\Leftrightarrow \btheta(\infty) := \lim_{t \to \infty}\btheta(t)$.
+        % \pause
+        % \item Assume $\sigma'(0) = 0$ for convenience.
+    \end{itemize}
+    
+    \note{
+        \footnotesize
+        \begin{enumerate}
+            \item The \emph{empirical square loss} is half the sum of the squared~$\ell_2$-norm of the differences between the network’s prediction,~$N_\btheta(\bx_i)$, and the corresponding target~vector,~$\by_i$. For~convenience, we sometimes use the matrix~notation and take the Frobenius~norm. Then, we stack the input~and~target~vectors as the columns of the matrices~$X, Y$.
+            \item In all our results, we assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining $0$~loss.
+            \item We also assume to have overparameterized~networks so~that $L$ has multiple (or even infinitely~many) global~minima.
+            \item We consider GF with the square~loss. It captures the behavior of GD with an infinitesimally~small~step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial~point~$\btheta(0)$. The following differential~equation gives the dynamics of~$\btheta(t)$: The derivative~of~$\btheta(t)$ equals minus~the~gradient of the objective~function~$L_{X,Y}$ with~respect~to~$\btheta(t)$.
+            \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.\\
+            Note that we assume that the derivative~of~the~ReLU at~$\zero$ equals~$0$.
+            % \item Another note is that, by default, the derivative of the ReLU~function at $\zero$ is ambiguous. However, practical implementations of gradient~methods define its derivative~at~$\zero$ to be some constant in the closed~interval between $0$~and~$1$ ((N.T.:~$\sigma'(0) \in [0,1]$)). For convenience, we assume that the derivative~at~$\zero$ equals~$0$.
+        \end{enumerate}
+    }
+\end{frame}
+
+
+
 \section{What is implicit regularization?}
 
 \begin{frame}{What is \emph{implicit regularization}?}{Generalization despite overparameterization}
     \pause
-    \newline
-    If \#[learnable parameters] $>>$ \#[training examples]:
+    Setting: \#[learnable parameters] $>>$ \#[training examples].
     \pause
     \begin{itemize}
-        \item \alert{Many} global minima with $0$ training loss.
+        \item $\Rightarrow$ \alert{Many} global minima with $0$ training loss.
     \end{itemize}
     \pause
     \begin{block}{Phenomenon in practice (\cite{zhang2017understanding})}
@@ -159,11 +255,10 @@
     
     \note{
         \footnotesize
-        We focus on overparameterized neural networks, namely, 
         \begin{enumerate}
-            \item models with far more learnable~parameters than training~examples.
+            \item As said, we focus on overparameterized~networks, namely, models with far more learnable~parameters than training~examples.
             \item In this setting of learning, we face an underdetermined optimization~problem with many global~minima of $0$~training~loss.
-            \item A central puzzle in the theory~of~deep~learning is how such overparameterized neural~networks generalize, even when trained without explicit regularization, as \cite{zhang2017understanding}  demonstrated.
+            \item A central puzzle in the theory~of~deep~learning is how such overparameterized neural~networks generalize, even when trained without explicit~regularization, as \cite{zhang2017understanding}  demonstrated.
             \item A possible explanation is that GD induces an {\em implicit~regularization}~(or~\emph{implicit~bias}).
         \end{enumerate}
         Today we take another step in trying to characterizing this regularization/bias.
@@ -273,7 +368,7 @@
             \item We know that GF (e.g., w.r.t. square loss) \textbf{usually} converges to local~minima.
             \item The question is: When GF converges to a global minimum, can we guarantee to which one?
         \end{enumerate}
-        But please remember that the "implicit bias" we are looking for may not even exist!
+        But please remember that the ``implicit~bias" we are looking~for may~not~have a ``nice"~definition~or~characterization!
     }
 \end{frame}
 
@@ -283,48 +378,21 @@
 \section{Square loss}
 \subsection{Previous work}
 
-\begin{frame}{Previous work}{Implicit regularization in linear networks}
+\begin{frame}{Previous work}{Implicit regularization in linear networks with square~loss}
+    \begin{description}
+        \item[linear~network] $N_\btheta(\bx) := W^{(k)} W^{(k-1)} \ldots W^{(2)} W^{(1)} \bx$.
+    \end{description}
     \pause
-    \begin{definition}[fully-connected~neural~network]
-        A fully-connected~neural~network $N_\btheta$ of depth~$k \geq 2$ is parameterized by a collection~$\btheta := [W^{(\ell)}]_{\ell=1}^k$ of weight~matrices\\
-        ($\forall \ell \in [k] : W^{(\ell)} \in \reals^{d_\ell \times d_{\ell-1}}$), and computes a function $N_\btheta : \reals^\din \to \reals^\dout$:
-        \[
-            N_\btheta(\bx) := 
-            \onslide<5->{W^{(k)}}
-                \onslide<4->{\sigma\Big( W^{(k-1)} \ldots }
-                    \onslide<3->{\sigma\Big( W^{(2)}~} 
-                        \sigma\Big( W^{(1)} \bx \Big) 
-                    \onslide<3->{\Big)}
-                \onslide<4->{ \Big)} 
-            \onslide<5->{\Big)}
-            , \forall \bx
-        \]
-        where $\sigma:\reals \to \reals$ is an activation~function that acts coordinate-wise.
-    \end{definition}
-    \onslide<6->{
-        \begin{description}
-            \item[fully-connected \emph{linear} neural~network] $N_\btheta$, where $\sigma$ is the identity.
-            \item[fully-connected \emph{ReLU} neural~network] $N_\btheta$, where $\sigma(z) := \max\set{0, z}$.
-        \end{description}
-    }
-    \onslide<7->{
-        \begin{block}{Matrix Factorization}
-            What is the implicit regularization in training linear networks of depth 2 and multiple outputs w.r.t. square loss? ($W^{(2)}W^{(1)}\bx_i = W^* \bx_i, \forall i \in [n]$.)
-        \end{block}
-    }
-    
+    \begin{block}{Matrix Factorization}
+        What is the implicit regularization in training linear networks of depth 2 and multiple outputs w.r.t. square loss? ($W^{(2)}W^{(1)}\bx_i = W^* \bx_i, \forall i \in [n]$.)
+    \end{block}
+
     \note{
         \scriptsize
-        In recent years, several works studied the relationship between the implicit~regularization in \emph{linear}~neural~networks and rank~minimization. To understand those, let's first define our model.
+        In recent years, several works studied the relationship between the implicit~regularization in \emph{linear}~networks and rank~minimization of their weight~matrices.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item We concern a fully-connected~neural~network, denoted by $N_\btheta$, where $\btheta$ is a collection of $k$ weight~matrices $W^{(\ell)}$. We say that $k$ is the \emph{depth} of the network, and it is $\ge 2$. The network computes a function $\reals^{\din} \to \reals^{\dout}$ in the following iterative way. A given input vector $\bx$ is multiplied by the first weight matrix, $W^{(1)}$. On the resulted multiplication, we apply an entrywise real-valued function, denoted by $\sigma$. This expression is called ``the output of the first layer" or ``the input to the second layer".
-            \item Then, we repeat: We take the output of the first layer and do the same: Multiplying by $W^{(2)}$ and applying $\sigma$.
-            \item This continues until we compute the input to the last layer.\\
-            \item Then, we only multiply by the last weight matrix, $W^{(K)}$. Note that we do not have an activation function in the last layer or bias terms.\\
-            The $d_\ell$ rows of $W^{(\ell)}$ are ``the neurons of the $\ell$-th layer". The \emph{hidden neurons} are the neurons in all layers except the last (namely, in layers $1, \ldots, k-1$). The \emph{width of the $\ell$-th layer} is the number of its neurons, and the \emph{width of the network} is the maximal width of all layers.
-            \item When referring to a \emph{linear} network, we mean that $\sigma$ is the identity function. \emph{ReLU} network is when $\sigma$ is the $\max$ between $0$ and its input.
             \item A main focus in recent years was on the matrix~fact.~problem, which corresponds to training a depth-2~linear~network with multiple outputs w.r.t. the square~loss. Think of finding $W^{(1)}, W^{(2)}$ that realize the training dataset, given by $\bx_i$ and $W^*$. The matrix~factorization~problem is considered a well-studied test-bed for analyzing implicit~regularization in DL.
         \end{enumerate}
     }
@@ -332,51 +400,8 @@
 
 
 
+
 \begin{frame}
-    \pause
-    \begin{definition}[square loss]
-        Given a network $N_\btheta$ and a dataset $\{(\bx_i,\by_i)\}_{i=1}^n \subseteq \reals^\din \times \reals^\dout$,
-        \begin{align} \label{eq:objective}
-        	 L_{X,Y}(\btheta) 
-        	 := \frac{1}{2} \sum_{i=1}^n \norm{N_\btheta(\bx_i) - \by_i}^2
-        	 = \frac{1}{2} \norm{N_\btheta(X) - Y}_F^2~.
-        \end{align}
-        $(X,Y) \in \reals^{\din \times n} \times \reals^{\dout \times n}$ are the corresponding data matrices.
-    \end{definition}
-    \pause
-    \begin{itemize}
-            \item Assume $\min_\btheta L(\btheta)=0$.
-            \pause
-            \item Overparameterization $\Rightarrow$ Multiple (or even $\infty$) global minima.
-        \end{itemize}
-    \pause
-    \begin{definition}[gradient flow (w.r.t. square loss)]
-        Let~$\btheta(t)$ be the trajectory of GF. Starting from $\btheta(0)$, the dynamics is given by $\frac{d \btheta(t)}{dt} = -\nabla L_{X,Y}(\btheta(t))$.
-    \end{definition}
-    \begin{itemize}
-        \pause
-        \item GF \emph{converges} $\Leftrightarrow \btheta(\infty) := \lim_{t \to \infty}\btheta(t)$.
-        % \pause
-        % \item Assume $\sigma'(0) = 0$ for convenience.
-    \end{itemize}
-    
-    \note{
-        \footnotesize
-        \begin{enumerate}
-            \item The \emph{empirical square loss} is half the sum of the squared~$\ell_2$-norm of the differences between the network’s prediction,~$N_\btheta(\bx_i)$, and the corresponding target~vector,~$\by_i$. For~convenience, we sometimes use the matrix~notation and take the Frobenius~norm. Then, we stack the input~and~target~vectors as the columns of the matrices~$X, Y$.
-            \item We assume that the data is \emph{realizable}. Namely, there exists a parameterization $\btheta$ attaining $0$~loss.
-            \item Another note is that $L$ has multiple (or even infinitely many) global minima because of our overparameterized setting.
-            \item We consider GF on the square loss. It captures the behavior of GD with an infinitesimally small step~size. $\btheta(t)$ is the trajectory of GF, starting from an initial point~$\btheta(0)$. The dynamics of~$\btheta(t)$ is given by the differential equation: $\frac{d \btheta(t)}{dt}$ equals the minus of the gradient of the objective function $L_{X,Y}$ with respect to vector of parameters $\btheta(t)$.
-            \item We say that GF~\emph{converges} if $\lim_{t \to \infty}\btheta(t)$~exists, and we denote this limit by $\btheta(\infty)$.\\
-            Note that we assume that the derivative~of~the~ReLU at~$\zero$ equals~$0$.
-            % \item Another note is that, by default, the derivative of the ReLU~function at $\zero$ is ambiguous. However, practical implementations of gradient~methods define its derivative~at~$\zero$ to be some constant in the closed~interval between $0$~and~$1$ ((N.T.:~$\sigma'(0) \in [0,1]$)). For convenience, we assume that the derivative~at~$\zero$ equals~$0$.
-        \end{enumerate}
-    }
-\end{frame}
-
-
-
-\begin{frame}{Previous work}{Implicit regularization in linear networks with square~loss}
     \pause
     \begin{block}{\cite{gunasekar2018implicit}’s conjecture \onslide<3->{\hfill\alert{X}}}
         The implicit~bias in \emph{matrix~fact.} can be characterized by the \alert{nuclear~norm} of the corresponding linear~predictor.
@@ -400,11 +425,11 @@
     
     \note{
         \footnotesize
-        We saw that training a linear~network with multiple outputs w.r.t. the square~loss corresponds to a matrix~factorization~problem. Prior works in recent years have tried to identify its implicit~regularization.
         \begin{enumerate}
-            \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor can characterize the implicit~regularization in matrix~factorization. A string of later works further studied this conjecture (e.g., \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}), until...
-            \item \cite{li2020towards} formally refuted it.
-            \item Still in 2020, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
+            \item Initially, \cite{gunasekar2018implicit} conjectured that the nuclear~norm of the corresponding linear~predictor could characterize the implicit~regularization in matrix~factorization.
+            \item Following a string of later works, eventually, \cite{li2020towards} formally refuted it.\\ 
+            ((N.T.: \cite{belabbas2020implicit,arora2019implicit,razin2020implicit}))
+            \item On the positive side, \cite{razin2020implicit} conjectured that rank~minimization could explain the implicit~regularization in matrix~factorization. Moreover, they raised the hypothesis that some notion of rank~minimization may be vital in explaining generalization in DL.
             \item The work of \cite{li2020towards} established theoretical and empirical evidence that the implicit~regularization in matrix~factorization is a ``heuristic for rank~minimization" (as they called it).
             \item \cite{razin2021implicit} studied the implicit~regularization in a generalization of matrix~factorization: Tensor~factorization. They demonstrated implicit~bias towards low-rank~tensors, both theoretically and empirically.
         \end{enumerate}
@@ -415,7 +440,7 @@
 
 
 
-\begin{frame}{Previous work}{Implicit regularization in *nonlinear* networks with square~loss}
+\begin{frame}{Previous work}{Implicit regularization in \textbf{nonlinear} networks with square~loss}
     \pause
     \begin{exampleblock}{Neural network compression (empirical evidences)}
         Replacing the weight~matrices by low-rank~approximations $\Rightarrow$ only a small drop in accuracy.
@@ -451,19 +476,19 @@
 \end{frame}
 
 
-\begin{frame}{More previous work...}{Implicit regularization in *nonlinear* networks with square~loss}
-    \pause
+\begin{frame}{More previous work...}{Implicit regularization in \textbf{nonlinear} networks with square~loss}
+    % \pause
     \begin{block}{\cite{oymak2019overparameterized}}
          GD over certain overparameterized nonlinear models is guaranteed to converge to a 0-loss~solution with a bounded $\ell_2$~norm, under some assumptions.
     \end{block}
-    \pause
+    % \pause
     \begin{block}{\cite{vardi2021implicit}}
          In width-$1$ ReLU networks, $\forall$ function~$\calr(\btheta)$, if  GF with the square~loss converges to a global~minima that minimizes~$\calr \Rightarrow \calr$ is \alert{trivial}.
     \end{block}
-    \pause
+    % \pause
     \begin{itemize}
         \item Does GF act as a \emph{heuristic}? (i.e., induces implicit bias for ``most" datasets and initializations)
-        \pause
+        % \pause
         \item Does GF is implicitly~biased towards low-ranks? (\emph{rank} is undefined for width $1$.)
     \end{itemize}
     
@@ -488,8 +513,17 @@
 \subsection{Our results}
 
 \begin{frame}{Our results}{GF does~not even approximately minimize ranks}
+    \setlength{\parskip}{0pt}
+    \setlength{\abovedisplayskip}{0pt}
+    \setlength{\belowdisplayskip}{0pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0pt}
     \pause
-    Setting: \true{ReLU}~networks of depth $2$ and width $2$ with multiple outputs, trained with the square~loss.
+    \begin{align*}
+        \text{Setting: } & \text{\true{ReLU}~networks of depth $2$ and width $2$,}\\
+        &\text{with \textbf{multiple outputs} (i.e., predicting a vector $N_\btheta(\bx) \in \reals^2$),}\\
+        &\text{trained w.r.t. the square~loss.}
+    \end{align*}
     \pause
     \begin{exampleblock}{\cite{li2020towards,razin2020implicit} (matrix/tensor~fact.)}
         \alert{Linear} networks of this architecture are implicitly biased towards low-rank. (GF can be viewed as a "heuristic for rank~minimization".)
@@ -508,8 +542,8 @@
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
-            \item Now, I would like to informally introduce our results on depth-$2$~width-$2$~ReLU~networks with multiple~outputs, trained with the square~loss.
-            \item Recall the prior results on matrix factorization we mentioned. They gave evidence that in \emph{linear} networks of this depth-$2$~width-$2$~architecture, GF acts as a heuristic for rank~minimization.
+            \item I would like to informally introduce our results on depth-$2$~width-$2$~ReLU~networks with multiple~outputs trained with the square~loss. Please note that in this setting, having multiple~outputs means that the prediction~of~the~network is in~$\reals^2$.
+            \item Prior results on matrix factorization we mentioned gave evidence that in \emph{linear}~networks of this depth-$2$~width-$2$~architecture, GF acts as a heuristic for rank~minimization.
             \item In contrast to the linear case, we show that in ReLU~networks, the situation is quite different: We show that GF does~not converge to a low-rank~solution, already for the simple case of datasets of size~$2$. Our result has only mild assumptions on the training dataset and that the initialization is sufficiently close-to-$0$. The assumptions on the data are so weak that they allow us to consider ``most'' datasets of size $2$. Soon we will see it formally.
             \item To completely rule~out the possibility of low-rank bias, we show that with at least constant probability, the solutions GF converges to are not even close to having low~rank for any reasonable rank-approximation metric (e.g., the ratio of the Frobenius and spectral norms).
         \end{enumerate}
@@ -522,9 +556,10 @@
 
 \begin{frame}
     \pause
+    Setting: 0-loss network $N_{W,V}(X)=V\sigma(WX)$ of depth and width $2$.\\
+    \hspace{13mm} ($W,V,X,Y \in \reals^{2 \times 2}$ s.t. $Y=V\sigma(WX)$).
+    \pause
     \begin{itemize}
-        \item Setting: 0-loss network $N_{W,V}(X)=V\sigma(WX)$ of depth and width $2$ ($W,V,X,Y \in \reals^{2 \times 2}$ s.t. $Y=V\sigma(WX)$).
-        \pause
         \item \emph{``low-rank"} $:= \rank W < 2$. Why?
         \pause
         \begin{itemize}
@@ -970,7 +1005,7 @@
     \end{exampleblock}
     \pause
     \begin{itemize}
-        \item Recall: The \emph{stable~rank} of $W := {\norm{W}^2_F} / {\norm{W}^2_\sigma}$.
+        \item The \emph{stable~rank} of $W := {\norm{W}^2_F} / {\norm{W}^2_\sigma}$.
         \pause
         \item $\Rightarrow$ There is a bias towards \true{low~ranks}.
         \pause
@@ -981,13 +1016,14 @@
     
     \note{
         \footnotesize
-        Next, for ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
+        For ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
             \item First, we consider ReLU~networks trained w.r.t. the square~loss.
             \item We show that for sufficiently deep networks, if GF converges to a network that attains $0$~loss and minimizes the $\ell_2$-norm~of~the~parameters, then the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
-            \item The squared inverse of this ratio is the \emph{stable~rank} that we introduced previously. As said, it is a continuous approximation of the rank. The stable rank of $W$ is~$1$ if~and~only~if $\rank(W)$ is~$1$.
+            \item The squared inverse of this ratio is known~as the \emph{stable~rank}. It is a continuous~approximation of the rank.\\
+            The ratio of spectral-to-Frobenius~norms of some matrix~$W$ and the inverse of this ratio have both the following important property: They equal~$1$ if~and~only~if $\rank(W)$ is~$1$.
             \item Therefore, our result reveals a bias towards low~ranks.
             \item A possible critique on the statement of the theorem might be: ``Why assume that $\norm{\btheta}$ is minimal? GF in ReLU~networks w.r.t. the square~loss is \textbf{not}~known to be biased towards solutions that minimize the $\ell_2$~norm."
             \item While this is generally true, in practice, it is common to use explicit $\ell_2$-regularization, which encourages norm~minimization. Thus, our result suggests that GF in deep networks trained with the square~loss and explicit $\ell_2$-regularization encourages rank~minimization.
