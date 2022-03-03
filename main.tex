@@ -178,7 +178,7 @@
     }
     \onslide<7->{
         \begin{description}
-            \item[overparameterized neural network] $N_\btheta$, where $\prod_{\ell = 1}^k d_\ell \cdot d_{\ell-1} >> n \cdot \din$.
+            \item[overparameterized neural network] $N_\btheta$, where $\sum_{\ell = 1}^k d_\ell \cdot d_{\ell-1} >> n$.
         \end{description}
     }
     
@@ -1006,9 +1006,9 @@
     Settings: ReLU~networks, overparameterized in \true{depth}, of width $\ge 2$, trained with the square~loss.
     \pause
     \begin{exampleblock}{Thm. (informal)}
-        For sufficiently deep networks, if $\btheta(\infty)$ exists and $\btheta(\infty) \in \arg\min_{\btheta} \norm{\btheta}$ s.t. $L_{X,Y}(\btheta(\infty)) = 0$, then 
+        For a sufficiently deep network $N_\btheta$, if $L_{X,Y}(\btheta) = 0$ and $\btheta \in \arg\min_{\btheta} \norm{\btheta}$, then 
         \[
-        \frac{1}{k}\sum_{i=1}^{k} \frac{\norm{W^{(i)}(\infty)}_\sigma}{\norm{W^{(i)}(\infty)}_F}
+        \frac{1}{k}\sum_{i=1}^{k} \frac{\norm{W^{(i)}}_\sigma}{\norm{W^{(i)}}_F}
         \approx 1
         \]
     \end{exampleblock}
@@ -1025,12 +1025,12 @@
     
     \note{
         \footnotesize
-        For ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which GF \textbf{is} biased towards low~ranks.
+        For ReLU~networks that are overparameterized in~terms of depth and have width~$\ge 2$, we identify settings in which they \textbf{are} biased towards low~ranks.
         \begin{enumerate}
             \itemsep=0pt
             \topsep=0pt
             \item First, we consider ReLU~networks trained w.r.t. the square~loss.
-            \item We show that for sufficiently deep networks, if GF converges to a network that attains $0$~loss and minimizes the $\ell_2$-norm~of~the~parameters, then the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
+            \item We show that, in sufficiently~deep~networks that attain $0$~loss and minimize the $\ell_2$-norm~of~the~parameters, the average~ratio between the spectral and the Frobenius~norms of the weight~matrices is close~to~$1$.
             \item The squared inverse of this ratio is known~as the \emph{stable~rank}. It is a continuous~approximation of the rank.\\
             The ratio of spectral-to-Frobenius~norms of some matrix~$W$ and the inverse of this ratio have both the following important property: They equal~$1$ if~and~only~if $\rank(W)$ is~$1$.
             \item Therefore, our result reveals a bias towards low~ranks.
@@ -1409,11 +1409,6 @@
 
 
 \begin{frame}{Thank you for listening!}
-Special thanks to
-\begin{itemize}
-    \item Ohad Shamir
-    \item Gal Vardi
-\end{itemize}
 \end{frame}
 
 
