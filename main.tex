@@ -530,7 +530,7 @@
     \pause
     \begin{align*}
         \text{Setting: } & \text{\true{ReLU}~networks of depth $2$ and width $2$,}\\
-        &\text{with \textbf{multiple outputs} (i.e., predicting a vector $N_\btheta(\bx) \in \reals^2$),}\\
+        &\text{with \textbf{multiple outputs} (i.e., predicting a vector $\by_i, N_\btheta(\bx_i) \in \reals^2$),}\\
         &\text{trained w.r.t. the square~loss.}
     \end{align*}
     \pause
@@ -758,11 +758,11 @@
             \begin{column}{0.7\textwidth}
                 {\fontsize{10}{10} \selectfont
                 \begin{eqnarray*}
-                    &\mathcal{D} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) \le 0\}\\
+                    &\mathcal{D} := \{ \bw \mid \forall i \in [2], \bw^\top \bx_i \le 0\}\\
                     \pause
-                    &\mathcal{S} := \{ \bw \mid \forall i \in [2], \sigma(\bw^\top \bx_i) > 0 \}\\
+                    &\mathcal{S} := \{ \bw \mid \forall i \in [2], \bw^\top \bx_i > 0 \}\\
                     \pause
-                    &\mathcal{S}_j := \{ \bw  \mid  i=j \Leftrightarrow \sigma(\bw^\top \bx_i) > 0 \}
+                    &\mathcal{S}_j := \{ \bw  \mid  i=j \Leftrightarrow \bw^\top \bx_i > 0 \}
                 \end{eqnarray*}
                 }
             \end{column}
@@ -770,11 +770,11 @@
     
     \note{
         \footnotesize
-        The figure depicts the 2D plain, the given input vectors $\bx_1, \bx_2$ on the unit sphere, and the following four regions $\cd, \cs, \cs_1, \cs_2$.
+        The figure depicts the 2D~plain, the given input~vectors~$\bx_1, \bx_2$ on the unit~sphere, and the following four regions~$\cd, \cs, \cs_1, \cs_2$.
         \begin{enumerate}
-            \item Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$. 
-            \item $\cs$~is the ``active''~region where neurons have a positive~output on both~$\bx_1,\bx_2$. 
-            \item $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding input. It means, for example, that each neuron in $\cs_1$ is positively correlated with $\bx_1$ and non-positively correlated with $\bx_2$.
+            \item Intuitively, $\cd$~defines the ``dead''~region where neurons output~$0$ on both~$\bx_1,\bx_2$ after applying the ReLU. In other words, any neuron in~$\cd$ has a non-positive correlation with both inputs. 
+            \item $\cs$~is the ``active''~region where neurons have a positive~correlation with both~$\bx_1,\bx_2$.
+            \item $\cs_1,\cs_2$~are the ``partially~active''~regions, where neurons are active for only the corresponding~input. For~example, each neuron in~$\cs_1$ has a positive~correlation with~$\bx_1$ and non-positive~correlation with~$\bx_2$.
         \end{enumerate}
     }
 \end{frame}
